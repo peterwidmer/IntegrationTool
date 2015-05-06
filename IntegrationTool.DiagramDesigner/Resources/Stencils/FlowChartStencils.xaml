@@ -42,24 +42,4 @@
         <Setter Property="Stroke" Value="Transparent"/>
     </Style>
 
-    <s:Toolbox x:Key="FlowChartStencils" ItemSize="60,50" SnapsToDevicePixels="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-    <ItemsControl.Items>
-
-            <Path Style="{StaticResource Process}" ToolTip="Process">
-                <s:DesignerItem.DragThumbTemplate>
-                    <ControlTemplate>
-                        <Path Style="{StaticResource Process_DragThumb}"/>
-                    </ControlTemplate>
-                </s:DesignerItem.DragThumbTemplate>
-            </Path>
-
-        </ItemsControl.Items>
-  </s:Toolbox>
-
-    <s:Toolbox x:Key="toolboxControl" ItemSize="60,50" SnapsToDevicePixels="True"
-             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-        <ItemsControl.Items>
-        </ItemsControl.Items>
-    </s:Toolbox>
 </ResourceDictionary>

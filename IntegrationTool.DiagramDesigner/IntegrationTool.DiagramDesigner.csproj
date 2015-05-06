@@ -70,8 +70,6 @@
     <Compile Include="SelectionService.cs" />
     <Compile Include="IGroupable.cs" />
     <Compile Include="ISelectable.cs" />
-    <Compile Include="Toolbox.cs" />
-    <Compile Include="ToolboxItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PathFinder.cs" />
@@ -99,10 +97,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Resources\ApplicationToolbar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\Connection.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -132,18 +126,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\Styles\Shared.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Styles\ToolBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\Toolbox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Resources\ToolboxItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

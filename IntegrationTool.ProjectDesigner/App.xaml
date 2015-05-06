@@ -13,11 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Styles/ScrollBar.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Styles/Expander.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Styles/GroupBox.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Styles/ToolBar.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/ApplicationToolbar.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/DesignerItem.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/ToolboxItem.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Toolbox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Connection.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Stencils/FlowChartStencils.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/IntegrationTool.DiagramDesigner;component/Resources/Stencils/ShapeStencils.xaml" />
