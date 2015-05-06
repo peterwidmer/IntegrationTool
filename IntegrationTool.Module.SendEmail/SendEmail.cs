@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.SendEmail
     [StepModuleAttribute(Name = "SendEmail",
                            DisplayName = "Send Email",
                            ModuleType = ModuleType.Step,
+                           GroupName = ModuleGroup.Task,
                            ContainsSubConfiguration = false,
                            RequiresConnection = true,
                            ConnectionType = typeof(SmtpClient),

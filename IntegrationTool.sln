@@ -78,11 +78,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icons", "Icons", "{D1DD0A7E
 	ProjectSection(SolutionItems) = preProject
 		_Readme.txt = _Readme.txt
 		Icons\ConnectionIcon.design = Icons\ConnectionIcon.design
+		Icons\Eventlog.design = Icons\Eventlog.design
 		Icons\LogIcon.design = Icons\LogIcon.design
 		Icons\MssqlExecute.design = Icons\MssqlExecute.design
 		Icons\PackageIcon.design = Icons\PackageIcon.design
 		Icons\ProjectIcon.design = Icons\ProjectIcon.design
 		Icons\SendEmail.design = Icons\SendEmail.design
+		Icons\ToolboxIcon.design = Icons\ToolboxIcon.design
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.TestSuccessfulDelay", "IntegrationTool.Module.TestSuccessfulDelay\IntegrationTool.Module.TestSuccessfulDelay.csproj", "{F8B3F660-D8D2-4044-8493-501DBB8FC79E}"
@@ -111,7 +113,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "60 SDK Samples", "60 SDK Sa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.CustomStep", "IntegrationTool.Module.CustomStep\IntegrationTool.Module.CustomStep.csproj", "{946A568D-EBD2-4199-94D1-8CC3BE8A1F74}"
 EndProject
-
+Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

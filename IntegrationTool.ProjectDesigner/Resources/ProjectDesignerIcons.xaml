@@ -106,4 +106,28 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
+    <DrawingBrush x:Key="IconToolbox" Stretch="Uniform">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 0,0L 500,0L 500,500L 0,500L 0,0 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen LineJoin="Round" Brush="#FF000000"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 433.915,252.811L 243.203,63.1L 172.091,134.587L 362.803,324.298L 433.915,252.811 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 307.523,187.028L 74.7926,420.987">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="100" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
 </ResourceDictionary>

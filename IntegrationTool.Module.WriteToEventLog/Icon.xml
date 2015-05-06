@@ -4,18 +4,20 @@
       <DrawingImage.Drawing>
         <DrawingGroup>
           <DrawingGroup.Children>
-            <GeometryDrawing Geometry="F1 M 9.77163,1.75L 9.76584,18.6457L 1.74375,18.6457L 15.6001,27.9812L 28.3625,18.4471L 19.6111,18.4471L 19.6111,1.7624L 9.77163,1.75 Z ">
+            <GeometryDrawing Brush="#FFFFE2D8" Geometry="F1 M 53.8127,73.4896L 447.813,73.4896L 447.813,392.99L 53.8127,392.99L 53.8127,73.4896 Z ">
               <GeometryDrawing.Pen>
-                <Pen Thickness="1" LineJoin="Round" Brush="#FF000000"/>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
               </GeometryDrawing.Pen>
-              <GeometryDrawing.Brush>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                  <LinearGradientBrush.GradientStops>
-                    <GradientStop Color="#FF323FFF" Offset="0"/>
-                    <GradientStop Color="#FFC1C8FF" Offset="1"/>
-                  </LinearGradientBrush.GradientStops>
-                </LinearGradientBrush>
-              </GeometryDrawing.Brush>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFFFE2D8" Geometry="F1 M 89.4794,100.823L 415.979,100.823L 415.979,150.823L 89.4794,150.823L 89.4794,100.823 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFFFE2D8" Geometry="F1 M 89.4794,176.755L 415.979,176.755L 415.979,361.497L 89.4794,361.497L 89.4794,176.755 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
             </GeometryDrawing>
           </DrawingGroup.Children>
         </DrawingGroup>

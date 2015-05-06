@@ -11,6 +11,7 @@ namespace IntegrationTool.Module.TestErrorDelay
     [StepModuleAttribute(Name = "ErrorDelay",
                            DisplayName = "Test Error Delayed",
                            ModuleType = ModuleType.Step,
+                           GroupName = ModuleGroup.Testing,
                            ContainsSubConfiguration = false,
                            RequiresConnection = false,
                            ConfigurationType = typeof(TestErrorDelayConfiguration))]

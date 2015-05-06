@@ -41,8 +41,14 @@
             <GridSplitter x:Name="propertiesSplitter" Focusable="False" Height="1" Margin="0 0 5 0" Background="LightGray"
                     VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="1" Visibility="Hidden"/>
             <!-- Designer -->
-            <GroupBox Header="Diagram" Grid.Column="1" Margin="3,0,0,0" Grid.RowSpan="2">
-                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+            <Grid Grid.Column="1" Margin="3,0,0,0" Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="38" />
+                    <RowDefinition Height="5" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Sequence" Style="{StaticResource SubTitle}" Grid.Column="3"  />
+                <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
 
                     <s:DesignerCanvas MagnifyDoubleClick="Magnify_DoubleClick"  Focusable="true" x:Name="MyDesigner" 
@@ -51,7 +57,7 @@
                             Margin="10" FocusVisualStyle="{x:Null}"
                             ContextMenu="{StaticResource DesignerCanvasContextMenu}"/>
                 </ScrollViewer>
-            </GroupBox>
+            </Grid>
             <ContentControl x:Name="PropertiesContentControl" Grid.Row="1"/>
 
 

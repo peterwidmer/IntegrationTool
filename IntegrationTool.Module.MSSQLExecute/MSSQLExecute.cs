@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.MSSQLExecute
     [StepModuleAttribute(Name = "MSSQLExecute",
                            DisplayName = "MSSQL Execute",
                            ModuleType = ModuleType.Step,
+                           GroupName = ModuleGroup.Task,
                            ContainsSubConfiguration = false,
                            RequiresConnection = true,
                            ConnectionType = typeof(SqlConnection),

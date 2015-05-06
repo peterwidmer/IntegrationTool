@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.WriteToEventLog
     [StepModuleAttribute(Name = "WriteToEventLog",
                            DisplayName = "Write to eventlog",
                            ModuleType = ModuleType.Step,
+                           GroupName = ModuleGroup.Task,
                            ContainsSubConfiguration = false,
                            RequiresConnection = true,
                            ConnectionType=typeof(EventLog),

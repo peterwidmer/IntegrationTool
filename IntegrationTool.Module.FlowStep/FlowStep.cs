@@ -11,7 +11,7 @@ namespace IntegrationTool.Module.FlowStep
     [StepModuleAttribute(Name = "FlowStep",
                            DisplayName = "Flow Step",
                            ModuleType = ModuleType.Step,
-                           GroupName = ModuleGroup.Flow ,
+                           GroupName = ModuleGroup.Flow,
                            ContainsSubConfiguration=true,
                            ConfigurationType=typeof(StepConfiguration))]
     public class FlowStep : IModule

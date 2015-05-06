@@ -17,6 +17,9 @@ namespace IntegrationTool.Module.CustomStep
     // Is shown in the editor
     DisplayName = "Custom Step",
 
+    // In which toolbox group the module is shown
+    GroupName = ModuleGroup.SDK,
+
     // Step, Source, Transformation, etc...
     ModuleType = ModuleType.Step,
 

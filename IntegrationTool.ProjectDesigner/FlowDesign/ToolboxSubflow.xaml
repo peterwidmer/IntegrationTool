@@ -8,20 +8,36 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="36"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="259*"/>
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ContentControl Content="Source Toolbox" x:Name="SourceToolbox" />    
-        </ScrollViewer>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="9,5,3,5" Background="{DynamicResource IconToolbox}" Grid.Column="1"  />
+        <Label Padding="2 0 0 0" VerticalAlignment="Center" Content="Toolbox" Style="{StaticResource SubTitle}" Grid.Column="3"  />
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <ContentControl Content="Transformation Toolbox" x:Name="TransformationToolbox" />    
-        </ScrollViewer>
+        <Grid Grid.Row="2" Grid.ColumnSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ContentControl Content="Source Toolbox" x:Name="SourceToolbox" />
+            </ScrollViewer>
 
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-            <ContentControl Content="Target Toolbox" x:Name="TargetToolbox" />
-        </ScrollViewer>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ContentControl Content="Transformation Toolbox" x:Name="TransformationToolbox" />
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                <ContentControl Content="Target Toolbox" x:Name="TargetToolbox" />
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </UserControl>

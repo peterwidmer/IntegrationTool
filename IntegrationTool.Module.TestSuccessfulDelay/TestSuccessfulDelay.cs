@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.TestSuccessfulDelay
     [StepModuleAttribute(Name = "SuccessfulDelay",
                            DisplayName = "Test Successful Delayed",
                            ModuleType = ModuleType.Step,
+                           GroupName = ModuleGroup.Testing,
                            ContainsSubConfiguration = false,
                            RequiresConnection = false,
                            ConfigurationType = typeof(TestSuccessfulDelayConfiguration))]
