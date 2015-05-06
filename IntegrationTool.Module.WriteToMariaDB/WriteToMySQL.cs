@@ -11,6 +11,7 @@ namespace IntegrationTool.Module.WriteToMySql
     [TargetModuleAttribute(Name = "WriteToMySQL",
                            DisplayName = "MySQL",
                            ModuleType = ModuleType.Target,
+                           GroupName = ModuleGroup.Target,
                            ConnectionType = typeof(OdbcConnection),
                            ConfigurationType = typeof(WriteToMySQLConfiguration))]
     public partial class WriteToMySQL : IModule, IDataTarget

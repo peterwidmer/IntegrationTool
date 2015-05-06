@@ -8,6 +8,6 @@ namespace IntegrationTool.SDK
 {
     public enum ModuleGroup
     {
-        Custom, Flow, CRM, Task, Fileoperation, SDK, Testing
+        Custom = 1, Flow = 10, Task = 20, CRM = 30, SDK = 40, Testing = 50, Source=60, Transformation=70, Target=80
     }
 }

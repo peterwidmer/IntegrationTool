@@ -13,6 +13,7 @@ namespace IntegrationTool.Module.StringTranformation
         Name = "StringTransformation",
         DisplayName = "String Transformation",
         ModuleType = ModuleType.Transformation,
+        GroupName = ModuleGroup.Transformation,
         ConfigurationType = typeof(StringTransformationConfiguration),
         RequiresConnection=false)]
     public partial class StringTransformation : IModule, IDataTransformation

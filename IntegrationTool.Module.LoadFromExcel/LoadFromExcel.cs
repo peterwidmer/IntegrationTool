@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.LoadFromExcel
     [SourceModuleAttribute(Name="LoadFromExcel", 
                            DisplayName="Excel",
                            ModuleType=ModuleType.Source,
+                           GroupName = ModuleGroup.Source,
                            ConnectionType = typeof(ExcelWorkbook),
                            ConfigurationType= typeof(LoadFromExcelConfiguration))]
     public class LoadFromExcel : IModule, IDataSource

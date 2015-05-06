@@ -17,6 +17,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
     [TargetModuleAttribute(Name = "WriteToDynamicsCrm",
                            DisplayName = "CRM",
                            ModuleType = ModuleType.Target,
+                           GroupName = ModuleGroup.Target,
                            ConnectionType = typeof(CrmConnection),
                            ConfigurationType= typeof(WriteToDynamicsCrmConfiguration))]
     public partial class WriteToDynamicsCrm : IModule, IDataTarget, ILogRendering

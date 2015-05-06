@@ -11,6 +11,7 @@ namespace IntegrationTool.Module.AddDefaultValue
         Name = "AddDefaultValue",
         DisplayName = "Add default value",
         ModuleType = ModuleType.Transformation,
+        GroupName = ModuleGroup.Transformation,
         ConfigurationType = typeof(AddDefaultValueConfiguration),
         RequiresConnection = false)]
     public partial class AddDefaultValue : IModule, IDataTransformation

@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.ConcatenateColumns
         Name = "ConcatenateColumns",
         DisplayName = "Concatenate Columns",
         ModuleType = ModuleType.Transformation,
+        GroupName = ModuleGroup.Transformation,
         ConfigurationType = typeof(ConcatenateColumnsConfiguration),
         RequiresConnection = false)]
     public partial class ConcatenateColumns : IModule, IDataTransformation

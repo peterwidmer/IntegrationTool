@@ -42,7 +42,7 @@ namespace IntegrationTool.ProjectDesigner.FlowDesign
 
         private void InitializeFlowToolbox()
         {
-            foreach (var module in this.modules)
+            foreach (var module in this.modules.OrderBy(t=> t.Attributes.GroupName))
             {
                 string groupName = module.Attributes.GroupName.ToString();
                 if (!moduleGroups.ContainsKey(groupName))

@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.LoadFromMSSQL
     [SourceModuleAttribute(Name = "LoadFromMSSQL",
                            DisplayName = "MSSQL",
                            ModuleType = ModuleType.Source,
+                           GroupName = ModuleGroup.Source,
                            ConnectionType = typeof(SqlConnection),
                            ConfigurationType = typeof(LoadFromMSSQLConfiguration))]
     public class LoadFromMSSQL: IModule, IDataSource

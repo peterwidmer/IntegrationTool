@@ -12,6 +12,7 @@ namespace IntegrationTool.Module.LoadFromODBC
     [SourceModuleAttribute(Name = "LoadFromODBC",
                            DisplayName = "ODBC",
                            ModuleType = ModuleType.Source,
+                           GroupName = ModuleGroup.Source,
                            ConnectionType = typeof(OdbcConnection),
                            ConfigurationType = typeof(LoadFromODBCConfiguration))]
     public class LoadFromODBC : IModule, IDataSource
