@@ -1,0 +1,30 @@
+﻿<Image xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Image.Source>
+    <DrawingImage>
+      <DrawingImage.Drawing>
+        <DrawingGroup>
+          <DrawingGroup.Children>
+            <GeometryDrawing Geometry="F1 M 45.5965,89.3812L 454.93,89.3812L 454.93,377.381L 45.5965,377.381L 45.5965,89.3812 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+              <GeometryDrawing.Brush>
+                <LinearGradientBrush StartPoint="0.5,-0.221476" EndPoint="0.5,1.22148">
+                  <LinearGradientBrush.GradientStops>
+                    <GradientStop Color="#FFFFFFFF" Offset="0.431034"/>
+                    <GradientStop Color="#FFA8A8A8" Offset="1"/>
+                  </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+              </GeometryDrawing.Brush>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFEAEAEA" Geometry="F1 M 239.867,242.079L 454.28,90.0255L 46.8959,90.0255L 239.867,242.079 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+          </DrawingGroup.Children>
+        </DrawingGroup>
+      </DrawingImage.Drawing>
+    </DrawingImage>
+  </Image.Source>
+</Image>

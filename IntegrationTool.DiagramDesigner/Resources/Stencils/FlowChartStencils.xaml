@@ -1,0 +1,65 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:IntegrationTool.DiagramDesigner"
+                    xmlns:c="clr-namespace:IntegrationTool.DiagramDesigner.Controls">
+
+    <Brush x:Key="ItemStroke">#FF017BCD</Brush>
+
+    <SolidColorBrush x:Key="ItemStatusBrush_Default" Color="#3AA2E6" />
+    <SolidColorBrush x:Key="ItemStatusBrush_Inactive" Color="#C0C0C0" />
+    <SolidColorBrush x:Key="ItemStatusBrush_Running" Color="#FFFF2D" />
+    <SolidColorBrush x:Key="ItemStatusBrush_Successful" Color="#3AC971" />
+    <SolidColorBrush x:Key="ItemStatusBrush_Error" Color="#FFE63030" />
+    <SolidColorBrush x:Key="ItemStatusBrush_NotExecuted" Color="Gainsboro" />
+
+    <Brush x:Key="ItemStroke1">#ACADCD</Brush>
+
+    <Style x:Key="FlowChartItemStyle" TargetType="Path">
+        <Setter Property="Fill" Value="{StaticResource ItemStatusBrush_Default}"/>
+    <Setter Property="Stroke" Value="{StaticResource ItemStroke}"/>
+
+    <Setter Property="StrokeThickness" Value="1"/>
+    <Setter Property="StrokeLineJoin" Value="Round"/>
+    <Setter Property="Stretch" Value="Fill"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+    <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="BitmapEffect">
+            <Setter.Value>
+                <DropShadowBitmapEffect Color="#AAA" Direction="315" ShadowDepth="2"
+                                Softness="0.3" Opacity="0.6"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+  <!-- Process -->
+  <Style x:Key="Process" TargetType="Path" BasedOn="{StaticResource FlowChartItemStyle}">
+    <Setter Property="Data" Value="M 0,0 H 20 V20 H 0 Z"/>
+  </Style>
+
+    <Style x:Key="Process_DragThumb" TargetType="Path" BasedOn="{StaticResource Process}">
+        <Setter Property="IsHitTestVisible" Value="true"/>
+        <Setter Property="Fill" Value="Transparent"/>
+        <Setter Property="Stroke" Value="Transparent"/>
+    </Style>
+
+    <s:Toolbox x:Key="FlowChartStencils" ItemSize="60,50" SnapsToDevicePixels="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+    <ItemsControl.Items>
+
+            <Path Style="{StaticResource Process}" ToolTip="Process">
+                <s:DesignerItem.DragThumbTemplate>
+                    <ControlTemplate>
+                        <Path Style="{StaticResource Process_DragThumb}"/>
+                    </ControlTemplate>
+                </s:DesignerItem.DragThumbTemplate>
+            </Path>
+
+        </ItemsControl.Items>
+  </s:Toolbox>
+
+    <s:Toolbox x:Key="toolboxControl" ItemSize="60,50" SnapsToDevicePixels="True"
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl.Items>
+        </ItemsControl.Items>
+    </s:Toolbox>
+</ResourceDictionary>

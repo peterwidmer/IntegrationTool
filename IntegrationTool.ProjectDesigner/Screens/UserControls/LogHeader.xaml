@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="IntegrationTool.ProjectDesigner.Screens.UserControls.LogHeader"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="127" d:DesignWidth="542">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26*"/>
+        </Grid.RowDefinitions>
+        <Label Style="{StaticResource SubTitle}" Content="{Binding Path=DesignerItemDisplayName}" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="5"/>
+
+        <Label Content="Starttime:" Grid.Row="3"/>
+        <Label Content="{Binding Path=StartTime}" Grid.Column="1" Grid.Row="3"/>
+
+        <Label Content="Endtime:" Grid.Row="5"/>
+        <Label Content="{Binding Path=EndTime}" Grid.Column="1" Grid.Row="5"/>
+        <Label Style="{StaticResource SubTitle}" x:Name="lblDetailedLog" Content="Detailed-Log:" Grid.Row="7" Grid.ColumnSpan="5"/>
+
+    </Grid>
+</UserControl>

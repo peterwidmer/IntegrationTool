@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="IntegrationTool.ProjectDesigner.FlowDesign.FlowDesigner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:s="clr-namespace:IntegrationTool.DiagramDesigner;assembly=IntegrationTool.DiagramDesigner"
+            
+             mc:Ignorable="d"   s:DesignerItem.DoubleClick="DesignerItem_DoubleClick" s:DesignerItem.Click="DesignerItem_Click" d:DesignHeight="436" d:DesignWidth="935.825" >
+    <UserControl.Resources>
+        <ContextMenu x:Key="DesignerCanvasContextMenu">
+            <MenuItem Header="Paste" Command="{x:Static ApplicationCommands.Paste}">
+                <MenuItem.Icon>
+                    <Image  Width="16"/>
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="Select All" Command="{x:Static s:DesignerCanvas.SelectAll}"/>
+        </ContextMenu>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="180*"/>
+                <RowDefinition x:Name="propertiesRow" Height="100*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="265"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!-- Toolbox -->
+            <ContentControl x:Name="ToolboxContent" Grid.Column="0" Margin="0,0,5,0" />
+            <!--<StackPanel x:Name="ToolboxPanel" Grid.Column="0" Margin="0,0,5,0" /> -->
+
+            <!-- GridSplitter -->
+            <GridSplitter Focusable="False" Width="2" Background="LightGray"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.RowSpan="3"/>
+            <GridSplitter x:Name="propertiesSplitter" Focusable="False" Height="1" Margin="0 0 5 0" Background="LightGray"
+                    VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="1" Visibility="Hidden"/>
+            <!-- Designer -->
+            <GroupBox Header="Diagram" Grid.Column="1" Margin="3,0,0,0" Grid.RowSpan="2">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto">
+
+                    <s:DesignerCanvas MagnifyDoubleClick="Magnify_DoubleClick"  Focusable="true" x:Name="MyDesigner" 
+                            
+                            Background="{StaticResource WindowBackgroundBrush}"
+                            Margin="10" FocusVisualStyle="{x:Null}"
+                            ContextMenu="{StaticResource DesignerCanvasContextMenu}"/>
+                </ScrollViewer>
+            </GroupBox>
+            <ContentControl x:Name="PropertiesContentControl" Grid.Row="1"/>
+
+
+        </Grid>
+    </Grid>
+</UserControl>

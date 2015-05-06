@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="IntegrationTool.ProjectDesigner.FlowDesign.ToolboxSubflow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="Source Toolbox" x:Name="SourceToolbox" />    
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="Transformation Toolbox" x:Name="TransformationToolbox" />    
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ContentControl Content="Target Toolbox" x:Name="TargetToolbox" />
+        </ScrollViewer>
+    </Grid>
+</UserControl>

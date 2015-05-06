@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="IntegrationTool.Module.WriteToDynamicsCrm.UserControls.ImportSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" Width="623" d:DesignHeight="386">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="216*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="12*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="202*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Label Content="Import-Mode:" Grid.Column="1" Grid.Row="1"/>
+        <ComboBox x:Name="ddAvailablePrimaryKeyAttributes" ItemsSource="{Binding}" DisplayMemberPath="Name" Grid.Row="9" Grid.Column="2"/>
+        <Label Content="Select Primary-Key:" Grid.Column="1" Grid.Row="9"/>
+        <Button x:Name="btnAddPrimaryKey" Content="Add" Grid.Column="4" Grid.Row="9" Click="btnAddPrimaryKey_Click"/>
+        <Label Content="Selected Primary Keys:" Grid.Column="1" Grid.Row="11"/>
+        <ListBox ItemsSource="{Binding}" x:Name="lbSelectedPrimaryKeyAttributes" Grid.Column="2" Grid.Row="11" KeyUp="lbSelectedPrimaryKeyAttributes_KeyUp"/>
+        <ComboBox x:Name="ddImportMode" Grid.Column="2" Grid.Row="1" SelectedValue="{Binding Path=ImportMode}" SelectedValuePath="Tag" SelectionChanged="ddImportMode_SelectionChanged" >
+            <ComboBoxItem Content="None" Tag="None" />
+            <ComboBoxItem Content="Create" Tag="Create" />
+            <ComboBoxItem Content="Update" Tag="Update" />
+            <ComboBoxItem Content="Create &amp; Update" Tag="All" />
+        </ComboBox>
+        <Label Content="If multiple exist:" Grid.Column="1" Grid.Row="3"/>
+        <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="3" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Do nothing" Tag="None" />
+            <ComboBoxItem Content="Update all" Tag="All" />
+        </ComboBox>
+        <Label Content="Set state on:" Grid.Column="1" Grid.Row="5"/>
+        <ComboBox x:Name="ddSetStateMode" Grid.Column="2" Grid.Row="5" SelectedValue="{Binding SetStateMode}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="None" Tag="None" />
+            <ComboBoxItem Content="Create" Tag="Create" />
+            <ComboBoxItem Content="Update" Tag="Update" />
+            <ComboBoxItem Content="Create &amp; Update" Tag="All" />
+        </ComboBox>
+        <Label Content="Set owner on:" Grid.Column="1" Grid.Row="7"/>
+        <ComboBox x:Name="ddSetOwnerMode" Grid.Column="2" Grid.Row="7" SelectedValue="{Binding SetOwnerMode}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="None" Tag="None" />
+            <ComboBoxItem Content="Create" Tag="Create" />
+            <ComboBoxItem Content="Update" Tag="Update" />
+            <ComboBoxItem Content="Create &amp; Update" Tag="All" />
+        </ComboBox>
+
+    </Grid>
+</UserControl>

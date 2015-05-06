@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.8</ProductVersion>
+    <ProjectGuid>c2b5a154-b1d3-4d11-92b7-339e9ce92675</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>IntegrationTool.Setup</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.ApplicationCore\IntegrationTool.ApplicationCore.csproj">
+      <Name>IntegrationTool.ApplicationCore</Name>
+      <Project>{329f3ea9-9ea5-4610-9fde-e8169282b022}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.ConsoleProjectStarter\IntegrationTool.ConsoleProjectStarter.csproj">
+      <Name>IntegrationTool.ConsoleProjectStarter</Name>
+      <Project>{91339927-1bed-4559-98be-78a36f91d086}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
+      <Name>IntegrationTool.DataMappingControl</Name>
+      <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DBAccess\IntegrationTool.DBAccess.csproj">
+      <Name>IntegrationTool.DBAccess</Name>
+      <Project>{953f8dc5-dd92-4b2b-be8e-72fbaffa8420}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DiagramDesigner\IntegrationTool.DiagramDesigner.csproj">
+      <Name>IntegrationTool.DiagramDesigner</Name>
+      <Project>{70a2aee8-1c30-4898-a8e8-fa377ff05b91}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.AddDefaultValue\IntegrationTool.Module.AddDefaultValue.csproj">
+      <Name>IntegrationTool.Module.AddDefaultValue</Name>
+      <Project>{f44d0d86-b21f-4638-b4cd-a607a324ad5b}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConcatenateColumns\IntegrationTool.Module.ConcatenateColumns.csproj">
+      <Name>IntegrationTool.Module.ConcatenateColumns</Name>
+      <Project>{fe52e182-4c94-4c7b-a76c-38d728960192}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToDynamicsCrm\IntegrationTool.Module.ConnectToDynamicsCrm.csproj">
+      <Name>IntegrationTool.Module.ConnectToDynamicsCrm</Name>
+      <Project>{42d951a0-a901-4bce-ac49-b735c1ff99ca}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToEventlog\IntegrationTool.Module.ConnectToEventlog.csproj">
+      <Name>IntegrationTool.Module.ConnectToEventlog</Name>
+      <Project>{c24ff1fd-2346-4441-ad9f-91c090a88db8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToExcel\IntegrationTool.Module.ConnectToExcel.csproj">
+      <Name>IntegrationTool.Module.ConnectToExcel</Name>
+      <Project>{78ab131a-7b8e-40ed-b8cd-861c274cf14d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToMSSQL\IntegrationTool.Module.ConnectToMSSQL.csproj">
+      <Name>IntegrationTool.Module.ConnectToMSSQL</Name>
+      <Project>{5befa389-7695-492d-8a03-d0b30436416c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToODBC\IntegrationTool.Module.ConnectToODBC.csproj">
+      <Name>IntegrationTool.Module.ConnectToODBC</Name>
+      <Project>{6ac6e5fc-2b14-46e4-8150-3cfce86d9ad9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToSmtp\IntegrationTool.Module.ConnectToSmtp.csproj">
+      <Name>IntegrationTool.Module.ConnectToSmtp</Name>
+      <Project>{8e5dd428-17e0-4e60-83db-4771b937d713}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
+      <Name>IntegrationTool.Module.CrmWrapper</Name>
+      <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.FlowStep\IntegrationTool.Module.FlowStep.csproj">
+      <Name>IntegrationTool.Module.FlowStep</Name>
+      <Project>{83b52bc6-7fa8-4595-8f8c-c154ceab7751}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromExcel\IntegrationTool.Module.LoadFromExcel.csproj">
+      <Name>IntegrationTool.Module.LoadFromExcel</Name>
+      <Project>{fed4145d-5fe4-4fdf-a11f-d637df37721f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromMSSQL\IntegrationTool.Module.LoadFromMSSQL.csproj">
+      <Name>IntegrationTool.Module.LoadFromMSSQL</Name>
+      <Project>{e19b9d67-447a-4aff-8c6c-bd2a90d7a053}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromODBC\IntegrationTool.Module.LoadFromODBC.csproj">
+      <Name>IntegrationTool.Module.LoadFromODBC</Name>
+      <Project>{6882bbb0-8851-4461-acb5-10af1320cc3c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.MSSQLExecute\IntegrationTool.Module.MSSQLExecute.csproj">
+      <Name>IntegrationTool.Module.MSSQLExecute</Name>
+      <Project>{dfd0dd83-c23f-4656-8173-ea9c3541c93e}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.SendEmail\IntegrationTool.Module.SendEmail.csproj">
+      <Name>IntegrationTool.Module.SendEmail</Name>
+      <Project>{fe907749-9be6-46c5-b677-91cbdb1dcada}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.StringTranformation\IntegrationTool.Module.StringTranformation.csproj">
+      <Name>IntegrationTool.Module.StringTranformation</Name>
+      <Project>{12f62e43-0766-4a1a-ae23-b89012bc80e0}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrm\IntegrationTool.Module.WriteToDynamicsCrm.csproj">
+      <Name>IntegrationTool.Module.WriteToDynamicsCrm</Name>
+      <Project>{cd0ef612-415e-4a40-8d40-c77186a083c9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.WriteToEventLog\IntegrationTool.Module.WriteToEventLog.csproj">
+      <Name>IntegrationTool.Module.WriteToEventLog</Name>
+      <Project>{12e5fa23-47de-4b36-b962-129fe6d8e566}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.ProjectDesigner\IntegrationTool.ProjectDesigner.csproj">
+      <Name>IntegrationTool.ProjectDesigner</Name>
+      <Project>{69437fda-c9a8-4f03-b20b-e63200d82cbc}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
+      <Name>IntegrationTool.SDK</Name>
+      <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="license.rtf" />
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <!--
+	To modify your build process, add your task inside one of the targets below and uncomment it.
+	Other similar extension points exist, see Wix.targets.
+	<Target Name="BeforeBuild">
+	</Target>
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+</Project>

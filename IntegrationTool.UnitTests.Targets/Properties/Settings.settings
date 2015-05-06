@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IntegrationTool.UnitTests.Targets.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CrmConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Url=http://devserv/DataProc; Domain=DEV; Username=johntest; Password=12ab!12ab;</Value>
+    </Setting>
+    <Setting Name="OdbcConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Driver={MySQL ODBC 5.1 Driver};Server=localhost;Port=3306;Database=mydb;User=root;Password=1234;Option=3;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

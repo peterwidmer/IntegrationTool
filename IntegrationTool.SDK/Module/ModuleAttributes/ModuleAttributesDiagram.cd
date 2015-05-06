@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="IntegrationTool.SDK.ModuleAttributeBase" Collapsed="true">
+    <Position X="3.25" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ABAAEAAAAAgAAAAAAAAAABQIAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\ModuleAttributeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntegrationTool.SDK.Module.ModuleAttributes.ConnectionModuleAttribute" Collapsed="true">
+    <Position X="1" Y="1" Width="2" />
+    <InheritanceLine Type="IntegrationTool.SDK.ModuleAttributeBase" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="3" />
+        <Point X="4.125" Y="1.375" />
+        <Point X="3" Y="1.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\ConnectionModuleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntegrationTool.SDK.SourceModuleAttribute" Collapsed="true">
+    <Position X="1" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\SourceModuleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntegrationTool.SDK.StepModuleAttribute" Collapsed="true">
+    <Position X="1" Y="2" Width="2" />
+    <InheritanceLine Type="IntegrationTool.SDK.ModuleAttributeBase" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="3" />
+        <Point X="4.125" Y="2.312" />
+        <Point X="3" Y="2.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\StepModuleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntegrationTool.SDK.TargetModuleAttribute" Collapsed="true">
+    <Position X="1" Y="5" Width="2" />
+    <InheritanceLine Type="IntegrationTool.SDK.ModuleAttributeBase" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="3.691" />
+        <Point X="4.125" Y="5.375" />
+        <Point X="3" Y="5.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\TargetModuleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IntegrationTool.SDK.TransformationModuleAttribute" Collapsed="true">
+    <Position X="1" Y="4" Width="2" />
+    <InheritanceLine Type="IntegrationTool.SDK.ModuleAttributeBase" FixedToPoint="true">
+      <Path>
+        <Point X="4.125" Y="3.691" />
+        <Point X="4.125" Y="4.375" />
+        <Point X="3" Y="4.375" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Module\ModuleAttributes\TransformationModuleAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

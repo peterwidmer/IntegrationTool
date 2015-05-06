@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="IntegrationTool.Module.WriteToEventLog.ConfigurationWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="152*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="234*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Level" Grid.Row="1" />
+        <ComboBox Grid.Row="1" Grid.Column="2" SelectedValue="{Binding Path=Level}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Information" Tag="Information" />
+            <ComboBoxItem Content="Warning" Tag="Warning" />
+            <ComboBoxItem Content="Error" Tag="Error" />
+        </ComboBox>
+
+        <Label Content="Message" Grid.Row="3"/>
+        <TextBox Grid.Row="5" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Message}" Grid.ColumnSpan="3"/>
+
+    </Grid>
+</UserControl>

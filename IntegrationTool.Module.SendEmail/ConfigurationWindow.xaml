@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="IntegrationTool.Module.SendEmail.ConfigurationWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="152*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="234*"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="From:" Grid.Row="1"/>
+        <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding Path=From}" />
+
+        <Label Content="To:" Grid.Row="3"/>
+        <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding Path=To}" />
+
+        <Label Content="CC:" Grid.Row="5"/>
+        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding Path=Cc}" />
+
+        <Label Content="Subject:" Grid.Row="7"/>
+        <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding Path=Subject}" />
+
+        <Label Content="Is Body HTML?:" Grid.Row="9"/>
+        <CheckBox Grid.Column="2" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="9" VerticalAlignment="Top" IsChecked="{Binding Path=IsBodyHtml}"/>
+
+        <Label Content="Body" Grid.Row="11"/>
+        <TextBox Grid.Row="12" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Path=Body}" Grid.ColumnSpan="3"/>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:ui="http://schemas.microsoft.com/wix/UIExtension">
+	<Product Id="*" Name="IntegrationTool 1.5" Language="1033" Version="1.5.0.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />   
+
+    <Upgrade Id="bb598bcf-a861-4d71-8ab5-1fa3544a35c0">
+      <UpgradeVersion OnlyDetect="no" Property="PREVIOUSFOUND"
+        Minimum="1.0.0" IncludeMinimum="yes"
+        Maximum="99.0.0" IncludeMaximum="no" />
+    </Upgrade>
+
+    <!-- WIX UI Definition -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+
+		<Feature Id="ProductFeature" Level="1" ConfigurableDirectory="INSTALLFOLDER"
+             Title="IntegrationTool" Description="Installs the complete integration-tool.">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="StepModules" />
+      <ComponentGroupRef Id="ConnectionModules" />
+      <ComponentGroupRef Id="SourceModules" />
+      <ComponentGroupRef Id="TransformerModules" />
+      <ComponentGroupRef Id="TargetModules" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="IntegrationTool" >
+          <Directory Id="MODULES" Name="Modules" >
+            <Directory Id="STEPMODULES" Name="Steps" />
+            <Directory Id="CONNECTIONMODULES" Name="Connections" />
+            <Directory Id="SOURCEMODULES" Name="Sources" />
+            <Directory Id="TRANSFORMERMODULES" Name="Transformers" />
+            <Directory Id="TARGETMODULES" Name="Targets" />
+          </Directory>
+        </Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      
+      <!-- Files from Projects -->
+      <!-- =================== -->
+      <Component Id="MainComponent_ProjectDesigner" Win64="yes">
+        <File Id="MainComponent_ProjectDesigner.exe" Source="$(var.IntegrationTool.ProjectDesigner.TargetPath)" KeyPath="yes" />
+      </Component>
+			 <Component Id="MainComponent_ConsoleProjectStarter" Win64="yes">
+         <File Id="MainComponent_ConsoleProjectStarter.exe" Source="$(var.IntegrationTool.ConsoleProjectStarter.TargetPath)" KeyPath="yes" />
+			 </Component>
+      <Component Id="MainComponent_ApplicationCore" Win64="yes">
+        <File Id="MainComponent_ApplicationCore.dll" Source="$(var.IntegrationTool.ApplicationCore.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_SDK" Win64="yes">
+        <File Id="MainComponent_SDK.dll" Source="$(var.IntegrationTool.SDK.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_DataMappingControl" Win64="yes">
+        <File Id="MainComponent_DataMappingControl.dll" Source="$(var.IntegrationTool.DataMappingControl.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_DbAccess" Win64="yes">
+        <File Id="MainComponent_DbAccess.dll" Source="$(var.IntegrationTool.DBAccess.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_DiagramDesigner" Win64="yes">
+        <File Id="MainComponent_DiagramDesigner.dll" Source="$(var.IntegrationTool.DiagramDesigner.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_CrmWrapper" Win64="yes">
+        <File Id="MainComponent_CrmWrapper.dll" Source="$(var.IntegrationTool.Module.CrmWrapper.TargetPath)" KeyPath="yes" />
+      </Component>
+      
+      <!-- Static Reference Files -->
+      <!-- ====================== -->
+      <Component Id="MainComponent_EPPlus" Win64="yes">
+        <File Id="MainComponent_EPPlus.dll" Source="..\References\EPPlus.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_CommandLine" Win64="yes">
+        <File Id="MainComponent_CommandLine.dll" Source="..\References\CommandLine.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_Microsoft_Crm_Sdk_Proxy" Win64="yes">
+        <File Id="MainComponent_Microsoft.Crm.Sdk.Proxy.dll" Source="..\References\Microsoft.Crm.Sdk.Proxy.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_Microsoft_Xrm_Client" Win64="yes">
+        <File Id="MainComponent_Microsoft.Xrm.Client.dll" Source="..\References\Microsoft.Xrm.Client.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_Microsoft_Xrm_Sdk" Win64="yes">
+        <File Id="MainComponent_Microsoft.Xrm.Sdk.dll" Source="..\References\Microsoft.Xrm.Sdk.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_SQLite_Interop_dll" Win64="yes">
+        <File Id="MainComponent_SQLite.Interop.dll" Source="..\References\SQLite.Interop.dll" KeyPath="yes" />
+      </Component>
+      <Component Id="MainComponent_System_Data_SQLite" Win64="yes">
+        <File Id="MainComponent_System.Data.SQLite.dll" Source="..\References\System.Data.SQLite.dll" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Step Module-Files -->
+    <!-- ====================== -->
+    <ComponentGroup Id="StepModules" Directory="STEPMODULES">
+      <Component Id="ModuleComponent_FlowStep" Win64="yes">
+        <File Id="ModuleComponent_FlowStep.dll" Source="$(var.IntegrationTool.Module.FlowStep.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_MSSQLExecute" Win64="yes">
+        <File Id="ModuleComponent_MSSQLExecute.dll" Source="$(var.IntegrationTool.Module.MSSQLExecute.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_SendEmail" Win64="yes">
+        <File Id="ModuleComponent_SendEmail.dll" Source="$(var.IntegrationTool.Module.SendEmail.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_WriteToEventLog" Win64="yes">
+        <File Id="ModuleComponent_WriteToEventLog.dll" Source="$(var.IntegrationTool.Module.WriteToEventLog.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Connection Module-Files -->
+    <!-- ====================== -->
+    <ComponentGroup Id="ConnectionModules" Directory="CONNECTIONMODULES">
+      <Component Id="ModuleComponent_ConnectToExcel" Win64="yes">
+        <File Id="ModuleComponent_ConnectToExcel.dll" Source="$(var.IntegrationTool.Module.ConnectToExcel.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConnectToDynamicsCrm" Win64="yes">
+        <File Id="ModuleComponent_ConnectToDynamicsCrm.dll" Source="$(var.IntegrationTool.Module.ConnectToDynamicsCrm.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConnectToMSSQL" Win64="yes">
+        <File Id="ModuleComponent_ConnectToMSSQL.dll" Source="$(var.IntegrationTool.Module.ConnectToMSSQL.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConnectToSmtp" Win64="yes">
+        <File Id="ModuleComponent_ConnectToSmtp.dll" Source="$(var.IntegrationTool.Module.ConnectToSmtp.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConnectToEventlog" Win64="yes">
+        <File Id="ModuleComponent_ConnectToEventlog.dll" Source="$(var.IntegrationTool.Module.ConnectToEventlog.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConnectToODBC" Win64="yes">
+        <File Id="ModuleComponent_ConnectToODBC.dll" Source="$(var.IntegrationTool.Module.ConnectToODBC.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+    
+    <!-- Source Module-Files -->
+    <!-- ====================== -->
+    <ComponentGroup Id="SourceModules" Directory="SOURCEMODULES">
+      <Component Id="ModuleComponent_LoadFromExcel" Win64="yes">
+        <File Id="ModuleComponent_LoadFromExcel.dll" Source="$(var.IntegrationTool.Module.LoadFromExcel.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_LoadFromMSSQL" Win64="yes">
+        <File Id="ModuleComponent_LoadFromMSSQL.dll" Source="$(var.IntegrationTool.Module.LoadFromMSSQL.TargetPath)" KeyPath="yes" />
+      </Component>
+    <Component Id="ModuleComponent_LoadFromODBC" Win64="yes">
+        <File Id="ModuleComponent_LoadFromODBC.dll" Source="$(var.IntegrationTool.Module.LoadFromODBC.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Transformation Module-Files -->
+    <!-- ====================== -->
+    <ComponentGroup Id="TransformerModules" Directory="TRANSFORMERMODULES">
+      <Component Id="ModuleComponent_StringTranformation" Win64="yes">
+        <File Id="ModuleComponent_StringTranformation.dll" Source="$(var.IntegrationTool.Module.StringTranformation.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_AddDefaultValue" Win64="yes">
+        <File Id="ModuleComponent_AddDefaultValue.dll" Source="$(var.IntegrationTool.Module.AddDefaultValue.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ConcatenateColumns" Win64="yes">
+        <File Id="ModuleComponent_ConcatenateColumns.dll" Source="$(var.IntegrationTool.Module.ConcatenateColumns.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- Target Module-Files -->
+    <!-- ====================== -->
+    <ComponentGroup Id="TargetModules" Directory="TARGETMODULES">
+      <Component Id="ModuleComponent_WriteToDynamicsCrm" Win64="yes">
+        <File Id="ModuleComponent_WriteToDynamicsCrm.dll" Source="$(var.IntegrationTool.Module.WriteToDynamicsCrm.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+	</Fragment>
+</Wix>

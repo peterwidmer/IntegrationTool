@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="IntegrationTool.Module.ConnectToSmtp.ConfigurationWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:c="clr-namespace:IntegrationTool.Module.ConnectToSmtp"
+             mc:Ignorable="d" d:DesignHeight="264" d:DesignWidth="520">
+    <UserControl.Resources>
+        <c:InverseBooleanConverter x:Key="inverseValueConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="155"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="10*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="65*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Host:" Grid.Row="1"/>
+        <TextBox Grid.Column="2" Height="22" Grid.Row="1" Text="{Binding Path=Host}" VerticalAlignment="Top" Grid.ColumnSpan="3" />
+        <Label Content="Port:" Grid.Row="3"/>
+        <TextBox Grid.Column="2" Height="22" Grid.Row="3" Text="{Binding Path=Port}" VerticalAlignment="Top" />
+        <Label Content="Enable SSL:" Grid.Row="5"/>
+        <CheckBox Grid.Column="2" IsChecked="{Binding Path=EnableSsl}" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="5" VerticalAlignment="Top"/>
+        <Label Content="Integrated Security:" Grid.Row="7"/>
+        <CheckBox x:Name="cbUseDefaultCredentials" Grid.Column="2" IsChecked="{Binding Path=UseDefaultCredentials}" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="7" VerticalAlignment="Top"/>
+        <Label Content="Username:" Grid.Row="9"/>
+        <TextBox Grid.Column="2" Height="22" Grid.Row="9" Text="{Binding Path=UserName}" VerticalAlignment="Top" Grid.ColumnSpan="3" IsEnabled="{Binding ElementName=cbUseDefaultCredentials, Path=IsChecked, Converter={StaticResource inverseValueConverter}, Mode=OneWay}" />
+        <Label Content="Password:" Grid.Row="11"/>
+        <TextBox Grid.Column="2" Height="22" Grid.Row="11" Text="{Binding Path=Password}" VerticalAlignment="Top" Grid.ColumnSpan="3" IsEnabled="{Binding ElementName=cbUseDefaultCredentials, Path=IsChecked, Converter={StaticResource inverseValueConverter}, Mode=OneWay}" />
+    </Grid>
+</UserControl>

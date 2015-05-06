@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="IntegrationTool.SDK.Controls.FilterControl.DataConditionRow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:datans="clr-namespace:IntegrationTool.SDK.Data"
+             xmlns:Sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="481">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="treatAsTypeEnum" ObjectType="{x:Type Sys:Enum}" MethodName="GetValues" >
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="datans:TreatAsType"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="113*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="113*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="112*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="103*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox VerticalAlignment="Top" x:Name="ddColumn" ItemsSource="{Binding}" SelectedValue="{Binding Path=ColumnName}" SelectedValuePath="Tag" />
+        <ComboBox VerticalAlignment="Top" x:Name="ddTreatAsType" ItemsSource="{Binding Source={StaticResource treatAsTypeEnum}}"  SelectedValue="{Binding TreatAsType}" Grid.Column="2" SelectionChanged="ddTreatAsType_SelectionChanged" />
+        <ComboBox VerticalAlignment="Top" x:Name="ddDataConditionType" SelectedValue="{Binding Path=ConditionType}" SelectedValuePath="Tag" Grid.Column="4" SelectionChanged="ddDataConditionType_SelectionChanged" />
+        <TextBox VerticalAlignment="Top" x:Name="tbValue" Grid.Column="6" Height="23" Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"  />
+    </Grid>
+</UserControl>

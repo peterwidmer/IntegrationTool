@@ -1,0 +1,8 @@
+﻿<Window x:Class="UserControlTest.FlowToolboxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FlowToolboxWindow" Height="300" Width="300">
+    <Grid>
+        <ContentControl x:Name="content" />
+    </Grid>
+</Window>

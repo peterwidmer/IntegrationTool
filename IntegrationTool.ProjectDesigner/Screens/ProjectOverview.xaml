@@ -1,0 +1,79 @@
+﻿<UserControl x:Class="IntegrationTool.ProjectDesigner.Screens.ProjectOverview"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignHeight="462" d:DesignWidth="771">
+    <UserControl.Resources>
+        <DataTemplate x:Key="PackageTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="{Binding Path=DisplayName}" />
+                <Label Content="{Binding Path=Description}" Grid.Column="2" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="RunLogTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+                <Label Content="{Binding Path=PackageDisplayName}" />
+                <Label Content="{Binding Path=StartTime}" Grid.Column="2" />
+                <Label Content="{Binding Path=EndTime}" Grid.Column="3" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ConnectionTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="{Binding Path=Name}" />
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="38"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="140*"/>
+            <ColumnDefinition Width="563*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="38"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="9"/>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="140*"/>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="140*"/>
+            <RowDefinition Height="33"/>
+            <RowDefinition Height="140*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Label Content="Project Overview" Style="{StaticResource MainTitle}" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="3" Grid.RowSpan="2"/>
+        <Label Content="{Binding Path=ProjectName}" Grid.Column="3" Grid.Row="3" Grid.ColumnSpan="2"/>
+        <Label Content="Packages" Style="{StaticResource SubTitle}" Grid.Column="3" Grid.Row="7"/>
+        <ListBox Margin="0 0 0 10" x:Name="lbPackages" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Packages}" ItemTemplate="{StaticResource PackageTemplate}" MouseDoubleClick="lbPackages_MouseDoubleClick" KeyUp="lbPackages_KeyUp" />
+        <Button Style="{StaticResource ButtonStyle}" x:Name="btnAddPackage" Content="Add Package" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,4" Grid.Row="7" VerticalAlignment="Bottom" Width="120" Click="btnAddPackage_Click" />
+        <Label Content="Connections" Style="{StaticResource SubTitle}"  Grid.Column="3" Grid.Row="5"/>
+        <ListBox x:Name="lbConnections" Margin="0 0 0 10" Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="4" ItemsSource="{Binding Path=Connections}" ItemTemplate="{StaticResource ConnectionTemplate}" MouseDoubleClick="lbConnections_MouseDoubleClick" KeyUp="lbConnections_KeyUp" />
+        <Button Style="{StaticResource ButtonStyle}" x:Name="btnAddConnection" Content="Add Connection" Grid.Column="4" HorizontalAlignment="Right" Margin="0,0,0,4" Grid.Row="5" VerticalAlignment="Bottom" Width="120" Click="btnAddConnection_Click"/>
+        <Label Content="Logs" Style="{StaticResource SubTitle}" Grid.Column="3" Grid.Row="9"/>
+        <ListBox x:Name="lbLogs" Grid.Column="1" Grid.Row="10" Grid.ColumnSpan="4" ItemsSource="{Binding RunLogs}" ItemTemplate="{StaticResource RunLogTemplate}" Margin="0,0,0,1" MouseDoubleClick="lbLogs_MouseDoubleClick" />
+        <Grid Background="{DynamicResource IconProject}"  Grid.Column="1" Grid.Row="1"/>
+        <Grid Margin="5,5,5,5" Background="{DynamicResource IconConnection}" Grid.Column="1" Grid.Row="5" />
+        <Grid Margin="5,5,5,5" Background="{DynamicResource IconPackage}" Grid.Column="1" Grid.Row="7" />
+        <Grid Margin="5,5,5,5" Background="{DynamicResource IconLog}" Grid.Column="1" Grid.Row="9" />
+    </Grid>
+</UserControl>

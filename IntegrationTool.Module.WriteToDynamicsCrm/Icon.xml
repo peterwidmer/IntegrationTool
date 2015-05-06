@@ -1,0 +1,27 @@
+﻿<Image xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Image.Source>
+    <DrawingImage>
+      <DrawingImage.Drawing>
+        <DrawingGroup>
+          <DrawingGroup.Children>
+            <GeometryDrawing Brush="#FF43FF5D" Geometry="F1 M 12.125,48.75L 87.375,48.75L 87.375,90.125L 12.125,90.125L 12.125,48.75 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="5" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 51.1666,7.45826L 51.1666,38.7084L 49.6666,38.7084L 49.6666,7.45826L 51.1666,7.45826 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="5" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FF43FF5D" Geometry="F1 M 50.5,69.9895L 72.8319,34.7605L 28.1681,34.7605L 50.5,69.9895 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="5" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+          </DrawingGroup.Children>
+        </DrawingGroup>
+      </DrawingImage.Drawing>
+    </DrawingImage>
+  </Image.Source>
+</Image>
