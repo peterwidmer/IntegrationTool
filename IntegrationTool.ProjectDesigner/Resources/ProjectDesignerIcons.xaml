@@ -130,4 +130,67 @@
         </DrawingBrush.Drawing>
     </DrawingBrush>
 
+    <DrawingBrush x:Key="IconSequence" Stretch="Uniform">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 0,0L 500,0L 500,500L 0,500L 0,0 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen LineJoin="Round" Brush="#FF000000"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 170.243,70.1114L 71.7706,70.0847L 71.7568,119.739L 170.229,119.765L 170.243,70.1114 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 170.243,234.186L 71.7706,234.16L 71.7568,283.814L 170.229,283.84L 170.243,234.186 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 298.743,397.186L 200.271,397.16L 200.257,446.814L 298.729,446.84L 298.743,397.186 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 427.243,70.1114L 328.771,70.0847L 328.757,119.739L 427.229,119.765L 427.243,70.1114 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 237.5,341.25L 115.5,340.75">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="15" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 247.833,345.021L 247.833,378.021">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="15" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 123,134.438L 123,335.419">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="15" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 377.833,136.938L 377.833,339.937">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="15" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 385.328,341.65L 229.533,341.15">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="15" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 427.243,234.186L 328.771,234.16L 328.757,283.814L 427.229,283.84L 427.243,234.186 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Thickness="50" LineJoin="Round" Brush="#FFFFFFFF"/>
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
 </ResourceDictionary>

@@ -22,45 +22,30 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Margin="0,10,0,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="180*"/>
-                <RowDefinition x:Name="propertiesRow" Height="100*"/>
-            </Grid.RowDefinitions>
+        <!-- Designer -->
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0,10,0,0" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="265"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="38"/>
+                <ColumnDefinition Width="598*"/>
             </Grid.ColumnDefinitions>
-            <!-- Toolbox -->
-            <ContentControl x:Name="ToolboxContent" Grid.Column="0" Margin="0,0,5,0" />
-            <!--<StackPanel x:Name="ToolboxPanel" Grid.Column="0" Margin="0,0,5,0" /> -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="38" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid Margin="0,5,3,5" Background="{DynamicResource IconSequence}" Grid.Column="1"  />
+            <Label x:Name="FlowHeader" VerticalAlignment="Center" Content="FlowHeader" Style="{StaticResource SubTitle}" Grid.Column="2" />
+            <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="3">
 
-            <!-- GridSplitter -->
-            <GridSplitter Focusable="False" Width="2" Background="LightGray"
-                    VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.RowSpan="3"/>
-            <GridSplitter x:Name="propertiesSplitter" Focusable="False" Height="1" Margin="0 0 5 0" Background="LightGray"
-                    VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="1" Visibility="Hidden"/>
-            <!-- Designer -->
-            <Grid Grid.Column="1" Margin="3,0,0,0" Grid.RowSpan="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="38" />
-                    <RowDefinition Height="5" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-                <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Sequence" Style="{StaticResource SubTitle}" Grid.Column="3"  />
-                <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Auto"
-                      VerticalScrollBarVisibility="Auto">
-
-                    <s:DesignerCanvas MagnifyDoubleClick="Magnify_DoubleClick"  Focusable="true" x:Name="MyDesigner" 
+                <s:DesignerCanvas MagnifyDoubleClick="Magnify_DoubleClick"  Focusable="true" x:Name="MyDesigner" 
                             
                             Background="{StaticResource WindowBackgroundBrush}"
                             Margin="10" FocusVisualStyle="{x:Null}"
                             ContextMenu="{StaticResource DesignerCanvasContextMenu}"/>
-                </ScrollViewer>
-            </Grid>
-            <ContentControl x:Name="PropertiesContentControl" Grid.Row="1"/>
-
-
+            </ScrollViewer>
         </Grid>
+
     </Grid>
 </UserControl>

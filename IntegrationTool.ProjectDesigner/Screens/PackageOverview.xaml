@@ -4,17 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:UserControls="clr-namespace:IntegrationTool.ProjectDesigner.Screens.UserControls" x:Class="IntegrationTool.ProjectDesigner.Screens.PackageOverview" 
-             mc:Ignorable="d" d:DesignHeight="398" d:DesignWidth="554">
-    
+             mc:Ignorable="d" d:DesignHeight="412" d:DesignWidth="686">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="22"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="227*"/>
+            <RowDefinition Height="180*"/>
+            <RowDefinition Height="100*" x:Name="propertiesRow" />
             <RowDefinition x:Name="AdditionalInfosArea" Height="0"/>
         </Grid.RowDefinitions>
-        <TabControl x:Name="packageDesignerTabControl" Grid.Row="3" SelectionChanged="packageDesignerTabControl_SelectionChanged" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="265"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ContentControl x:Name="ToolboxContent" Grid.Column="0" Grid.Row="3" Margin="0,0,5,0" />
+        <!-- GridSplitter -->
+        <GridSplitter Focusable="False" Width="2" Background="LightGray" Grid.Row="3"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.RowSpan="3"/>
+        <GridSplitter x:Name="propertiesSplitter" Focusable="False" Height="1" Margin="0 0 5 0" Background="LightGray"
+                    VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="4" Grid.ColumnSpan="1" Visibility="Hidden"/>
+
+        <TabControl x:Name="packageDesignerTabControl" Grid.Row="1" SelectionChanged="packageDesignerTabControl_SelectionChanged" Grid.Column="1" Grid.RowSpan="4" >
             <TabItem x:Name="mainFlowTab" Header="Main Flow">
                 <ContentControl x:Name="mainFlowContent" />
             </TabItem>
@@ -22,7 +34,7 @@
                 <ContentControl x:Name="subFlowContent" />
             </TabItem>
         </TabControl>
-        <Button x:Name="btnBack" Style="{StaticResource ButtonStyle}"  Padding="0 0 0 0" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="26" Click="btnBack_Click">
+        <Button x:Name="btnBack" Style="{StaticResource ButtonStyle}"  Padding="0 0 0 0" HorizontalAlignment="Left" Margin="18,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="26" Click="btnBack_Click">
             <Grid Margin="-5 0 0 0" Height="20" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="22" />
@@ -32,7 +44,7 @@
                 <Label Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Grid.Column="1" Content="Back" Margin="0 -2" Padding="0 0 0 0" />
             </Grid>
         </Button>
-        <Button x:Name="btnRunPackage" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Center" Height="26" Grid.Row="1" VerticalAlignment="Top" Width="125" Click="btnRunPackage_Click" Margin="90,0,0,0" >
+        <Button x:Name="btnRunPackage" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Height="26" Grid.Row="1" VerticalAlignment="Top" Width="125" Click="btnRunPackage_Click" Margin="110,0,0,0" >
             <Grid Margin="-5 0 0 0" Height="20" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -40,12 +52,14 @@
                 </Grid.ColumnDefinitions>
                 <Label Foreground="White"  FontSize="16" Grid.Column="1" Content="▶" Margin="10 -2 -30 0" Padding="0 0 0 0" />
                 <Label Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Grid.Column="0" Content=" Run Package" Margin="0 -2" Padding="0 0 0 0" />
-            </Grid>            
+            </Grid>
         </Button>
 
 
-        <UserControls:PackageRunStatus x:Name="PackageRunStatus"  Grid.Row="4"/>
-        <GridSplitter  Grid.Row="4" Focusable="False" Height="2" Background="LightGray"
-			VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
+        <UserControls:PackageRunStatus x:Name="PackageRunStatus"  Grid.Row="5" Grid.ColumnSpan="2" />
+        <GridSplitter  Grid.Row="5" Focusable="False" Height="2" Background="LightGray"
+			VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0,0,-2"/>
+        <ContentControl x:Name="PropertiesContentControl" Grid.Row="4"/>
     </Grid>
+
 </UserControl>

@@ -28,45 +28,38 @@ namespace IntegrationTool.ProjectDesigner.FlowDesign
 
         public event EventHandler DesignerItemClick;
         public event EventHandler DesignerItemDoubleClick;
-        public event EventHandler SubflowMagnifyIconDoubleClick;        
+        public event EventHandler SubflowMagnifyIconDoubleClick;
+        public event EventHandler DesignerClicked;
 
         private Package package;
 
-        public FlowDesigner(Package package, UserControl toolboxControl, List<ModuleDescription> loadedModules, DesignerCanvasType designerCanvasType)
+        public FlowDesigner(Package package, List<ModuleDescription> loadedModules, DesignerCanvasType designerCanvasType)
         {
             InitializeComponent();
             this.package = package;
             MyDesigner.ModuleDescriptions = loadedModules;
             MyDesigner.DesignerCanvasType = designerCanvasType;
             MyDesigner.Clicked += MyDesigner_Clicked;
-            this.ToolboxContent.Content = toolboxControl;
-            //InitializeModules(loadedModules, typesToShow);
+            
+            switch(designerCanvasType)
+            {
+                case DesignerCanvasType.MainFlow:
+                    FlowHeader.Content = "Main Sequence";
+                    break;
+
+                case DesignerCanvasType.SubFlow:
+                    FlowHeader.Content = "Sub-Sequence";
+                    break;
+            }
         }
 
         void MyDesigner_Clicked(object sender, EventArgs e)
         {
-            propertiesRow.Height = new GridLength(0, GridUnitType.Pixel);
-            PropertiesContentControl.Content = null;
-            propertiesSplitter.Visibility = System.Windows.Visibility.Hidden;
+            if(DesignerClicked != null)
+            {
+                DesignerClicked(sender, e);
+            }            
         }
-
-        //private void InitializeModules(List<ModuleDescription> loadedModules, List<ModuleType> typesToShow)
-        //{
-        //    foreach (ModuleType moduleType in typesToShow)
-        //    {
-        //        Expander toolboxExpander = new Expander() { Header = moduleType.ToString(), Name = moduleType.ToString(), IsExpanded = true };
-        //        toolboxExpander.Content = new Toolbox() { ItemSize = new Size(60, 50), SnapsToDevicePixels = true };
-        //        expanders.Add(toolboxExpander.Name, toolboxExpander);
-        //        ToolboxPanel.Children.Add(toolboxExpander);
-        //    }
-
-        //    foreach (ModuleDescription module in loadedModules.Where(t => typesToShow.Contains(t.Attributes.ModuleType)))
-        //    {
-        //        Toolbox toolbox = (Toolbox)expanders[module.Attributes.ModuleType.ToString()].Content;
-
-        //        toolbox.AddToolboxItem("Process", "Process_DragThumb", module);
-        //    }
-        //}
 
         private void DesignerItem_DoubleClick(object sender, RoutedEventArgs e)
         {

@@ -84,6 +84,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Icons", "Icons", "{D1DD0A7E
 		Icons\PackageIcon.design = Icons\PackageIcon.design
 		Icons\ProjectIcon.design = Icons\ProjectIcon.design
 		Icons\SendEmail.design = Icons\SendEmail.design
+		Icons\SequenceIcon.design = Icons\SequenceIcon.design
 		Icons\ToolboxIcon.design = Icons\ToolboxIcon.design
 	EndProjectSection
 EndProject

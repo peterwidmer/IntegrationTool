@@ -55,14 +55,21 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         public void InitializePackageOverview()
         {
-            // Initialize Mainflow Designer
-            ToolboxMainflow toolboxMainflow = new ToolboxMainflow(moduleLoader.Modules);
-            mainFlowDesigner = new FlowDesign.FlowDesigner(this.Package, toolboxMainflow, moduleLoader.Modules, DesignerCanvasType.MainFlow);
+            // Initialize Mainflow Designer            
+            mainFlowDesigner = new FlowDesign.FlowDesigner(this.Package, moduleLoader.Modules, DesignerCanvasType.MainFlow);
             mainFlowDesigner.MyDesigner.LoadDiagramFromXElement(this.Package.Diagram.Diagram);
             mainFlowDesigner.DesignerItemClick += mainFlowDesigner_DesignerItemClick;
             mainFlowDesigner.DesignerItemDoubleClick += mainFlowDesigner_DesignerItemDoubleClick;
+            mainFlowDesigner.DesignerClicked += designerClicked;
             this.mainFlowContent.Content = mainFlowDesigner;
             InitializeSubFlowDesigner();            
+        }
+
+        void designerClicked(object sender, EventArgs e)
+        {
+            propertiesRow.Height = new GridLength(0, GridUnitType.Pixel);
+            PropertiesContentControl.Content = null;
+            propertiesSplitter.Visibility = System.Windows.Visibility.Hidden;
         }
 
         void mainFlowDesigner_DesignerItemClick(object sender, EventArgs e)
@@ -71,19 +78,18 @@ namespace IntegrationTool.ProjectDesigner.Screens
             stepProperty.DesignerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
             stepProperty.Configuration = GetStepConfiguration(stepProperty.DesignerItem.ID, stepProperty.DesignerItem.ModuleDescription, this.Package);
 
-            mainFlowDesigner.propertiesRow.Height = new GridLength(100, GridUnitType.Star);
-            mainFlowDesigner.PropertiesContentControl.Content = new PropertiesControl(stepProperty);
-            mainFlowDesigner.propertiesSplitter.Visibility = System.Windows.Visibility.Visible;
+            propertiesRow.Height = new GridLength(100, GridUnitType.Star);
+            this.PropertiesContentControl.Content = new PropertiesControl(stepProperty);
+            this.propertiesSplitter.Visibility = System.Windows.Visibility.Visible;
         }
 
         private void InitializeSubFlowDesigner()
         {
             // Initialize Subflow Designer
-            ToolboxSubflow toolboxSubflow = new ToolboxSubflow(moduleLoader.Modules);
-            var subFlowDesigner = new FlowDesign.FlowDesigner(this.Package, toolboxSubflow, moduleLoader.Modules, DesignerCanvasType.SubFlow);
+            var subFlowDesigner = new FlowDesign.FlowDesigner(this.Package, moduleLoader.Modules, DesignerCanvasType.SubFlow);
             subFlowDesigner.DesignerItemDoubleClick += subFlowDesigner_DesignerItemDoubleClick;
             subFlowDesigner.SubflowMagnifyIconDoubleClick += subFlowDesigner_SubflowMagnifyIconDoubleClick;
-            subFlowDesigner.propertiesRow.Height = new GridLength(0);
+            propertiesRow.Height = new GridLength(0);
             this.subFlowContent.Content = subFlowDesigner;
         }
 
@@ -203,9 +209,9 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 case 0:
                     this.subFlowTab.Visibility = System.Windows.Visibility.Hidden;
                     subFlowContent.Visibility = Visibility.Hidden;
-                    btnBack.Visibility = System.Windows.Visibility.Visible;
                     SaveSubflowConfiguration();
                     this.doubleClickedMainflowDesignerItem = null;
+                    this.ToolboxContent.Content = new ToolboxMainflow(moduleLoader.Modules);
                     break;
 
                 case 1:
@@ -213,7 +219,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
                     LoadSubflowConfiguration();
                     this.subFlowTab.Visibility = System.Windows.Visibility.Visible;
                     subFlowContent.Visibility = Visibility.Visible;
-                    btnBack.Visibility = System.Windows.Visibility.Hidden;                    
+                    this.ToolboxContent.Content = new ToolboxSubflow(moduleLoader.Modules);
                     break;
             }
         }

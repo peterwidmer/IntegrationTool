@@ -6,6 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TreeView x:Name="toolBoxMenu" BorderThickness="0" />
+        <TreeView x:Name="toolBoxMenu" Margin="15 0 0 0" BorderThickness="0" />
     </Grid>
 </UserControl>
