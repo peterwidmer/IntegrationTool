@@ -115,6 +115,9 @@
       <Component Id="ModuleComponent_WriteToEventLog" Win64="yes">
         <File Id="ModuleComponent_WriteToEventLog.dll" Source="$(var.IntegrationTool.Module.WriteToEventLog.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_ExecuteCmd" Win64="yes">
+        <File Id="ModuleComponent_ExecuteCmd.dll" Source="$(var.IntegrationTool.Module.ExecuteCmd.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 
     <!-- Connection Module-Files -->

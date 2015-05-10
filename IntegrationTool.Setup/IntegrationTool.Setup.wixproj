@@ -136,6 +136,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ExecuteCmd\IntegrationTool.Module.ExecuteCmd.csproj">
+      <Name>IntegrationTool.Module.ExecuteCmd</Name>
+      <Project>{203283aa-762c-46f3-80c8-7a07b880a005}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.FlowStep\IntegrationTool.Module.FlowStep.csproj">
       <Name>IntegrationTool.Module.FlowStep</Name>
       <Project>{83b52bc6-7fa8-4595-8f8c-c154ceab7751}</Project>
