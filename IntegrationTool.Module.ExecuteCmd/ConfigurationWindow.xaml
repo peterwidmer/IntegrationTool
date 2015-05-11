@@ -20,7 +20,7 @@
             <RowDefinition Height="117*"/>
         </Grid.RowDefinitions>
         <Label Content="Execution Type:" Grid.Row="1" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="ddExecutionType" Grid.Column="2" SelectedValue="{Binding Path=CmdExecutionType}" SelectedValuePath="Tag" IsEnabled="False"  Grid.Row="1" VerticalAlignment="Top" SelectionChanged="ddExecutionType_SelectionChanged">
+        <ComboBox x:Name="ddExecutionType" Grid.Column="2" SelectedValue="{Binding Path=ExecutionType}" SelectedValuePath="Tag" IsEnabled="False"  Grid.Row="1" VerticalAlignment="Top" SelectionChanged="ddExecutionType_SelectionChanged">
             <ComboBoxItem Content="Execute single CMD" Tag="cmd" />
         </ComboBox>
         <ContentControl x:Name="ExecutionTypeContent" Content="ContentControl" Grid.Row="3" Grid.ColumnSpan="5"/>

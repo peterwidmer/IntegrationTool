@@ -21,19 +21,19 @@ namespace IntegrationTool.Module.ExecuteCmd
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        private ExecuteCmdConfiguration mssqlExecuteConfiguraration;
+        private ExecuteCmdConfiguration executeCmdConfiguration;
 
         public ConfigurationWindow(ExecuteCmdConfiguration configuration)
         {
             InitializeComponent();
-            this.DataContext = this.mssqlExecuteConfiguraration = configuration;
+            this.DataContext = this.executeCmdConfiguration = configuration;
         }
 
         private void ddExecutionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ddExecutionType.SelectedItem != null)
             {
-                switch (this.mssqlExecuteConfiguraration.ExecutionType)
+                switch (this.executeCmdConfiguration.ExecutionType)
                 {
                     case CmdExecutionType.cmd:
                         this.ExecutionTypeContent.Content = new ExecuteSingleCommand();

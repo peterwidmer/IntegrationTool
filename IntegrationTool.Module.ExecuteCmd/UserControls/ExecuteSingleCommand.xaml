@@ -18,6 +18,6 @@
             <ColumnDefinition Width="10*"/>
         </Grid.ColumnDefinitions>
         <Label Content="Command"/>
-        <TextBox Grid.Column="2" Grid.RowSpan="2" TextWrapping="Wrap"  Text="{Binding Path=CmdValue}" AcceptsReturn="True" Grid.ColumnSpan="3"/>
+        <TextBox Grid.Column="2" VerticalContentAlignment="Center" TextWrapping="NoWrap"  Text="{Binding Path=CmdValue}" AcceptsReturn="False" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>
