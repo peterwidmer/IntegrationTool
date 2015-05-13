@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:ui="http://schemas.microsoft.com/wix/UIExtension">
-	<Product Id="*" Name="IntegrationTool 1.5" Language="1033" Version="1.5.0.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
+	<Product Id="*" Name="IntegrationTool 1.6" Language="1033" Version="1.6.0.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -21,6 +21,7 @@
 		<Feature Id="ProductFeature" Level="1" ConfigurableDirectory="INSTALLFOLDER"
              Title="IntegrationTool" Description="Installs the complete integration-tool.">
 			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="StartMenuEntries"/>
       <ComponentGroupRef Id="StepModules" />
       <ComponentGroupRef Id="ConnectionModules" />
       <ComponentGroupRef Id="SourceModules" />
@@ -31,6 +32,7 @@
 
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
+      
 			<Directory Id="ProgramFiles64Folder">
         <Directory Id="INSTALLFOLDER" Name="IntegrationTool" >
           <Directory Id="MODULES" Name="Modules" >
@@ -42,7 +44,13 @@
           </Directory>
         </Directory>
 			</Directory>
+
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Integration Tool"/>
+      </Directory>
+      
 		</Directory>
+
 	</Fragment>
 
 	<Fragment>
@@ -73,7 +81,7 @@
       </Component>
       <Component Id="MainComponent_CrmWrapper" Win64="yes">
         <File Id="MainComponent_CrmWrapper.dll" Source="$(var.IntegrationTool.Module.CrmWrapper.TargetPath)" KeyPath="yes" />
-      </Component>
+      </Component>      
       
       <!-- Static Reference Files -->
       <!-- ====================== -->
@@ -100,6 +108,20 @@
       </Component>
     </ComponentGroup>
 
+    <!-- Startmenu entries -->
+    <!-- ====================== -->
+    <ComponentGroup Id="StartMenuEntries" Directory="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="244804E0-A439-42B0-A579-75452309EC0C" Win64="yes">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Integration Tool Designer"
+                  Description="Tool for integration and processes"
+                  Target="[#MainComponent_ProjectDesigner.exe]"
+                  WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\IntegrationTool" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+
     <!-- Step Module-Files -->
     <!-- ====================== -->
     <ComponentGroup Id="StepModules" Directory="STEPMODULES">
@@ -117,6 +139,9 @@
       </Component>
       <Component Id="ModuleComponent_ExecuteCmd" Win64="yes">
         <File Id="ModuleComponent_ExecuteCmd.dll" Source="$(var.IntegrationTool.Module.ExecuteCmd.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_ODBCExecute" Win64="yes">
+        <File Id="ModuleComponent_ODBCExecute.dll" Source="$(var.IntegrationTool.Module.ODBCExecute.TargetPath)" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 

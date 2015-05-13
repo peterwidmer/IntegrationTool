@@ -184,6 +184,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ODBCExecute\IntegrationTool.Module.ODBCExecute.csproj">
+      <Name>IntegrationTool.Module.ODBCExecute</Name>
+      <Project>{e82d84aa-99b0-44f1-8fd2-5b3b4a3d25fc}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.SendEmail\IntegrationTool.Module.SendEmail.csproj">
       <Name>IntegrationTool.Module.SendEmail</Name>
       <Project>{fe907749-9be6-46c5-b677-91cbdb1dcada}</Project>
