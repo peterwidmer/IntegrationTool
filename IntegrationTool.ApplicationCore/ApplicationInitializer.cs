@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,12 +13,13 @@ namespace IntegrationTool.ApplicationCore
 
         public ApplicationInitializer()
         {
+            string basePath = Assembly.GetExecutingAssembly().Location.Replace("IntegrationTool.ApplicationCore.dll", "");
             ModuleLoader = new ModuleLoader();
-            ModuleLoader.LoadModules(@"Modules\Steps");
-            ModuleLoader.LoadModules(@"Modules\Connections");
-            ModuleLoader.LoadModules(@"Modules\Sources");
-            ModuleLoader.LoadModules(@"Modules\Transformers");
-            ModuleLoader.LoadModules(@"Modules\Targets");
+            ModuleLoader.LoadModules(basePath + @"Modules\Steps");
+            ModuleLoader.LoadModules(basePath + @"Modules\Connections");
+            ModuleLoader.LoadModules(basePath + @"Modules\Sources");
+            ModuleLoader.LoadModules(basePath + @"Modules\Transformers");
+            ModuleLoader.LoadModules(basePath + @"Modules\Targets");
         }
     }
 }
