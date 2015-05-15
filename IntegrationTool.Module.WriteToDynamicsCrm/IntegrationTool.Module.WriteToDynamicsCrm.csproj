@@ -62,6 +62,7 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Execution\DateTimeHelper.cs" />
     <Compile Include="Execution\EntityMapper.cs" />
     <Compile Include="Execution\EntityMapper.MapAttributes.cs" />
     <Compile Include="Execution\PrimaryKeyResolver.cs" />
@@ -89,6 +90,9 @@
     </Compile>
     <Compile Include="UserControls\ImportSettings.xaml.cs">
       <DependentUpon>ImportSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Mapping\DateTimeMapping.xaml.cs">
+      <DependentUpon>DateTimeMapping.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Mapping\PicklistMapping.xaml.cs">
       <DependentUpon>PicklistMapping.xaml</DependentUpon>
@@ -155,6 +159,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ImportSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Mapping\DateTimeMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

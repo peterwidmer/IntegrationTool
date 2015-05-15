@@ -39,9 +39,10 @@ namespace IntegrationTool.UnitTests.Targets
             writeToCrmConfig.ImportMode = Module.WriteToDynamicsCrm.SDK.Enums.ImportMode.All;
             writeToCrmConfig.MultipleFoundMode = Module.WriteToDynamicsCrm.SDK.Enums.MultipleFoundMode.All;
             writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "ID", Target = "new_id" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "FirstName", Target="firstname" });
+            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "FirstName", Target = "firstname" });
             writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "LastName", Target = "lastname" });
             writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "Status", Target = "statuscode" });
+            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "Birthdate", Target = "birthdate" });
             writeToCrmConfig.RelationMapping.Add(new Module.WriteToDynamicsCrm.SDK.RelationMapping()
                 {
                     EntityName = "account",
@@ -77,10 +78,11 @@ namespace IntegrationTool.UnitTests.Targets
             dataObject.AddColumnMetadata(new ColumnMetadata(3, "ID"));
             dataObject.AddColumnMetadata(new ColumnMetadata(4, "CompanyName"));
             dataObject.AddColumnMetadata(new ColumnMetadata(5, "Status"));
+            dataObject.AddColumnMetadata(new ColumnMetadata(6, "Birthdate"));
 
-            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, "Best o' Things (sample)", "Active" });
-            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, "Litware Inc. (sample)", "Inactive" });
-            dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active" });
+            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, "Best o' Things (sample)", "Active", new DateTime(1980, 06, 23) });
+            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, "Litware Inc. (sample)", "Inactive", new DateTime(2004, 12, 03) });
+            dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null });
 
             IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
             module.SetConfiguration(writeToCrmConfig);

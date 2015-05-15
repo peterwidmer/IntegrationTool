@@ -10,5 +10,6 @@ namespace IntegrationTool.DataMappingControl
     {
         public string Source { get; set; }
         public string Target { get; set; }
+        public string ValueFormat { get; set; }
     }
 }

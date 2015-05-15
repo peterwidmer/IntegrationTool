@@ -43,7 +43,23 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         throw new Exception("Direct Customer Attribute Mapping not supported!");
 
                     case AttributeTypeCode.DateTime:
-                        throw new Exception("DateTime Attribute Mapping not supported right now!");
+                        if(obj.GetType() == typeof(DateTime))
+                        {
+                            entity.Attributes.Add(dataMapping.Target, (DateTime)obj);
+                        }
+                        else
+                        {
+                            DateTime? dt = DateTimeHelper.ConvertStringToDateTime(obj.ToString(), dataMapping.ValueFormat);
+                            if (dt != null)
+                            {
+                                entity.Attributes.Add(attributeMetadata.LogicalName, dt);
+                            }
+                            else
+                            {
+                                throw new Exception("Could not convert value " + obj.ToString() + " to datetime. Please correct value or check valueformat!");
+                            }
+                        }
+                        break;
 
                     case AttributeTypeCode.Decimal:
                         decimal decimalValue = Convert.ToDecimal(obj.ToString());

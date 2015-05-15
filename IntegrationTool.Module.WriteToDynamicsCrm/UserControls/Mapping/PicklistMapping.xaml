@@ -20,7 +20,7 @@
             <RowDefinition Height="5*"/>
             <RowDefinition Height="117*"/>
         </Grid.RowDefinitions>
-        <Label Content="Picklistmapping" Grid.Row="1" Grid.Column="1"/>
+        <Label Content="Picklist-Mapping" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
         <Label Content="Mapping Type:" Grid.Column="1" Grid.Row="3"/>
         <ComboBox x:Name="ddMappingType" Grid.Column="2" Grid.Row="3" SelectedValue="{Binding MappingType}" SelectedValuePath="Tag" SelectionChanged="ddMappingType_SelectionChanged" >
             <ComboBoxItem Content="Automatic" Tag="Automatic" />

@@ -82,6 +82,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                     attributeDependentSettings.Content = picklistMapping;
                     break;
 
+                case AttributeTypeCode.DateTime:
+                    attributeDependentSettings.Content = new DateTimeMapping(item);
+                    break;
+
                 default:
                     attributeDependentSettings.Content = null;
                     break;
