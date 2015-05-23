@@ -30,5 +30,10 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             this.dataObject = dataObject;
             this.configuration = configuration;
         }
+
+        private void ddJoinType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // TODO Implement this (either joinmapping or manualmapping)
+        }
     }
 }

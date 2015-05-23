@@ -3,10 +3,33 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" Height="342" Width="822">
     <Grid>
-        <Label Content="Marketinglist" HorizontalAlignment="Left" Margin="110,139,0,0" VerticalAlignment="Top"/>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="223*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="28*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="91*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="169*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Marketinglist Jointype:"/>
+        <ContentControl x:Name="ListMappingContent" Grid.Row="4"  Grid.ColumnSpan="4" />
+        <ComboBox x:Name="ddJoinType" Grid.Column="2" SelectedValue="{Binding Path=JoinList}" SelectedValuePath="Tag" SelectionChanged="ddJoinType_SelectionChanged">
+            <ComboBoxItem Content="Manual Marketinglistname" Tag="Manual" />
+            <ComboBoxItem Content="Join Marketinglist" Tag="Join" />
+        </ComboBox>
+        <Label Content="If join unsuccessful:" Grid.Row="2"/>
+        <ComboBox Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=IfJoinUnsuccessful}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Create new marketinglist" Tag="CreateNew" />
+            <ComboBoxItem Content="Fail" Tag="Fail" />
+        </ComboBox>
     </Grid>
 </UserControl>
