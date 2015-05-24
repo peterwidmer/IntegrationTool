@@ -33,7 +33,20 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
         private void ddJoinType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // TODO Implement this (either joinmapping or manualmapping)
+            if(ddJoinType.SelectedItem == null)
+            {
+                ListMappingContent.Content = null;
+            }
+            switch(this.configuration.JoinList)
+            {
+                case MarketinglistJoinType.Manual:
+                    ListMappingContent.Content = new UserControls.ListMappingManual();
+                    break;
+
+                case MarketinglistJoinType.Join:
+                    ListMappingContent.Content = new UserControls.ListMappingJoin();
+                    break;
+            }
         }
     }
 }

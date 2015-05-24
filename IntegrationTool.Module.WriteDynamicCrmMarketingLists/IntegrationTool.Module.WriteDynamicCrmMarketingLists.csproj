@@ -60,6 +60,9 @@
     <Compile Include="UserControls\ListMappingManual.xaml.cs">
       <DependentUpon>ListMappingManual.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MemberJoinMapping.xaml.cs">
+      <DependentUpon>MemberJoinMapping.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WriteToDynamicsCrmMarketingLists.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WriteToDynamicsCrmMarketingListsConfiguration.cs" />
@@ -95,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ListMappingManual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\MemberJoinMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -14,11 +14,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="28*"/>
-            <RowDefinition Height="8*"/>
-            <RowDefinition Height="91*"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="169*"/>
+            <RowDefinition Height="100*" x:Name="rowJoinType"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
         <Label Content="Marketinglist Jointype:"/>
         <ContentControl x:Name="ListMappingContent" Grid.Row="4"  Grid.ColumnSpan="4" />

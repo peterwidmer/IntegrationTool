@@ -19,6 +19,11 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         Fail
     }
 
+    public enum MarketinglistMemberType
+    {
+        Account, Contact, Lead
+    }
+
     public class WriteToDynamicsCrmMarketingListsConfiguration : TargetConfiguration
     {
         public MarketinglistJoinType JoinList { get; set; }
@@ -28,5 +33,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         public List<DataMapping> ListMapping { get; set; }
 
         public List<DataMapping> ListMemberMapping { get; set; }
+        public MarketinglistMemberType ListMemberType { get; set; }
+
     }
 }

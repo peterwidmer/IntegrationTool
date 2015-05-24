@@ -1,0 +1,30 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl" x:Class="IntegrationTool.Module.WriteDynamicCrmMarketingLists.UserControls.MemberJoinMapping" 
+             mc:Ignorable="d" Height="271" Width="547">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="233*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="263*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Marketinglist Membertype:"/>
+        <ComboBox Grid.Column="2" SelectedValue="{Binding ListMemberType}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Account" Tag="Account" />
+            <ComboBoxItem Content="Contact" Tag="Contact" />
+            <ComboBoxItem Content="Lead" Tag="Lead" />
+        </ComboBox>
+
+        <DataMappingControl:MappingControl x:Name="listMemberJoinMapping" Grid.ColumnSpan="4" Grid.Row="2"/>
+
+    </Grid>
+</UserControl>
