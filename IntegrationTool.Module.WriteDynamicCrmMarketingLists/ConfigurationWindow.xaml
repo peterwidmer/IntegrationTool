@@ -24,14 +24,15 @@
         </Grid.RowDefinitions>
         <Label Content="Marketinglist Jointype:"/>
         <ContentControl x:Name="ListMappingContent" Grid.Row="4"  Grid.ColumnSpan="4" />
-        <ComboBox x:Name="ddJoinType" Grid.Column="2" SelectedValue="{Binding Path=JoinList}" SelectedValuePath="Tag" SelectionChanged="ddJoinType_SelectionChanged">
+        <ComboBox x:Name="ddJoinType" Grid.Column="2" SelectedValue="{Binding Path=JoinList}" SelectedValuePath="Tag" SelectionChanged="ddJoinType_SelectionChanged" IsEnabled="False">
             <ComboBoxItem Content="Manual Marketinglistname" Tag="Manual" />
             <ComboBoxItem Content="Join Marketinglist" Tag="Join" />
         </ComboBox>
         <Label Content="If join unsuccessful:" Grid.Row="2"/>
-        <ComboBox Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=IfJoinUnsuccessful}" SelectedValuePath="Tag" >
+        <ComboBox x:Name="ddJoinUnsuccessful" Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=IfJoinUnsuccessful}" SelectedValuePath="Tag" IsEnabled="False" >
             <ComboBoxItem Content="Create new marketinglist" Tag="CreateNew" />
             <ComboBoxItem Content="Fail" Tag="Fail" />
         </ComboBox>
+        <ContentControl x:Name="MemberMappingContent" Grid.Row="8"  Grid.ColumnSpan="4" />
     </Grid>
 </UserControl>
