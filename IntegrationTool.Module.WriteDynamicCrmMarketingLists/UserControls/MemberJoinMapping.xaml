@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl" x:Class="IntegrationTool.Module.WriteDynamicCrmMarketingLists.UserControls.MemberJoinMapping" 
-             mc:Ignorable="d" Height="271" Width="547">
+             mc:Ignorable="d" d:DesignHeight="271" d:DesignWidth="547">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="160"/>
@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="263*"/>
         </Grid.RowDefinitions>
         <Label Content="Marketinglist Membertype:"/>

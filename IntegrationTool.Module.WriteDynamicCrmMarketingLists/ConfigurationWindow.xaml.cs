@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.WriteDynamicCrmMarketingLists.UserControls;
+using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericControls;
 using Microsoft.Xrm.Client;
@@ -33,6 +34,8 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         private IDatastore dataObject;
         private WriteToDynamicsCrmMarketingListsConfiguration configuration;
 
+        private List<EntityMetadata> entitiesMetadata;
+
         public ConfigurationWindow(WriteToDynamicsCrmMarketingListsConfiguration configuration, IDatastore dataObject)
         {
             InitializeComponent();
@@ -42,18 +45,25 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
         private void ddJoinType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ddJoinType.SelectedItem == null)
+            SetListJoinType();
+        }
+
+        private void SetListJoinType()
+        {
+            if (this.entitiesMetadata == null) { return; }
+
+            if (ddJoinType.SelectedItem == null)
             {
                 ListMappingContent.Content = null;
             }
-            switch(this.configuration.JoinList)
+            switch (this.configuration.JoinList)
             {
                 case MarketinglistJoinType.Manual:
                     ListMappingContent.Content = new UserControls.ListMappingManual();
                     break;
 
                 case MarketinglistJoinType.Join:
-                    ListMappingContent.Content = new UserControls.ListMappingJoin();
+                    ListMappingContent.Content = new UserControls.ListMappingJoin(this.configuration, entitiesMetadata.Where(t => t.LogicalName == "list").First(), this.dataObject);
                     break;
             }
         }
@@ -76,7 +86,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         {
             List<EntityMetadata> entitiesMetadata = new List<EntityMetadata>();
             
-            var marketingListMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.orgServiceInstance, "marketinglist");
+            var marketingListMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.orgServiceInstance, "list");
             entitiesMetadata.Add(marketingListMetadata);
 
             var accountMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.orgServiceInstance, "account");
@@ -93,8 +103,11 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
         void bgwConnectionChanged_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.entitiesMetadata = (List<EntityMetadata>)((object[])e.Result)[0];
             ddJoinType.IsEnabled = true;
-            ddJoinType.IsEnabled = true;
+            ddJoinUnsuccessful.IsEnabled = true;
+            SetListJoinType();
+            MemberMappingContent.Content = new MemberJoinMapping();
         }
     }
 }

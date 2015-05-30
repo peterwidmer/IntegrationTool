@@ -72,6 +72,7 @@
     <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
       <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
       <Name>IntegrationTool.DataMappingControl</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToDynamicsCrm\IntegrationTool.Module.ConnectToDynamicsCrm.csproj">
       <Project>{42d951a0-a901-4bce-ac49-b735c1ff99ca}</Project>

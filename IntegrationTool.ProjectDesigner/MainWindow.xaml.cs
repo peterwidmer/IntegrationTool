@@ -35,7 +35,7 @@ namespace IntegrationTool.ProjectDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed, Open_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed, Save_Enabled));
 
-            // OpenProject(@"C:\temp\nextT.xml");
+            OpenProject(@"C:\Temp\IntegrationToolTests\CrmTest\CrmTest.xml");
             // OpenProject(@"..\..\..\IntegrationTool.UnitTests.ApplicationCore\FlowTestProjects\ErrorContinuation\ComplexTests.xml");
             // OpenProject(@"..\..\..\IntegrationTool.UnitTests.ApplicationCore\FlowTestProjects\ErrorPath\SimpleErrorPathTests.xml");
             
