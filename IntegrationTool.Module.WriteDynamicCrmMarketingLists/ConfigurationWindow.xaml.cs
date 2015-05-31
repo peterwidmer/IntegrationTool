@@ -107,7 +107,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             ddJoinType.IsEnabled = true;
             ddJoinUnsuccessful.IsEnabled = true;
             SetListJoinType();
-            MemberMappingContent.Content = new MemberJoinMapping();
+            MemberMappingContent.Content = new MemberJoinMapping(this.configuration, this.entitiesMetadata, this.dataObject);
         }
     }
 }

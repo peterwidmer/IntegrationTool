@@ -21,8 +21,8 @@
             <RowDefinition Height="0"/>
             <RowDefinition Height="0"/>
             <RowDefinition Height="100*" x:Name="rowJoinType"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="26"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>

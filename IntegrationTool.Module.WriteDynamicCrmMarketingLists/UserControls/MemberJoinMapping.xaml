@@ -18,7 +18,7 @@
             <RowDefinition Height="263*"/>
         </Grid.RowDefinitions>
         <Label Content="Marketinglist Membertype:"/>
-        <ComboBox Grid.Column="2" SelectedValue="{Binding ListMemberType}" SelectedValuePath="Tag" >
+        <ComboBox x:Name="ddMemberType" Grid.Column="2" SelectedValue="{Binding ListMemberType}" SelectedValuePath="Tag" SelectionChanged="ddMemberType_SelectionChanged" >
             <ComboBoxItem Content="Account" Tag="Account" />
             <ComboBoxItem Content="Contact" Tag="Contact" />
             <ComboBoxItem Content="Lead" Tag="Lead" />
