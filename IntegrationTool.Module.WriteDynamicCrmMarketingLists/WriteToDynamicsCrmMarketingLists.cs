@@ -15,7 +15,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
                            GroupName = ModuleGroup.Target,
                            ConnectionType = typeof(CrmConnection),
                            ConfigurationType = typeof(WriteToDynamicsCrmMarketingListsConfiguration))]
-    public class WriteToDynamicsCrmMarketingLists : IModule, IDataTarget
+    public partial class WriteToDynamicsCrmMarketingLists : IModule, IDataTarget
     {
 
         public WriteToDynamicsCrmMarketingListsConfiguration Configuration { get; set; }
@@ -31,9 +31,6 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             this.Configuration = configurationBase as WriteToDynamicsCrmMarketingListsConfiguration;
         }
 
-        public void WriteData(IConnection connection, SDK.Database.IDatabaseInterface databaseInterface, SDK.Database.IDatastore dataObject, ReportProgressMethod reportProgress)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

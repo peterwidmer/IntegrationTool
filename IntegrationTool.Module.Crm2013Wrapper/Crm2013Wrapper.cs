@@ -100,6 +100,12 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             return attributeList.OrderBy(t => t.Name).ToList();
         }
 
+        public static DataCollection<Entity> RetrieveMultiple(IOrganizationService service, string entityName, ColumnSet columnSet, ConditionExpression condition, LogicalOperator logicalOperator = LogicalOperator.And)
+        {
+            List<ConditionExpression> conditions = new List<ConditionExpression>() { condition };
+            return RetrieveMultiple(service, entityName, columnSet, conditions, logicalOperator);
+        }
+
         public static DataCollection<Entity> RetrieveMultiple(IOrganizationService service, string entityName, ColumnSet columnSet, List<ConditionExpression> conditions, LogicalOperator logicalOperator = LogicalOperator.And)
         {
             FilterExpression filter = new FilterExpression(logicalOperator);
@@ -111,7 +117,6 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             EntityCollection result = service.RetrieveMultiple(query);
 
             return result.Entities;
-
         }
 
         public static string GetAttributeIdentifierStringValue(Entity entity, AttributeMetadata attributeMetadata)
