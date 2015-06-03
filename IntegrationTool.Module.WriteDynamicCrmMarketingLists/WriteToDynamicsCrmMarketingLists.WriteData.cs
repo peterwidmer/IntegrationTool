@@ -81,19 +81,33 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             Dictionary<string, int> sourceColumnMapping = new Dictionary<string, int>();
             foreach (var mapping in this.Configuration.ListMapping)
             {
+                ColumnMetadata column = this.dataObject.Metadata.Columns.Where(t => t.ColumnName == mapping.Source).FirstOrDefault();
+                if (column == null) throw new Exception("Column " + mapping.Source + " was not found in sourcedata!");
+
+                sourceColumnMapping.Add(mapping.Source, column.ColumnIndex);
             }
 
             for (int i = 0; i < this.dataObject.Count; i++)
             {
-                
+                string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping);
+                if (marketingLists.Contains(joinKey)) continue;
+
+                // TODO Check if list exists, otherwise create it
+
             }
 
-            // TODO Implement
+            
             return marketingLists;
         }
 
-        private string BuildKey(string [] keyvalues)
+        private string BuildKey(object [] dataObject, List<DataMappingControl.DataMapping> mapping)
         {
+            string[] keyvalues = new string[mapping.Count];
+            for (int iMapping = 0; iMapping < mapping.Count; iMapping++)
+            {
+                keyvalues[iMapping] = dataObject[iMapping].ToString();
+            }
+
             string key = string.Empty;
             for(int i=0; i < keyvalues.Length; i++)
             {
