@@ -1,5 +1,4 @@
 ﻿using IntegrationTool.DataMappingControl;
-using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Sdk;
@@ -11,28 +10,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
+namespace IntegrationTool.Module.CrmWrapper
 {
-    public class RelationResolver
+    public class JoinResolver
     {
         private IOrganizationService service;
         private EntityMetadata relatedEntityMetadata;
-        private RelationMapping relationMapping;
+        private List<DataMapping> relationMappings;
         private Dictionary<string, AttributeMetadata> attributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
 
-        public RelationResolver(IOrganizationService service, EntityMetadata relatedEntityMetadata, RelationMapping relationMapping)
+        public JoinResolver(IOrganizationService service, EntityMetadata relatedEntityMetadata, List<DataMapping> relationMappings)
         {
             this.service = service;
             this.relatedEntityMetadata = relatedEntityMetadata;
-            this.relationMapping = relationMapping;
+            this.relationMappings = relationMappings;
 
-            foreach (DataMapping relMapping in relationMapping.Mapping)
+            foreach (DataMapping relMapping in relationMappings)
             {
                 string str = relMapping.Target;
                 AttributeMetadata attributeMetadata = relatedEntityMetadata.Attributes.Where(t => t.LogicalName == relMapping.Target).First();
                 attributeMetadataDictionary.Add(attributeMetadata.LogicalName, attributeMetadata);
             }
-
         }
 
         public Dictionary<string, Guid[]> BuildMassResolverIndex()
@@ -40,7 +38,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             ColumnSet columnSet = new ColumnSet(new string[] { relatedEntityMetadata.PrimaryIdAttribute });
             List<ConditionExpression> conditions = new List<ConditionExpression>();
 
-            foreach (var relMapping in relationMapping.Mapping)
+            foreach (var relMapping in relationMappings)
             {
                 conditions.Add(new ConditionExpression(relMapping.Target, ConditionOperator.NotNull));
 
@@ -100,26 +98,6 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             return keyDictionary;
         }
 
-        public void SetRelation(Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities)
-        {
-            EntityMapper entityMapper = new EntityMapper(relatedEntityMetadata, dataObject.Metadata, relationMapping.Mapping, null);
-
-            for (int i = 0; i < sourceEntities.Length; i++)
-            {
-                Entity relatedEntity = new Entity();
-                entityMapper.MapAttributes(relatedEntity, dataObject[i]);
-                string relatedEntityKey = BuildExistingCheckKey(relatedEntity, attributeMetadataDictionary);
-                if(relatedEntities.ContainsKey(relatedEntityKey))
-                {
-                    // TODO Check if attribute has already been mapped (cause multiple relations on one attribute)
-                    sourceEntities[i].Attributes.Add(this.relationMapping.LogicalName, new EntityReference(relationMapping.EntityName, relatedEntities[relatedEntityKey][0]));
-                }
-                else
-                {
-                    //throw new Exception("Could not resolve related entity with key " + relatedEntityKey);
-                }
-
-            }
-        }
+        
     }
 }

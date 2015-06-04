@@ -1,4 +1,5 @@
-﻿using IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK;
+﻿using IntegrationTool.Module.CrmWrapper;
+using IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Client;
@@ -39,7 +40,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
                     break;
 
                 case MarketinglistJoinType.Join:
-                    marketinglists = DoJoinMarketingLists();
+                    marketinglists = DoJoinMarketingLists(listEntityMetaData);
                     break;
             }
         }
@@ -74,7 +75,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             return marketingLists;
         }
 
-        public Marketinglists DoJoinMarketingLists()
+        public Marketinglists DoJoinMarketingLists(EntityMetadata listEntityMetaData)
         {
             Marketinglists marketingLists = new Marketinglists();
 
@@ -87,8 +88,12 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
                 sourceColumnMapping.Add(mapping.Source, column.ColumnIndex);
             }
 
+            JoinResolver joinResolver = new JoinResolver(this.service, listEntityMetaData, this.Configuration.ListMapping);
+            Dictionary<string, Guid[]> existingLists = joinResolver.BuildMassResolverIndex();
+
             for (int i = 0; i < this.dataObject.Count; i++)
             {
+
                 string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping);
                 if (marketingLists.Contains(joinKey)) continue;
 

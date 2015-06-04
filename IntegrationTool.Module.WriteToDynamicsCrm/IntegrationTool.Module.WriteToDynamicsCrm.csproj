@@ -66,7 +66,7 @@
     <Compile Include="Execution\EntityMapper.cs" />
     <Compile Include="Execution\EntityMapper.MapAttributes.cs" />
     <Compile Include="Execution\PrimaryKeyResolver.cs" />
-    <Compile Include="Execution\RelationResolver.cs" />
+    <Compile Include="Execution\RelationSetter.cs" />
     <Compile Include="Logging\ImportSummaryControl.xaml.cs">
       <DependentUpon>ImportSummaryControl.xaml</DependentUpon>
     </Compile>

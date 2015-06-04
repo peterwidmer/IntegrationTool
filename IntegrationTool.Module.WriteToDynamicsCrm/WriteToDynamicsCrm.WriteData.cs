@@ -1,4 +1,5 @@
-﻿using IntegrationTool.Module.WriteToDynamicsCrm.Execution;
+﻿using IntegrationTool.Module.CrmWrapper;
+using IntegrationTool.Module.WriteToDynamicsCrm.Execution;
 using IntegrationTool.Module.WriteToDynamicsCrm.Logging;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.SDK;
@@ -68,11 +69,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 EntityMetadata relationEntityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, relationMapping.EntityName);
 
                 reportProgress(new SimpleProgressReport("Resolving relationship - load related records"));
-                RelationResolver relationResolver = new RelationResolver(service, relationEntityMetadata, relationMapping);
+                JoinResolver relationResolver = new JoinResolver(service, relationEntityMetadata, relationMapping.Mapping);
                 Dictionary<string, Guid[]> relatedEntities = relationResolver.BuildMassResolverIndex();
 
                 reportProgress(new SimpleProgressReport("Resolving relationship - set relations"));
-                relationResolver.SetRelation(entities, dataObject, relatedEntities);
+
+                RelationSetter relationSetter = new RelationSetter(relationEntityMetadata, relationMapping.Mapping);
+                relationSetter.SetRelation(relationMapping.LogicalName, entities, dataObject, relatedEntities);
             }
 
             reportProgress(new SimpleProgressReport("Resolving primarykeys of records"));
