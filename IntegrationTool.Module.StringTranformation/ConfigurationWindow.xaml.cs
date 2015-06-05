@@ -77,7 +77,7 @@ namespace IntegrationTool.Module.StringTranformation
         {
             Grid grid = ((Label)sender).Parent as Grid;
             ComboBox ddColumn = WPFHelper.FindVisualChildren<ComboBox>(grid).Where(t => t.Name == "ddColumn").First();
-            foreach(var column in dataObject.Metadata.Columns)
+            foreach(var column in dataObject.Metadata.Columns.Values)
             {
                 ddColumn.Items.Add(new ComboBoxItem() { Content = column.ColumnName, Tag = column.ColumnName });
             }

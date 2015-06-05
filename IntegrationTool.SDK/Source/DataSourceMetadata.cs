@@ -9,16 +9,16 @@ namespace IntegrationTool.SDK
 {
     public class DataMetadata
     {
-        public List<ColumnMetadata> Columns { get; set; }
+        public Dictionary<string, ColumnMetadata> Columns { get; set; }
         public DataMetadata()
         {
-            Columns = new List<ColumnMetadata>();
+            Columns = new Dictionary<string, ColumnMetadata>();
         }
 
         public List<NameDisplayName> GetColumnsAsNameDisplayNameList()
         {
             List<NameDisplayName> columnList = new List<NameDisplayName>();
-            foreach (ColumnMetadata column in this.Columns)
+            foreach (ColumnMetadata column in this.Columns.Values)
             {
                 columnList.Add(new NameDisplayName(column.ColumnName, column.ColumnName));
             }
@@ -29,7 +29,7 @@ namespace IntegrationTool.SDK
         public Dictionary<string, ColumnMetadata> GetColumnsDictionary()
         {
             Dictionary<string, ColumnMetadata> dictionary = new Dictionary<string, ColumnMetadata>();
-            foreach (ColumnMetadata column in this.Columns)
+            foreach (ColumnMetadata column in this.Columns.Values)
             {
                 dictionary.Add(column.ColumnName, column);
             }
@@ -37,9 +37,9 @@ namespace IntegrationTool.SDK
             return dictionary;
         }
 
-        public ColumnMetadata this[string ColumnName]
+        public ColumnMetadata this[string columnName]
         {
-            get { return this.Columns.Where(t => t.ColumnName == ColumnName).FirstOrDefault(); }
+            get { return this.Columns[columnName]; }
         }
     }
 }

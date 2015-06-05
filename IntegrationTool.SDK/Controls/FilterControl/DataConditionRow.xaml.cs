@@ -40,7 +40,7 @@ namespace IntegrationTool.SDK.Controls.FilterControl
 
         private void InitializeColumns()
         {
-            foreach(var column in datastore.Metadata.Columns)
+            foreach(var column in datastore.Metadata.Columns.Values)
             {
                 ddColumn.Items.Add(new ComboBoxItem() { Content = column.ColumnName, Tag = column.ColumnName });
             }

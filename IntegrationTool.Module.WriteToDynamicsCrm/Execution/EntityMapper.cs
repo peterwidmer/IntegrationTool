@@ -38,7 +38,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             }
 
             columnMetadataDictionary = new Dictionary<string, ColumnMetadata>();
-            foreach(var column in dataMetadata.Columns)
+            foreach(var column in dataMetadata.Columns.Values)
             {
                 columnMetadataDictionary.Add(column.ColumnName, column);
             }

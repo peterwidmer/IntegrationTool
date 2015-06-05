@@ -21,12 +21,12 @@ namespace IntegrationTool.Module.StringTranformation
             {
                 reportProgress(new SimpleProgressReport("Start stringtranformation of type " + transformation.TransformationType + " on column " + transformation.ColumnName));
                 
-                if (dataObject.Metadata.Columns.Where(t => t.ColumnName == transformation.ColumnName).Count() == 0)
+                if (dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.ColumnName).Count() == 0)
                 {
                     throw new Exception("Column " + transformation.ColumnName + " was not found in the sourcedata");
                 }
 
-                int columnIndex = dataObject.Metadata.Columns.Where(t => t.ColumnName == transformation.ColumnName).First().ColumnIndex;
+                int columnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.ColumnName).First().ColumnIndex;
                 ITransformationExecutor transformer = Activator.CreateInstance(stringTransformationMapping[transformation.TransformationType]) as ITransformationExecutor;
 
                 for(int i=0; i < dataObject.Count; i++)

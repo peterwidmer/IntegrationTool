@@ -18,8 +18,8 @@ namespace IntegrationTool.Module.ConcatenateColumns
 
                 dataObject.AddColumnMetadata(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.OutputColumn));
                 
-                int leftColumnIndex = dataObject.Metadata.Columns.Where(t => t.ColumnName == transformation.LeftColumn).First().ColumnIndex;
-                int rightColumnIndex = dataObject.Metadata.Columns.Where(t => t.ColumnName == transformation.RightColumn).First().ColumnIndex;
+                int leftColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.LeftColumn).First().ColumnIndex;
+                int rightColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.RightColumn).First().ColumnIndex;
                 
                 for (int i = 0; i < dataObject.Count; i++)
                 {

@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Crm.Sdk.Proxy">
+      <HintPath>..\References\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Xrm.Client">
       <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
       <Private>False</Private>
@@ -57,7 +61,6 @@
     </Compile>
     <Compile Include="SDK\ListHelper.cs" />
     <Compile Include="SDK\Marketinglist.cs" />
-    <Compile Include="SDK\Marketinglists.cs" />
     <Compile Include="UserControls\ListMappingJoin.xaml.cs">
       <DependentUpon>ListMappingJoin.xaml</DependentUpon>
     </Compile>

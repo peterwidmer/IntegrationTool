@@ -26,7 +26,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
             InitializeComponent();
 
             DataTable dt = new DataTable();
-            foreach(var column in datastore.Metadata.Columns)
+            foreach(var column in datastore.Metadata.Columns.Values)
             {
                 dt.Columns.Add(column.ColumnName);
             }

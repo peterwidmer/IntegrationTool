@@ -38,7 +38,7 @@ namespace IntegrationTool.SDK
         public List<NameDisplayName> GetDistinctValuesOfColumn(string columnName)
         {
             List<string> distinctValues = new List<string>();
-            var column = this.Metadata.Columns.Where(t => t.ColumnName == columnName).FirstOrDefault();
+            var column = this.Metadata.Columns.Values.Where(t => t.ColumnName == columnName).FirstOrDefault();
             if(column == null)
             {
                 throw new Exception("Column " + columnName + " does not exist in the DataObject");
@@ -64,7 +64,7 @@ namespace IntegrationTool.SDK
 
         public void AddColumnMetadata(ColumnMetadata columnMetadata)
         {
-            this.Metadata.Columns.Add(columnMetadata);
+            this.Metadata.Columns.Add(columnMetadata.ColumnName, columnMetadata);
 
             for(int i=0; i < data.Count; i++)
             {

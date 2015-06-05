@@ -2,6 +2,7 @@
 using IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
@@ -21,6 +22,9 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         private ReportProgressMethod reportProgress;
         private IDatastore dataObject;
 
+        private Dictionary<string, Guid[]> existingLists;
+        private Dictionary<string, Guid[]> existingMembers;
+
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
             this.reportProgress = reportProgress;
@@ -29,25 +33,50 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
             this.service = new OrganizationService(crmConnection);
             this.dataObject = dataObject;
-            
+
+            reportProgress(new SimpleProgressReport("Load marketinglist metadata"));
             EntityMetadata listEntityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, "list");
 
-            Marketinglists marketinglists = null;
+            reportProgress(new SimpleProgressReport("Resolve existing marketinglists"));
+            JoinResolver listResolver = new JoinResolver(this.service, listEntityMetaData, this.Configuration.ListMapping);
+            this.existingLists = listResolver.BuildMassResolverIndex();
+
+            reportProgress(new SimpleProgressReport("Load members metadata"));
+            EntityMetadata memberEntityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.ListMemberType.ToString().ToLower());
+            
+            reportProgress(new SimpleProgressReport("Resolve listmembers"));
+            JoinResolver memberResolver = new JoinResolver(this.service, memberEntityMetaData, this.Configuration.ListMemberMapping);
+            this.existingMembers = memberResolver.BuildMassResolverIndex();
+
             switch(this.Configuration.JoinList)
             {
                 case MarketinglistJoinType.Manual:
-                    marketinglists = DoManualMarketingList();
+                    DoManualMarketingList();
                     break;
 
                 case MarketinglistJoinType.Join:
-                    marketinglists = DoJoinMarketingLists(listEntityMetaData);
+                    DoJoinMarketingLists();
                     break;
             }
         }
 
-        public Marketinglists DoManualMarketingList()
+        public void AddMemberToList(Guid listId, object [] currentRecord)
         {
-            Marketinglists marketingLists = new Marketinglists();
+            string joinKey = BuildKey(currentRecord, this.Configuration.ListMemberMapping, this.dataObject.Metadata);
+            foreach(Guid memberId in this.existingMembers[joinKey])
+            {
+                AddMemberListRequest addMemberListRequest = new AddMemberListRequest();
+                addMemberListRequest.ListId = listId;
+                addMemberListRequest.EntityId = memberId;
+
+                this.service.Execute(addMemberListRequest);
+            }
+        }
+
+        public void DoManualMarketingList()
+        {
+            Marketinglist marketinglist = null;
+
             reportProgress(new SimpleProgressReport("Check if manual list is already created."));
 
             DataCollection<Entity> lists = ListHelper.RetrieveMarketinglists(service, this.Configuration.ManualListName);
@@ -56,7 +85,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             {
                 if(this.Configuration.IfJoinUnsuccessful == OnUnsuccessfulJoin.CreateNew)
                 {
-                    marketingLists[this.Configuration.ManualListName] = ListHelper.CreateMarketingList(service, this.Configuration.ManualListName, this.Configuration.ListMemberType);       
+                    marketinglist = ListHelper.CreateMarketingList(service, this.Configuration.ManualListName, this.Configuration.ListMemberType);       
                 }
                 else
                 {
@@ -65,52 +94,56 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             }
             else if(lists.Count == 1)
             {
-                marketingLists[this.Configuration.ManualListName] = new Marketinglist(this.Configuration.ManualListName, lists[0].Id);
+                marketinglist = new Marketinglist(this.Configuration.ManualListName, lists[0].Id);
             }
             else
             {
                 throw new Exception("Multiple lists with the name " + this.Configuration.ManualListName + " exists.");
             }
 
-            return marketingLists;
-        }
-
-        public Marketinglists DoJoinMarketingLists(EntityMetadata listEntityMetaData)
-        {
-            Marketinglists marketingLists = new Marketinglists();
-
-            Dictionary<string, int> sourceColumnMapping = new Dictionary<string, int>();
-            foreach (var mapping in this.Configuration.ListMapping)
-            {
-                ColumnMetadata column = this.dataObject.Metadata.Columns.Where(t => t.ColumnName == mapping.Source).FirstOrDefault();
-                if (column == null) throw new Exception("Column " + mapping.Source + " was not found in sourcedata!");
-
-                sourceColumnMapping.Add(mapping.Source, column.ColumnIndex);
-            }
-
-            JoinResolver joinResolver = new JoinResolver(this.service, listEntityMetaData, this.Configuration.ListMapping);
-            Dictionary<string, Guid[]> existingLists = joinResolver.BuildMassResolverIndex();
-
             for (int i = 0; i < this.dataObject.Count; i++)
             {
-
-                string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping);
-                if (marketingLists.Contains(joinKey)) continue;
-
-                // TODO Check if list exists, otherwise create it
-
+                AddMemberToList(marketinglist.ListId, this.dataObject[i]);
             }
-
-            
-            return marketingLists;
         }
 
-        private string BuildKey(object [] dataObject, List<DataMappingControl.DataMapping> mapping)
+        public void DoJoinMarketingLists()
+        {
+            for (int i = 0; i < this.dataObject.Count; i++)
+            {
+                string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping, this.dataObject.Metadata);
+                if (existingLists.ContainsKey(joinKey))
+                {
+                    if (existingLists[joinKey].Length > 1)
+                    {
+                        throw new Exception("Multiple lists with the joinvalues " + joinKey.Replace("#", " ").TrimEnd(' ') + " exists.");
+                    }
+                }
+                else
+                {
+                    if (this.Configuration.IfJoinUnsuccessful == OnUnsuccessfulJoin.CreateNew)
+                    {
+                        // TO DO Create all joined values of the marketinglist
+                        Marketinglist marketingList = ListHelper.CreateMarketingList(service, joinKey, this.Configuration.ListMemberType);
+                        existingLists.Add(joinKey, new Guid[] { marketingList.ListId });
+                    }
+                    else
+                    {
+                        throw new Exception("List with joinvalues " + joinKey.Replace("#", " ").TrimEnd(' ') + " does not exist.");
+                    }
+                }
+
+                AddMemberToList(existingLists[joinKey][0], this.dataObject[i]);
+            }
+        }
+
+        private string BuildKey(object [] dataObject, List<DataMappingControl.DataMapping> mapping, DataMetadata dataMetadata)
         {
             string[] keyvalues = new string[mapping.Count];
             for (int iMapping = 0; iMapping < mapping.Count; iMapping++)
             {
-                keyvalues[iMapping] = dataObject[iMapping].ToString();
+                string source = mapping[iMapping].Source;
+                keyvalues[iMapping] = dataObject[dataMetadata[source].ColumnIndex].ToString();
             }
 
             string key = string.Empty;

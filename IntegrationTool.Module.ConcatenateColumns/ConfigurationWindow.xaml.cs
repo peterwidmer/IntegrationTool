@@ -46,7 +46,7 @@ namespace IntegrationTool.Module.ConcatenateColumns
             ComboBox ddLeftColumn = WPFHelper.FindVisualChildren<ComboBox>(grid).Where(t => t.Name == "ddLeftColumn").First();
             ComboBox ddRightColumn = WPFHelper.FindVisualChildren<ComboBox>(grid).Where(t => t.Name == "ddRightColumn").First();
 
-            foreach (var column in dataObject.Metadata.Columns)
+            foreach (var column in dataObject.Metadata.Columns.Values)
             {
                 ddLeftColumn.Items.Add(new ComboBoxItem() { Content = column.ColumnName, Tag = column.ColumnName });
                 ddRightColumn.Items.Add(new ComboBoxItem() { Content = column.ColumnName, Tag = column.ColumnName });
