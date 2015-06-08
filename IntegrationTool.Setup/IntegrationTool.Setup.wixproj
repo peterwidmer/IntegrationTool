@@ -208,6 +208,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.WriteDynamicCrmMarketingLists\IntegrationTool.Module.WriteDynamicCrmMarketingLists.csproj">
+      <Name>IntegrationTool.Module.WriteDynamicCrmMarketingLists</Name>
+      <Project>{22d1b14d-ec83-4e38-84b8-0ad60aacf49d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrm\IntegrationTool.Module.WriteToDynamicsCrm.csproj">
       <Name>IntegrationTool.Module.WriteToDynamicsCrm</Name>
       <Project>{cd0ef612-415e-4a40-8d40-c77186a083c9}</Project>

@@ -59,6 +59,8 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SDK\EntityMapperLight.cs" />
+    <Compile Include="SDK\EntityMapperLight.MapAttributes.cs" />
     <Compile Include="SDK\ListHelper.cs" />
     <Compile Include="SDK\Marketinglist.cs" />
     <Compile Include="UserControls\ListMappingJoin.xaml.cs">

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Crm2013Wrapper.cs" />
+    <Compile Include="DateTimeHelper.cs" />
     <Compile Include="JoinResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

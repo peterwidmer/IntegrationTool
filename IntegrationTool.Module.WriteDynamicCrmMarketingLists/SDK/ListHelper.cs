@@ -10,10 +10,8 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK
 {
     public class ListHelper
     {
-        public static Marketinglist CreateMarketingList(IOrganizationService service, string listname, MarketinglistMemberType listMemberType)
+        public static Marketinglist CreateMarketingList(IOrganizationService service, Entity list, MarketinglistMemberType listMemberType)
         {
-            Entity list = new Entity("list");
-            list.Attributes.Add("listname", listname);
             switch (listMemberType)
             {
                 case MarketinglistMemberType.Account:
@@ -34,7 +32,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK
 
             list.Id = service.Create(list);
 
-            return new Marketinglist(listname, list.Id);
+            return new Marketinglist(list["listname"].ToString(), list.Id);
         }
 
         public static DataCollection<Entity> RetrieveMarketinglists(IOrganizationService service, string listname)

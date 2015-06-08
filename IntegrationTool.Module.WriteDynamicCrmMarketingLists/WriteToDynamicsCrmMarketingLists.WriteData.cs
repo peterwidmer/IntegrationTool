@@ -19,6 +19,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
     public partial class WriteToDynamicsCrmMarketingLists
     {
         private IOrganizationService service = null;
+        private EntityMetadata listEntityMetaData;
         private ReportProgressMethod reportProgress;
         private IDatastore dataObject;
 
@@ -35,7 +36,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             this.dataObject = dataObject;
 
             reportProgress(new SimpleProgressReport("Load marketinglist metadata"));
-            EntityMetadata listEntityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, "list");
+            this.listEntityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, "list");
 
             reportProgress(new SimpleProgressReport("Resolve existing marketinglists"));
             JoinResolver listResolver = new JoinResolver(this.service, listEntityMetaData, this.Configuration.ListMapping);
@@ -85,7 +86,9 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             {
                 if(this.Configuration.IfJoinUnsuccessful == OnUnsuccessfulJoin.CreateNew)
                 {
-                    marketinglist = ListHelper.CreateMarketingList(service, this.Configuration.ManualListName, this.Configuration.ListMemberType);       
+                    Entity list = new Entity("list");
+                    list.Attributes.Add("listname", this.Configuration.ManualListName);
+                    marketinglist = ListHelper.CreateMarketingList(service, list, this.Configuration.ListMemberType);       
                 }
                 else
                 {
@@ -109,6 +112,8 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
         public void DoJoinMarketingLists()
         {
+            EntityMapperLight entityMapper = new EntityMapperLight(this.listEntityMetaData, this.dataObject.Metadata, this.Configuration.ListMapping);
+
             for (int i = 0; i < this.dataObject.Count; i++)
             {
                 string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping, this.dataObject.Metadata);
@@ -123,8 +128,9 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
                 {
                     if (this.Configuration.IfJoinUnsuccessful == OnUnsuccessfulJoin.CreateNew)
                     {
-                        // TO DO Create all joined values of the marketinglist
-                        Marketinglist marketingList = ListHelper.CreateMarketingList(service, joinKey, this.Configuration.ListMemberType);
+                        Entity list = new Entity("list");
+                        entityMapper.MapAttributes(list, this.dataObject[i]);
+                        Marketinglist marketingList = ListHelper.CreateMarketingList(service, list, this.Configuration.ListMemberType);
                         existingLists.Add(joinKey, new Guid[] { marketingList.ListId });
                     }
                     else

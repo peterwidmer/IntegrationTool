@@ -60,10 +60,12 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             {
                 case MarketinglistJoinType.Manual:
                     ListMappingContent.Content = new UserControls.ListMappingManual();
+                    rowJoinType.Height = new GridLength(27, GridUnitType.Pixel);
                     break;
 
                 case MarketinglistJoinType.Join:
                     ListMappingContent.Content = new UserControls.ListMappingJoin(this.configuration, entitiesMetadata.Where(t => t.LogicalName == "list").First(), this.dataObject);
+                    rowJoinType.Height = new GridLength(100, GridUnitType.Star);
                     break;
             }
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
+namespace IntegrationTool.Module.CrmWrapper
 {
     public class DateTimeHelper
     {

@@ -62,7 +62,6 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Execution\DateTimeHelper.cs" />
     <Compile Include="Execution\EntityMapper.cs" />
     <Compile Include="Execution\EntityMapper.MapAttributes.cs" />
     <Compile Include="Execution\PrimaryKeyResolver.cs" />

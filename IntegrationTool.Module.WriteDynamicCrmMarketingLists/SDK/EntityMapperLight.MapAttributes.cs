@@ -1,5 +1,4 @@
 ﻿using IntegrationTool.Module.CrmWrapper;
-using IntegrationTool.SDK;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
@@ -8,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
+namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK
 {
-    public partial class EntityMapper
+    public partial class EntityMapperLight
     {
         public void MapAttributes(Entity entity, object[] data)
         {
@@ -38,13 +37,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Customer:
-                        LookupAttributeMetadata customerMetadata = attributeMetadata as LookupAttributeMetadata;
-                        Guid customerId = new Guid(obj.ToString());
-                        //entity.Attributes.Add(customerMetadata.LogicalName, new EntityReference(customerMetadata.)
-                        throw new Exception("Direct Customer Attribute Mapping not supported!");
+                        throw new NotImplementedException("Customermappings are not supported in marketinglists right now!");
 
                     case AttributeTypeCode.DateTime:
-                        if(obj.GetType() == typeof(DateTime))
+                        if (obj.GetType() == typeof(DateTime))
                         {
                             entity.Attributes.Add(dataMapping.Target, (DateTime)obj);
                         }
@@ -79,10 +75,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                     case AttributeTypeCode.Owner:
                     case AttributeTypeCode.Lookup:
-                        LookupAttributeMetadata lookupMetadata = attributeMetadata as LookupAttributeMetadata;
-                        Guid lookupId = new Guid(obj.ToString());
-                        entity.Attributes.Add(dataMapping.Target, new EntityReference(lookupMetadata.Targets[0], lookupId));
-                        break;
+                        throw new NotImplementedException("Loojups are not supported in marketinglists right now!");
 
                     case AttributeTypeCode.Money:
                         decimal moneyValue = Convert.ToDecimal(obj.ToString());
@@ -95,43 +88,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         entity.Attributes.Add(dataMapping.Target, stringValue);
                         break;
 
-                    //case AttributeTypeCode.State:
-                    
-                    //    int stateValue = Convert.ToInt32(obj.ToString());
-                    //    entity.Attributes.Add(dataMapping.Target, new OptionSetValue(stateValue));
-                    //    break;
-
                     case AttributeTypeCode.Status:
                     case AttributeTypeCode.Picklist:
-                        IntegrationTool.Module.WriteToDynamicsCrm.SDK.PicklistMapping picklistMapping = this.picklistMappings.Where(t => t.LogicalName == dataMapping.Target).First();
-                        int optionValue = -1;
-                        switch (picklistMapping.MappingType)
-                        {
-                            case SDK.Enums.PicklistMappingType.Automatic:
-                                optionValue = Convert.ToInt32(obj.ToString());
-                                break;
-
-                            case SDK.Enums.PicklistMappingType.Manual:
-                                var mapping = picklistMapping.Mapping.Where(t => t.Source == obj.ToString()).FirstOrDefault();
-                                if (mapping == null)
-                                {
-                                    throw new Exception("Could not map picklist " + dataMapping.Target + ": Mapping for source-value " + obj.ToString() + " could not be found!");
-                                }
-                                optionValue = Convert.ToInt32(mapping.Target);
-                                break;
-                        }
-
-                        if(optionValue != -1)
-                        {                            
-                            if(dataMapping.Target == "statuscode")
-                            {
-                                StatusAttributeMetadata statusAttributeMetadata = attributeMetadata as StatusAttributeMetadata;
-                                var statusOptionMetadata = statusAttributeMetadata.OptionSet.Options.Where(t=> t.Value == optionValue).First() as StatusOptionMetadata;
-                                entity.Attributes.Add("statecode", new OptionSetValue(statusOptionMetadata.State.Value));
-                            }
-                            entity.Attributes.Add(dataMapping.Target, new OptionSetValue(optionValue));
-                        }
-                        break;
+                        throw new NotImplementedException("Picklists are not supported in marketinglists right now!");
 
                     case AttributeTypeCode.Uniqueidentifier:
                         Guid id = new Guid(obj.ToString());
