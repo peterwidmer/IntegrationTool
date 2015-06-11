@@ -1,0 +1,20 @@
+﻿<Window x:Class="IntegrationTool.ProjectDesigner.MenuWindows.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" Height="301" Width="405" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FFEEEEEE">
+        <Label Background="White" Content="Integration Tool" Style="{StaticResource MainTitle}" Height="45" VerticalAlignment="Top" />
+        <Label Content="Created by Peter Widmer, Switzerland" HorizontalAlignment="Left" Margin="0,62,0,0" VerticalAlignment="Top"/>
+        <Label Background="White" Content="" Style="{StaticResource MainTitle}" Height="45" VerticalAlignment="Bottom"  />
+        <Label Content="License: GPL v3" HorizontalAlignment="Left" Margin="0,88,0,0" VerticalAlignment="Top"/>
+        <Label Content="Have some work for me (120$/h)? Contact me on" HorizontalAlignment="Left" Margin="0,133,0,0" VerticalAlignment="Top"/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="6,160,0,0" VerticalAlignment="Top">
+            <Hyperlink x:Name="btnFreeDevTools" Click="btnFreeDevTools_Click" >
+                http://www.freedevelopertutorials.com/contact/
+            </Hyperlink>
+        </TextBlock>
+        <Button Content="OK" x:Name="btnOk" HorizontalAlignment="Right" Margin="0,0,10,56" VerticalAlignment="Bottom" Width="75" Click="btnOk_Click"/>
+
+    </Grid>
+</Window>

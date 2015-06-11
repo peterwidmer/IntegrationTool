@@ -15,8 +15,8 @@
                 <MenuItem Header="Save Project" Command="Save" />
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="View Help" Command="New" />
-                <MenuItem Header="About Integration Tool" Command="New" />
+                <MenuItem Header="View Help" x:Name="menuHelp" Click="menuHelp_Click" />
+                <MenuItem Header="About Integration Tool" x:Name="menuAbout" Click="menuAbout_Click" />
             </MenuItem>
         </Menu>
         <ContentControl x:Name="mainWindowContent" Grid.Row="1"/>        

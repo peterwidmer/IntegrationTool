@@ -26,5 +26,10 @@ namespace IntegrationTool.Module.ConnectToDynamicsCrm
             this.DataContext = configuration;
         }
 
+        private void btnCrmConnection_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.freedevelopertutorials.com/integrationtool-connections/dynamics-crm-connection/");            
+        }
+
     }
 }

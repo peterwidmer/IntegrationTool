@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.ApplicationCore;
+using IntegrationTool.ProjectDesigner.MenuWindows;
 using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
@@ -35,13 +36,24 @@ namespace IntegrationTool.ProjectDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed, Open_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed, Save_Enabled));
 
-            OpenProject(@"C:\Temp\IntegrationToolTests\CrmTest\CrmTest.xml");
+            // OpenProject(@"C:\Temp\IntegrationToolTests\CrmTest\CrmTest.xml");
             // OpenProject(@"..\..\..\IntegrationTool.UnitTests.ApplicationCore\FlowTestProjects\ErrorContinuation\ComplexTests.xml");
             // OpenProject(@"..\..\..\IntegrationTool.UnitTests.ApplicationCore\FlowTestProjects\ErrorPath\SimpleErrorPathTests.xml");
             
             // this.mainWindowContent.Content = new FlowDesign.FlowDesigner(applicationInitializer.ModuleLoader.Modules);
 
 
+        }
+
+        private void menuAbout_Click(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.ShowDialog();
+        }
+
+        private void menuHelp_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.freedevelopertutorials.com/integrationtool-tutorial/");
         }
     }
 }
