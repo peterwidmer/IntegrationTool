@@ -43,6 +43,8 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,8 +60,21 @@
     <Compile Include="DeleteInDynamicsCrm.cs" />
     <Compile Include="DeleteInDynamicsCrmConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\DeletionMappingJoin.xaml.cs">
+      <DependentUpon>DeletionMappingJoin.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
+      <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
+      <Name>IntegrationTool.DataMappingControl</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
+      <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
+      <Name>IntegrationTool.Module.CrmWrapper</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>
@@ -68,6 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DeletionMappingJoin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

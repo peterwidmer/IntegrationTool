@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK.ConfigurationsBase;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.SDK.ConfigurationsBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
 {
     public class DeleteInDynamicsCrmConfiguration: TargetConfiguration
     {
+        public List<DataMapping> DeleteMapping { get; set; }
     }
 }

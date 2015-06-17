@@ -6,6 +6,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="76*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Entity to delete:"/>
+        <Label Content="Join for records to delete:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Width="150"/>
+        <ContentControl x:Name="MainContent" Grid.Row="4" Grid.ColumnSpan="2"/>
+
+
     </Grid>
 </UserControl>
