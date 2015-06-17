@@ -7,6 +7,7 @@ using IntegrationTool.UnitTests.Targets.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,14 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void Test_CorrectImport()
         {
+            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
+            IOrganizationService service = new OrganizationService(crmConnection);
+            
+            string accountName1 = Guid.NewGuid().ToString();
+            Entity account = new Entity("account");
+            account.Attributes.Add("name", accountName1);
+            Guid account1 = service.Create(account);
+
             IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
             writeToCrmConfig.EntityName = "contact";
             writeToCrmConfig.PrimaryKeyAttributes.Add("new_id");
@@ -80,14 +89,16 @@ namespace IntegrationTool.UnitTests.Targets
             dataObject.AddColumnMetadata(new ColumnMetadata(5, "Status"));
             dataObject.AddColumnMetadata(new ColumnMetadata(6, "Birthdate"));
 
-            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, "Best o' Things (sample)", "Active", new DateTime(1980, 06, 23) });
-            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, "Litware Inc. (sample)", "Inactive", new DateTime(2004, 12, 03) });
+            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
+            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, accountName1, "Inactive", new DateTime(2004, 12, 03) });
             dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null });
 
             IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
             module.SetConfiguration(writeToCrmConfig);
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, ReportProgressMethod);
+
+            service.Delete("account", account1);
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)

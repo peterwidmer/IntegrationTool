@@ -20,6 +20,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
         public RelationSetter(EntityMetadata relatedEntityMetadata, List<DataMapping> relationMappings)
         {
             this.relatedEntityMetadata = relatedEntityMetadata;
+            this.relationMappings = relationMappings;
+
             foreach (DataMapping relMapping in relationMappings)
             {
                 string str = relMapping.Target;
