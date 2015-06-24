@@ -32,7 +32,7 @@ namespace IntegrationTool.UnitTests.Targets
         }
 
         [TestMethod]
-        public void Test_CorrectImport()
+        public void Test_ContactImport()
         {
             CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
             IOrganizationService service = new OrganizationService(crmConnection);
@@ -101,9 +101,58 @@ namespace IntegrationTool.UnitTests.Targets
             service.Delete("account", account1);
         }
 
+        [TestMethod]
+        public void Test_CaseImport()
+        {
+            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
+            IOrganizationService service = new OrganizationService(crmConnection);
+
+            string accountName1 = Guid.NewGuid().ToString();
+            Entity account = new Entity("account");
+            account.Attributes.Add("name", accountName1);
+            Guid account1 = service.Create(account);
+
+            IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
+            writeToCrmConfig.EntityName = "incident";
+            writeToCrmConfig.PrimaryKeyAttributes.Add("ticketnumber");
+            writeToCrmConfig.ImportMode = Module.WriteToDynamicsCrm.SDK.Enums.ImportMode.All;
+            writeToCrmConfig.MultipleFoundMode = Module.WriteToDynamicsCrm.SDK.Enums.MultipleFoundMode.All;
+            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "CaseID", Target = "ticketnumber" });
+            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "CaseTitle", Target = "title" });
+
+            writeToCrmConfig.RelationMapping.Add(new Module.WriteToDynamicsCrm.SDK.RelationMapping()
+            {
+                EntityName = "account",
+                LogicalName = "customerid",
+                Mapping = new List<DataMappingControl.DataMapping>() { new DataMappingControl.DataMapping()
+                    {
+                        Source ="CompanyName",
+                        Target = "name"
+                    } }
+            });
+            writeToCrmConfig.ConfigurationId = Guid.NewGuid();
+            writeToCrmConfig.SelectedConnectionConfigurationId = CRMCONNECTIONID;
+            
+            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            dataObject.AddColumnMetadata(new ColumnMetadata(0, "CaseID"));
+            dataObject.AddColumnMetadata(new ColumnMetadata(1, "CaseTitle"));
+            dataObject.AddColumnMetadata(new ColumnMetadata(2, "CompanyName"));
+
+
+            dataObject.AddData(new object[] { "CA-100", "101 Title", accountName1 });
+            dataObject.AddData(new object[] { "CA-101", "Anöther Title", null });
+            dataObject.AddData(new object[] { "CA-102", "A'Title\"chen", accountName1 });
+
+            IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
+            module.SetConfiguration(writeToCrmConfig);
+
+            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, ReportProgressMethod);
+
+            service.Delete("account", account1);
+        }
+
         private void ReportProgressMethod(SimpleProgressReport progress)
         {
-            
         }   
     }
 }
