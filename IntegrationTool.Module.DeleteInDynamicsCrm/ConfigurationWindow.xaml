@@ -19,7 +19,8 @@
         </Grid.RowDefinitions>
         <Label Content="Entity to delete:"/>
         <Label Content="Join for records to delete:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Width="150"/>
-        <ContentControl x:Name="MainContent" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <ComboBox Grid.Column="1" x:Name="ddEntities" SelectionChanged="ddEntities_SelectionChanged" />
 
 
     </Grid>

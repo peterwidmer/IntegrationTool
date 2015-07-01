@@ -151,8 +151,6 @@ namespace IntegrationTool.UnitTests.Targets
             service.Delete("account", account1);
         }
 
-        private void ReportProgressMethod(SimpleProgressReport progress)
-        {
-        }   
+        private void ReportProgressMethod(SimpleProgressReport progress) { }   
     }
 }

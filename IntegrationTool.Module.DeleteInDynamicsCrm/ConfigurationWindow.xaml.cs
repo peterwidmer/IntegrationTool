@@ -1,5 +1,7 @@
 ﻿using IntegrationTool.SDK;
+using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.GenericClasses;
 using IntegrationTool.SDK.GenericControls;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
@@ -44,7 +46,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
 
         public void ConnectionChanged(IConnection connection)
         {
-            MainContent.Content = new LoadingControl();
+            ConfigurationContent.Content = new LoadingControl();
 
             this.crmConnection = connection.GetConnection() as CrmConnection;
             this.orgServiceInstance = new OrganizationService(crmConnection);
@@ -57,14 +59,69 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
 
         void bgwConnectionChanged_DoWork(object sender, DoWorkEventArgs e)
         {
-            var entityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.orgServiceInstance, "list");
-
-            e.Result = new object[] { entityMetadata };
+            try
+            {
+                var entities = IntegrationTool.Module.Crm2013Wrapper.Crm2013Wrapper.GetAllEntities(orgServiceInstance);
+                e.Result = new object[] { entities };
+            }
+            catch (Exception ex)
+            {
+                e.Result = new object[] { ex };
+            }
         }
 
         void bgwConnectionChanged_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.entityMetadata = (EntityMetadata)((object[])e.Result)[0];
+            List<NameDisplayName> entities = ((object[])e.Result)[0] as List<NameDisplayName>;
+            if (entities != null)
+            {
+                foreach (var entity in entities)
+                {
+                    ComboBoxItem comboBoxItem = new ComboBoxItem() { Content = entity.Name, ToolTip = entity.DisplayName };
+                    ddEntities.Items.Add(comboBoxItem);
+                    if (configuration.EntityName == entity.Name)
+                    {
+                        ddEntities.SelectedItem = comboBoxItem;
+                    }
+                }
+
+                ddEntities.IsEnabled = true;
+                ConfigurationContent.Content = null;
+            }
+
+            Exception error = ((object[])e.Result)[0] as Exception;
+            if (error != null)
+            {
+                string message = error.Message + ((error.InnerException != null) ? "\n" + error.InnerException.Message : "");
+                ConfigurationContent.Content = new MessageControl("An error occured:", message);
+            }
         }
+
+        private void ddEntities_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            configuration.EntityName = ((ComboBoxItem)ddEntities.SelectedItem).Content.ToString();
+            ConfigurationContent.Content = new LoadingControl();
+            BackgroundWorker bgwEntityChanged = new BackgroundWorker();
+            bgwEntityChanged.DoWork += bgwEntityChanged_DoWork;
+            bgwEntityChanged.RunWorkerCompleted += bgwEntityChanged_RunWorkerCompleted;
+            bgwEntityChanged.RunWorkerAsync(((ComboBoxItem)ddEntities.SelectedItem).Content);
+        }
+
+        void bgwEntityChanged_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.entityMetadata = ((object[])e.Result)[0] as EntityMetadata;
+
+            // TODO
+
+            // ConfigurationContent.Content = // TODO new ConfigurationContent(attributeMapping, existingCheck, relationMapping);
+        }
+
+        void bgwEntityChanged_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string selectedEntity = e.Argument as string;
+            var entityMetaData = IntegrationTool.Module.Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(orgServiceInstance, selectedEntity);
+            e.Result = new object[] { entityMetaData };
+        }
+
     }
 }
