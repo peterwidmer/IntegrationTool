@@ -63,7 +63,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
         public void AddMemberToList(Guid listId, object [] currentRecord)
         {
-            string joinKey = BuildKey(currentRecord, this.Configuration.ListMemberMapping, this.dataObject.Metadata);
+            string joinKey = JoinResolver.BuildExistingCheckKey(currentRecord, this.Configuration.ListMemberMapping, this.dataObject.Metadata);
             foreach(Guid memberId in this.existingMembers[joinKey])
             {
                 AddMemberListRequest addMemberListRequest = new AddMemberListRequest();
@@ -116,7 +116,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 
             for (int i = 0; i < this.dataObject.Count; i++)
             {
-                string joinKey = BuildKey(this.dataObject[i], this.Configuration.ListMapping, this.dataObject.Metadata);
+                string joinKey = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.ListMapping, this.dataObject.Metadata);
                 if (existingLists.ContainsKey(joinKey))
                 {
                     if (existingLists[joinKey].Length > 1)
@@ -143,23 +143,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
             }
         }
 
-        private string BuildKey(object [] dataObject, List<DataMappingControl.DataMapping> mapping, DataMetadata dataMetadata)
-        {
-            string[] keyvalues = new string[mapping.Count];
-            for (int iMapping = 0; iMapping < mapping.Count; iMapping++)
-            {
-                string source = mapping[iMapping].Source;
-                keyvalues[iMapping] = dataObject[dataMetadata[source].ColumnIndex].ToString();
-            }
-
-            string key = string.Empty;
-            for(int i=0; i < keyvalues.Length; i++)
-            {
-                key += keyvalues[i] + "##";
-            }
-
-            return key;
-        }
+        
 
     }
 }

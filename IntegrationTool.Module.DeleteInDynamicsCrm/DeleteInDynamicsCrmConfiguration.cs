@@ -8,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.DeleteInDynamicsCrm
 {
-    public class DeleteInDynamicsCrmConfiguration: TargetConfiguration
+    public class DeleteInDynamicsCrmConfiguration : TargetConfiguration
     {
         public string EntityName { get; set; }
         public List<DataMapping> DeleteMapping { get; set; }
+
+        public DeleteInDynamicsCrmConfiguration()
+        {
+            this.DeleteMapping = new List<DataMapping>();
+        }
     }
 }

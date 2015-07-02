@@ -29,11 +29,6 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
         public void SetConfiguration(ConfigurationBase configurationBase)
         {
             this.Configuration = configurationBase as DeleteInDynamicsCrmConfiguration;
-        }
-
-        public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
-        {
-            throw new NotImplementedException();
-        }
+        }        
     }
 }

@@ -90,6 +90,24 @@ namespace IntegrationTool.Module.CrmWrapper
             return strKey;
         }
 
+        public static string BuildExistingCheckKey(object[] dataObject, List<DataMappingControl.DataMapping> mapping, DataMetadata dataMetadata)
+        {
+            string[] keyvalues = new string[mapping.Count];
+            for (int iMapping = 0; iMapping < mapping.Count; iMapping++)
+            {
+                string source = mapping[iMapping].Source;
+                keyvalues[iMapping] = dataObject[dataMetadata[source].ColumnIndex].ToString();
+            }
+
+            string key = string.Empty;
+            for (int i = 0; i < keyvalues.Length; i++)
+            {
+                key += keyvalues[i] + "##";
+            }
+
+            return key;
+        }
+
         public Dictionary<string, Guid[]> OneByOneResolver(Entity[] sourceEntities)
         {
             Dictionary<string, Guid[]> keyDictionary = new Dictionary<string, Guid[]>();

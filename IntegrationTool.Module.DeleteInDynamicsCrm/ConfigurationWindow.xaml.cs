@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.DeleteInDynamicsCrm.UserControls;
+using IntegrationTool.SDK;
 using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericClasses;
@@ -27,7 +28,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
     /// <summary>
     /// Interaction logic for ConfigurationWindow.xaml
     /// </summary>
-    public partial class ConfigurationWindow : UserControl
+    public partial class ConfigurationWindow : UserControl, IConnectionChanged
     {
         private CrmConnection crmConnection;
         private OrganizationService orgServiceInstance;
@@ -42,6 +43,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
             InitializeComponent();
             this.dataObject = dataObject;
             this.configuration = configuration;
+            this.ddEntities.IsEnabled = false;
         }
 
         public void ConnectionChanged(IConnection connection)
@@ -111,9 +113,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
         {
             this.entityMetadata = ((object[])e.Result)[0] as EntityMetadata;
 
-            // TODO
-
-            // ConfigurationContent.Content = // TODO new ConfigurationContent(attributeMapping, existingCheck, relationMapping);
+            ConfigurationContent.Content = new DeletionMappingJoin(this.configuration, entityMetadata, this.dataObject);
         }
 
         void bgwEntityChanged_DoWork(object sender, DoWorkEventArgs e)
