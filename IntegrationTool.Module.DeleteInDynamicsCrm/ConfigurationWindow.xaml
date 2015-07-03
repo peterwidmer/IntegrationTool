@@ -12,15 +12,22 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
             <RowDefinition Height="9*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="76*"/>
         </Grid.RowDefinitions>
         <Label Content="Entity to delete:"/>
-        <Label Content="Join for records to delete:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="2" Width="150"/>
-        <ContentControl x:Name="ConfigurationContent" Grid.Row="4" Grid.ColumnSpan="2"/>
+        <Label Content="Join for records to delete:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Width="150" Height="26"/>
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="6" Grid.ColumnSpan="2"/>
         <ComboBox Grid.Column="1" x:Name="ddEntities" SelectionChanged="ddEntities_SelectionChanged" />
+        <Label Content="If multiple exist:" Grid.Row="2"/>
+        <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Delete all" Tag="DeleteAll" />
+            <ComboBoxItem Content="Delete none" Tag="DeleteNone" />
+        </ComboBox>
 
 
     </Grid>

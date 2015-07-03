@@ -32,7 +32,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
             this.dataObject = dataObject;
 
             reportProgress(new SimpleProgressReport("Load " + this.Configuration.EntityName + " metadata"));
-            this.entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, "list");
+            this.entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
 
             reportProgress(new SimpleProgressReport("Resolve existing entityrecords"));
             JoinResolver entityResolver = new JoinResolver(this.service, entityMetaData, this.Configuration.DeleteMapping);
@@ -43,7 +43,25 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
                 string joinKey = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.DeleteMapping, this.dataObject.Metadata);
                 if (existingEntityRecords.ContainsKey(joinKey))
                 {
+                    var existingRecordIds = existingEntityRecords[joinKey];
+                    if (existingRecordIds.Length == 1 || this.Configuration.MultipleFoundMode == DeleteInCrmMultipleFoundMode.DeleteAll)
+                    {
+                        foreach (Guid entityId in existingRecordIds)
+                        {
+                            Crm2013Wrapper.Crm2013Wrapper.DeleteRecordInCrm(this.service, this.Configuration.EntityName, entityId);
+                        }
+                    }
+                    else
+                    {
+                        // TODO Log that multiplerecords were found but none deleted
+                    }
+
                 }
+                else
+                {
+                    // TODO Log that no record was found to delete
+                }
+
             }
         }
     }

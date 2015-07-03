@@ -15,7 +15,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
                            GroupName = ModuleGroup.Target,
                            ConnectionType = typeof(CrmConnection),
                            ConfigurationType = typeof(DeleteInDynamicsCrmConfiguration))]
-    public class DeleteInDynamicsCrm : IModule, IDataTarget
+    public partial class DeleteInDynamicsCrm : IModule, IDataTarget
     {
 
         public DeleteInDynamicsCrmConfiguration Configuration { get; set; }

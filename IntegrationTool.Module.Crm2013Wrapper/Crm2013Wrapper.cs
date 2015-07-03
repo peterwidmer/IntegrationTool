@@ -175,5 +175,10 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
             service.Execute(setStateRequest);
         }
+
+        public static void DeleteRecordInCrm(IOrganizationService service, string entityName, Guid entityId)
+        {
+            service.Delete(entityName, entityId);
+        }
     }
 }

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace IntegrationTool.UnitTests.Targets
 {
     [TestClass]
-    class Test_DeleteInDynamicsCrm
+    public class Test_DeleteInDynamicsCrm
     {
         private static Guid CRMCONNECTIONID = new Guid("4D3F2E27-71EC-4631-8E98-5915E99FCED2");
         private static IConnection connection;
@@ -45,7 +45,8 @@ namespace IntegrationTool.UnitTests.Targets
             Guid account1 = service.Create(account);
 
             DeleteInDynamicsCrmConfiguration deleteInCrmConfig = new DeleteInDynamicsCrmConfiguration();
-            deleteInCrmConfig.EntityName = "contact";
+            deleteInCrmConfig.EntityName = "account";
+            deleteInCrmConfig.MultipleFoundMode = DeleteInCrmMultipleFoundMode.DeleteAll;
             deleteInCrmConfig.DeleteMapping.Add(new DataMapping() { Source = "CompanyName", Target = "name" });
 
             IDatastore dataObject = new IntegrationTool.SDK.DataObject();
@@ -58,7 +59,6 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, ReportProgressMethod);
 
-            service.Delete("account", account1);
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress) { }   

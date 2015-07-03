@@ -8,10 +8,17 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.DeleteInDynamicsCrm
 {
+    public enum DeleteInCrmMultipleFoundMode
+    {
+        DeleteAll,
+        DeleteNone
+    }
+
     public class DeleteInDynamicsCrmConfiguration : TargetConfiguration
     {
         public string EntityName { get; set; }
         public List<DataMapping> DeleteMapping { get; set; }
+        public DeleteInCrmMultipleFoundMode MultipleFoundMode { get; set; }
 
         public DeleteInDynamicsCrmConfiguration()
         {
