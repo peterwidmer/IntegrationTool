@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
+using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,24 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Logging
             }
 
             return recordLogs;
+        }
+
+        public static LogSummary LoadLogSummary(IDatabaseInterface databaseInterface)
+        {
+            LogSummary logSummary = new LogSummary();
+
+            object result = null;
+
+            result = databaseInterface.ExecuteScalar("Select count(*) from tblRecordLog");
+            logSummary.NumberOfRecordsLoaded = result == null ? -1 : Convert.ToInt32(result);
+
+            result = databaseInterface.ExecuteScalar("Select count(*) from tblRecordLog where WriteFault IS NULL");
+            logSummary.NumberOfSuccessfulRecords = result == null ? -1 : Convert.ToInt32(result);
+
+            result = databaseInterface.ExecuteScalar("Select count(*) from tblRecordLog where WriteFault IS NOT NULL");
+            logSummary.NumberOfFailedRecords = result == null ? -1 : Convert.ToInt32(result);
+
+            return logSummary;
         }
 
     }

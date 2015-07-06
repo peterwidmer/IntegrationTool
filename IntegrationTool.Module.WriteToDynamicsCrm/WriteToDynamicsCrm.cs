@@ -1,6 +1,6 @@
 ﻿using IntegrationTool.Module.WriteToDynamicsCrm.Logging;
-using IntegrationTool.Module.WriteToDynamicsCrm.Logging.Models;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.Logging;
 using Microsoft.Xrm.Client;
@@ -39,8 +39,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         {
             LogWindow logWindow = new LogWindow();
 
-            ImportSummary importSummary = ImportSummary.Load(databaseInterface);
-            logWindow.ImportSummaryControl.SetModel(importSummary);
+            LogSummary logSummary = Logger.LoadLogSummary(databaseInterface);
+            logWindow.LogSummaryControl.SetModel(logSummary);
 
             Logger logger = new Logger(databaseInterface);
             ObservableCollection<RecordLog> recordLogs = logger.ReadPagedRecords(1);

@@ -1,5 +1,4 @@
-﻿using IntegrationTool.Module.WriteToDynamicsCrm.Logging.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace IntegrationTool.Module.WriteToDynamicsCrm.Logging
+namespace IntegrationTool.Module.DeleteInDynamicsCrm.Logging
 {
     /// <summary>
-    /// Interaction logic for ImportSummaryControl.xaml
+    /// Interaction logic for LogWindow.xaml
     /// </summary>
-    public partial class ImportSummaryControl : UserControl
+    public partial class LogWindow : UserControl
     {
-        public ImportSummaryControl()
+        public LogWindow()
         {
             InitializeComponent();
-            
-        }
-
-        public void SetModel(ImportSummary importSummary)
-        {
-            this.DataContext = importSummary;
         }
     }
 }

@@ -66,9 +66,6 @@
     <Compile Include="Execution\EntityMapper.MapAttributes.cs" />
     <Compile Include="Execution\PrimaryKeyResolver.cs" />
     <Compile Include="Execution\RelationSetter.cs" />
-    <Compile Include="Logging\ImportSummaryControl.xaml.cs">
-      <DependentUpon>ImportSummaryControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LogWindow.xaml.cs">
       <DependentUpon>LogWindow.xaml</DependentUpon>
@@ -76,7 +73,6 @@
     <Compile Include="Logging\RecordLogList\RecordLogListControl.xaml.cs">
       <DependentUpon>RecordLogListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logging\Summary\ImportSummary.cs" />
     <Compile Include="Logging\RecordLogList\RecordLog.cs" />
     <Compile Include="SDK\Enums\ImportMode.cs" />
     <Compile Include="SDK\Enums\MultipleFoundMode.cs" />
@@ -138,10 +134,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ConfigurationWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Logging\ImportSummaryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

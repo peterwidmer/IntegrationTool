@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="IntegrationTool.Module.WriteToDynamicsCrm.Logging.ImportSummaryControl"
+﻿<UserControl x:Class="IntegrationTool.SDK.Controls.Generic.LogSummaryControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -28,6 +28,5 @@
         <Label Content="{Binding Path=NumberOfSuccessfulRecords}" Grid.Column="1" Grid.Row="3"/>
         <Label Content="Failed records:" Grid.Row="5"/>
         <Label Content="{Binding Path=NumberOfFailedRecords}" Grid.Column="1" Grid.Row="5"/>
-
     </Grid>
 </UserControl>

@@ -1,8 +1,12 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.DeleteInDynamicsCrm.Logging;
+using IntegrationTool.SDK;
+using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.Logging;
 using Microsoft.Xrm.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +19,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
                            GroupName = ModuleGroup.Target,
                            ConnectionType = typeof(CrmConnection),
                            ConfigurationType = typeof(DeleteInDynamicsCrmConfiguration))]
-    public partial class DeleteInDynamicsCrm : IModule, IDataTarget
+    public partial class DeleteInDynamicsCrm : IModule, IDataTarget, ILogRendering
     {
 
         public DeleteInDynamicsCrmConfiguration Configuration { get; set; }
@@ -29,6 +33,19 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
         public void SetConfiguration(ConfigurationBase configurationBase)
         {
             this.Configuration = configurationBase as DeleteInDynamicsCrmConfiguration;
-        }        
+        }
+
+        public System.Windows.Controls.UserControl RenderLogWindow(IDatabaseInterface databaseInterface)
+        {
+            LogWindow logWindow = new LogWindow();
+
+            LogSummary logSummary = null; // TODO LogSummary.Load(databaseInterface);
+            logWindow.LogSummaryControl.SetModel(logSummary);
+
+            Logger logger = new Logger(databaseInterface);
+            //ObservableCollection<RecordLog> recordLogs = logger.ReadPagedRecords(1);
+            //logWindow.RecordLogListControl.SetModel(recordLogs);
+            return logWindow;
+        }
     }
 }

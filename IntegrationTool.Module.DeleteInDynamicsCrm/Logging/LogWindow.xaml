@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:IntegrationTool.Module.WriteToDynamicsCrm.Logging" xmlns:RecordLogList="clr-namespace:IntegrationTool.Module.WriteToDynamicsCrm.Logging.RecordLogList" xmlns:Generic="clr-namespace:IntegrationTool.SDK.Controls.Generic;assembly=IntegrationTool.SDK" x:Class="IntegrationTool.Module.WriteToDynamicsCrm.Logging.LogWindow" 
-             mc:Ignorable="d" d:DesignHeight="349" d:DesignWidth="403">
+             xmlns:Generic="clr-namespace:IntegrationTool.SDK.Controls.Generic;assembly=IntegrationTool.SDK" x:Class="IntegrationTool.Module.DeleteInDynamicsCrm.Logging.LogWindow" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="95"/>
@@ -13,10 +14,6 @@
         </Grid.RowDefinitions>
 
         <Generic:LogSummaryControl x:Name="LogSummaryControl" />
-        <RecordLogList:RecordLogListControl x:Name="RecordLogListControl" Grid.Row="2" HorizontalAlignment="Right" Margin="0 0 10 0"/>
-
-        
-       
 
     </Grid>
 </UserControl>

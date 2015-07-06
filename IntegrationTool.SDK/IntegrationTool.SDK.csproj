@@ -71,6 +71,10 @@
     <Compile Include="Controls\FilterControl\FilterControl.xaml.cs">
       <DependentUpon>FilterControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Generic\LogSummary.cs" />
+    <Compile Include="Controls\Generic\LogSummaryControl.xaml.cs">
+      <DependentUpon>LogSummaryControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Generic\MessageControl.xaml.cs">
       <DependentUpon>MessageControl.xaml</DependentUpon>
     </Compile>
@@ -151,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FilterControl\FilterControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Generic\LogSummaryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
