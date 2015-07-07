@@ -189,7 +189,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         {
                             service.Update(entity);
                         }
-                        catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
+                        catch (FaultException<OrganizationServiceFault> ex)
                         {
                             logger.SetWriteFault(recordNumber, ex.Detail.Message);
                         }

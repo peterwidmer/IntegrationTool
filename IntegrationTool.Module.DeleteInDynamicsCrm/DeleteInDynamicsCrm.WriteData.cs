@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.Module.CrmWrapper;
+using IntegrationTool.Module.DeleteInDynamicsCrm.Logging;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Client;
@@ -8,6 +9,7 @@ using Microsoft.Xrm.Sdk.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +19,17 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
     {
         private IOrganizationService service = null;
         private EntityMetadata entityMetaData;
-        private ReportProgressMethod reportProgress;
         private IDatastore dataObject;
 
         private Dictionary<string, Guid[]> existingEntityRecords;
 
+        private Logger logger = null;
+
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
-            this.reportProgress = reportProgress;
+            reportProgress(new SimpleProgressReport("Building logging database"));
+            this.logger = new Logger(databaseInterface);
+            this.logger.InitializeDatabase();
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
             CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
@@ -46,10 +51,23 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
                     var existingRecordIds = existingEntityRecords[joinKey];
                     if (existingRecordIds.Length == 1 || this.Configuration.MultipleFoundMode == DeleteInCrmMultipleFoundMode.DeleteAll)
                     {
+                        string entityIds = string.Empty;
+                        string deletionFaults = string.Empty;
+
                         foreach (Guid entityId in existingRecordIds)
                         {
-                            Crm2013Wrapper.Crm2013Wrapper.DeleteRecordInCrm(this.service, this.Configuration.EntityName, entityId);
+                            entityIds += entityId.ToString() + ",";
+                            try
+                            {
+                                Crm2013Wrapper.Crm2013Wrapper.DeleteRecordInCrm(this.service, this.Configuration.EntityName, entityId);
+                            }
+                            catch (FaultException<OrganizationServiceFault> ex)
+                            {
+                                deletionFaults += ex.Detail.Message + "\n";
+                            }
                         }
+                        entityIds.TrimEnd(',');
+                        logger.AddRecord(i, joinKey, entityIds, deletionFaults);
                     }
                     else
                     {

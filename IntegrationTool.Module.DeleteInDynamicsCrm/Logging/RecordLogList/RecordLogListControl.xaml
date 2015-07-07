@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="IntegrationTool.Module.WriteToDynamicsCrm.Logging.RecordLogList.RecordLogListControl"
+﻿<UserControl x:Class="IntegrationTool.Module.DeleteInDynamicsCrm.Logging.RecordLogList.RecordLogListControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" d:DesignHeight="272" d:DesignWidth="547">
+             mc:Ignorable="d" d:DesignHeight="343" d:DesignWidth="645">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"/>
@@ -29,7 +29,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Record #" Binding="{Binding Path=RecordLogId}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Combined Key" Width="100" Binding="{Binding Path=CombinedBusinessKey}" />
-                <DataGridTextColumn IsReadOnly="True" Header="Import Mode" Binding="{Binding Path=ImportMode}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Entity IDs" Binding="{Binding Path=ImportMode}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Write Error" Width="1*" Binding="{Binding Path=WriteError}" ContextMenuService.IsEnabled="True">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -39,7 +39,7 @@
 
                 </DataGridTextColumn>
             </DataGrid.Columns>
-            
+
         </DataGrid>
 
     </Grid>

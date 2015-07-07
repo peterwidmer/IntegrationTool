@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.Module.DeleteInDynamicsCrm.Logging;
+using IntegrationTool.Module.DeleteInDynamicsCrm.Logging.RecordLogList;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
@@ -39,12 +40,12 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
         {
             LogWindow logWindow = new LogWindow();
 
-            LogSummary logSummary = null; // TODO LogSummary.Load(databaseInterface);
+            LogSummary logSummary = Logger.LoadLogSummary(databaseInterface);
             logWindow.LogSummaryControl.SetModel(logSummary);
 
             Logger logger = new Logger(databaseInterface);
-            //ObservableCollection<RecordLog> recordLogs = logger.ReadPagedRecords(1);
-            //logWindow.RecordLogListControl.SetModel(recordLogs);
+            ObservableCollection<RecordLog> recordLogs = logger.ReadPagedRecords(1);
+            logWindow.RecordLogListControl.SetModel(recordLogs);
             return logWindow;
         }
     }
