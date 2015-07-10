@@ -31,27 +31,28 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm.Logging
                 "CREATE TABLE [main].[tblRecordLog]( " +
                     "[pkRecordLogId] INTEGER PRIMARY KEY NOT NULL UNIQUE, " +
                     "[CombinedBusinessKey] NVARCHAR(256), " +
-                    "[EntityIds] NVARCHAR(MAX), " +
-                    "[DeletionFault] NVARCHAR(MAX) " +
+                    "[EntityIds] NVARCHAR(10000), " +
+                    "[DeletionFault] NVARCHAR(10000) " +
                     ");");
         }
 
         public void AddRecord(int record, string combinedBusinessKey, string entityIds, string deletionFault)
         {
-            deletionFault = deletionFault.Length <= 2000 ? deletionFault : deletionFault.Substring(0, 2000);
+            deletionFault = deletionFault.Length <= 10000 ? deletionFault : deletionFault.Substring(0, 10000);
 
-            this.databaseInterface.ExecuteNonQuery(
-                "INSERT INTO tblRecordLog (" +
+            string sqlCommand = "INSERT INTO tblRecordLog (" +
                                 "pkRecordLogId," +
                                 "CombinedBusinessKey," +
                                 "EntityIds," +
-                                "DeletionFault," +
+                                "DeletionFault" +
                                 ") " +
-                "values (" + record.ToString() + "," +
+                "values (" + (record + 1).ToString() + "," +
                        "'" + combinedBusinessKey + "'," +
                        "'" + entityIds + "'," +
-                            "'" + deletionFault + "'," +
-                             ")");
+                       (String.IsNullOrEmpty(deletionFault) ? "null" : "'" + deletionFault + "'") +
+                             ")";
+
+            this.databaseInterface.ExecuteNonQuery(sqlCommand);
         }
 
         public ObservableCollection<RecordLog> ReadPagedRecords(int pageNumber)

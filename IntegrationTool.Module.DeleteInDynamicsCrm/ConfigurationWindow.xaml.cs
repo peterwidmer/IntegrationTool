@@ -43,7 +43,6 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
             InitializeComponent();
             this.dataObject = dataObject;
             this.configuration = configuration;
-            this.ddEntities.IsEnabled = false;
         }
 
         public void ConnectionChanged(IConnection connection)

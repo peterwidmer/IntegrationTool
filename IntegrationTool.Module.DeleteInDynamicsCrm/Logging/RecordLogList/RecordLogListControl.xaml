@@ -29,8 +29,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Record #" Binding="{Binding Path=RecordLogId}" />
                 <DataGridTextColumn IsReadOnly="True" Header="Combined Key" Width="100" Binding="{Binding Path=CombinedBusinessKey}" />
-                <DataGridTextColumn IsReadOnly="True" Header="Entity IDs" Binding="{Binding Path=ImportMode}" />
-                <DataGridTextColumn IsReadOnly="True" Header="Write Error" Width="1*" Binding="{Binding Path=WriteError}" ContextMenuService.IsEnabled="True">
+                <DataGridTextColumn IsReadOnly="True" Header="Entity IDs" Binding="{Binding Path=EntityIds}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Write Error" Width="1*" Binding="{Binding Path=DeletionFault}" ContextMenuService.IsEnabled="True">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="ToolTip" Value="{Binding WriteError}" />

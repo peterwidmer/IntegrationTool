@@ -72,7 +72,7 @@ namespace IntegrationTool.SDK
 
                     string serializedRunLog = ConfigurationFileHandler.ReadStringFromFile(runLogFileDirectory + @"\runLog.xml");
                     RunLog runLog = (RunLog)ConfigurationSerializer.DeserializeObject(serializedRunLog, typeof(RunLog), new Type[] { });
-                    this.RunLogs.Add(runLog);
+                    this.RunLogs.Add(runLog);                    
                 }
             }
         }

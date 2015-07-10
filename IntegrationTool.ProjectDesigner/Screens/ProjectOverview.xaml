@@ -24,8 +24,8 @@
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
                 <Label Content="{Binding Path=PackageDisplayName}" />
-                <Label Content="{Binding Path=StartTime}" Grid.Column="2" />
-                <Label Content="{Binding Path=EndTime}" Grid.Column="3" />
+                <Label Content="{Binding Path=StartTime}" ContentStringFormat="yyyy-MM-dd HH:mm" Grid.Column="2" />
+                <Label Content="{Binding Path=EndTime}" ContentStringFormat="yyyy-MM-dd HH:mm" Grid.Column="3" />
             </Grid>
         </DataTemplate>
 

@@ -22,9 +22,9 @@
         <Label Content="Entity to delete:"/>
         <Label Content="Join for records to delete:" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" Width="150" Height="26"/>
         <ContentControl x:Name="ConfigurationContent" Grid.Row="6" Grid.ColumnSpan="2"/>
-        <ComboBox Grid.Column="1" x:Name="ddEntities" SelectionChanged="ddEntities_SelectionChanged" />
+        <ComboBox Grid.Column="1" x:Name="ddEntities" SelectionChanged="ddEntities_SelectionChanged" IsEnabled="False" />
         <Label Content="If multiple exist:" Grid.Row="2"/>
-        <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
+        <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="2" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" IsEnabled="False" >
             <ComboBoxItem Content="Delete all" Tag="DeleteAll" />
             <ComboBoxItem Content="Delete none" Tag="DeleteNone" />
         </ComboBox>

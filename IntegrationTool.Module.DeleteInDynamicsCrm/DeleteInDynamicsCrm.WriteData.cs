@@ -66,7 +66,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
                                 deletionFaults += ex.Detail.Message + "\n";
                             }
                         }
-                        entityIds.TrimEnd(',');
+                        entityIds = entityIds.TrimEnd(',');
                         logger.AddRecord(i, joinKey, entityIds, deletionFaults);
                     }
                     else
