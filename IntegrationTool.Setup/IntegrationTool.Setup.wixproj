@@ -136,6 +136,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.DeleteInDynamicsCrm\IntegrationTool.Module.DeleteInDynamicsCrm.csproj">
+      <Name>IntegrationTool.Module.DeleteInDynamicsCrm</Name>
+      <Project>{efabd2f9-e72b-4183-8119-08a1ce4ca01e}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.ExecuteCmd\IntegrationTool.Module.ExecuteCmd.csproj">
       <Name>IntegrationTool.Module.ExecuteCmd</Name>
       <Project>{203283aa-762c-46f3-80c8-7a07b880a005}</Project>

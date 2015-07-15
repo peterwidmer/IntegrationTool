@@ -205,6 +205,9 @@
       <Component Id="ModuleComponent_WriteDynamicCrmMarketingLists" Win64="yes">
         <File Id="ModuleComponent_WriteDynamicCrmMarketingLists.dll" Source="$(var.IntegrationTool.Module.WriteDynamicCrmMarketingLists.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_DeleteInDynamicsCrm" Win64="yes">
+        <File Id="ModuleComponent_DeleteInDynamicsCrm.dll" Source="$(var.IntegrationTool.Module.DeleteInDynamicsCrm.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 	</Fragment>
 </Wix>
