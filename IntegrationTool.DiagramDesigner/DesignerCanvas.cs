@@ -18,6 +18,11 @@ namespace IntegrationTool.DiagramDesigner
         MainFlow, SubFlow
     }
 
+    public class ItemsPastedEventArgs : EventArgs
+    {
+        public Dictionary<Guid, Guid> MappingOldToNewIDs { get; set; }
+    }
+
     public partial class DesignerCanvas : Canvas
     {
         public static readonly RoutedEvent MagnifyDoubleClickEvent = EventManager.RegisterRoutedEvent("MagnifyDoubleClick", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DesignerItem));
@@ -35,6 +40,10 @@ namespace IntegrationTool.DiagramDesigner
         public event EventHandler Clicked;
 
         public event EventHandler OnDeleteCurrentSelection;
+        public event EventHandler OnCopyCurrentSelection;
+
+        public delegate void OnPastedCurrentSelectionEventHandler(object sender, ItemsPastedEventArgs e);
+        public event OnPastedCurrentSelectionEventHandler OnPastedCurrentSelection;
 
         public DesignerCanvasType DesignerCanvasType { get; set; }
 

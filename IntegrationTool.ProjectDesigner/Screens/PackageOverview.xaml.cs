@@ -35,6 +35,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
     {
         public event EventHandler BackButtonClicked;
         public event EventHandler ProgressReport;
+        
+        public string copiedConfigurations { get; set; }
 
         public Package Package { get; set; }
         private ModuleLoader moduleLoader;
@@ -62,8 +64,37 @@ namespace IntegrationTool.ProjectDesigner.Screens
             mainFlowDesigner.DesignerItemDoubleClick += mainFlowDesigner_DesignerItemDoubleClick;
             mainFlowDesigner.DesignerClicked += designerClicked;
             mainFlowDesigner.MyDesigner.OnDeleteCurrentSelection += MyDesigner_OnDeleteCurrentSelection;
+            mainFlowDesigner.MyDesigner.OnCopyCurrentSelection += MyDesigner_OnCopyCurrentSelection;
+            mainFlowDesigner.MyDesigner.OnPastedCurrentSelection += MyDesigner_OnPastedCurrentSelection;
             this.mainFlowContent.Content = mainFlowDesigner;
             InitializeSubFlowDesigner();            
+        }
+
+        void MyDesigner_OnPastedCurrentSelection(object sender, ItemsPastedEventArgs e)
+        {
+            List<ConfigurationBase> copiedConfigurations = ConfigurationSerializer.DeserializeObject(
+                                                    this.copiedConfigurations,
+                                                    typeof(List<ConfigurationBase>),
+                                                    moduleLoader.GetModuleTypeList()
+                                                    ) as List<ConfigurationBase>;
+
+            // TODO add the pasted configurations to the package
+        }
+
+        void MyDesigner_OnCopyCurrentSelection(object sender, EventArgs e)
+        {
+            List<ConfigurationBase> configurationsToCopy = new List<ConfigurationBase>();
+            DesignerCanvas designerCanvas = sender as DesignerCanvas;
+            foreach (DesignerItem designerItem in designerCanvas.SelectionService.CurrentSelection.OfType<DesignerItem>())
+            {
+                var configuration = this.Package.Configurations.Where(t=> t.ConfigurationId == designerItem.ID).FirstOrDefault();
+                if(configuration != null)
+                {
+                    configurationsToCopy.Add(configuration);
+                }
+            }
+
+            this.copiedConfigurations = ConfigurationSerializer.SerializeObject(configurationsToCopy, moduleLoader.GetModuleTypeList());
         }
 
         void MyDesigner_OnDeleteCurrentSelection(object sender, EventArgs e)

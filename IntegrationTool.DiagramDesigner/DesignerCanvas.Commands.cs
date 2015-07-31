@@ -165,6 +165,10 @@ namespace IntegrationTool.DiagramDesigner
 
         private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if(OnCopyCurrentSelection != null)
+            {
+                OnCopyCurrentSelection(sender, e);
+            }
             CopyCurrentSelection();
         }
 
@@ -253,6 +257,11 @@ namespace IntegrationTool.DiagramDesigner
             root.Attribute("OffsetY").Value = (offsetY + 10).ToString();
             Clipboard.Clear();
             Clipboard.SetData(DataFormats.Xaml, root);
+
+            if (OnPastedCurrentSelection != null)
+            {
+                OnPastedCurrentSelection(sender, new ItemsPastedEventArgs() { MappingOldToNewIDs = mappingOldToNewIDs });
+            }
         }
 
         private void Paste_Enabled(object sender, CanExecuteRoutedEventArgs e)
