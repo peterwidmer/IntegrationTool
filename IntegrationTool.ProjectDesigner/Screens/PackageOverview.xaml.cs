@@ -61,9 +61,20 @@ namespace IntegrationTool.ProjectDesigner.Screens
             mainFlowDesigner.DesignerItemClick += mainFlowDesigner_DesignerItemClick;
             mainFlowDesigner.DesignerItemDoubleClick += mainFlowDesigner_DesignerItemDoubleClick;
             mainFlowDesigner.DesignerClicked += designerClicked;
+            mainFlowDesigner.MyDesigner.OnDeleteCurrentSelection += MyDesigner_OnDeleteCurrentSelection;
             this.mainFlowContent.Content = mainFlowDesigner;
             InitializeSubFlowDesigner();            
         }
+
+        void MyDesigner_OnDeleteCurrentSelection(object sender, EventArgs e)
+        {
+            DesignerCanvas designerCanvas = sender as DesignerCanvas;
+            foreach(DesignerItem designerItem in designerCanvas.SelectionService.CurrentSelection.OfType<DesignerItem>())
+            {
+                this.Package.Configurations.RemoveAll(t => t.ConfigurationId == designerItem.ID);
+            }
+        }
+
 
         void designerClicked(object sender, EventArgs e)
         {

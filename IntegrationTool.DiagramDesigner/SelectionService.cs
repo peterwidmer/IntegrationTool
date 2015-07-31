@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace IntegrationTool.DiagramDesigner
 {
-    internal class SelectionService
+    public class SelectionService
     {
         private DesignerCanvas designerCanvas;
 
         private List<ISelectable> currentSelection;
-        internal List<ISelectable> CurrentSelection
+        public List<ISelectable> CurrentSelection
         {
             get
             {
@@ -25,13 +25,13 @@ namespace IntegrationTool.DiagramDesigner
             this.designerCanvas = canvas;
         }
 
-        internal void SelectItem(ISelectable item)
+        public void SelectItem(ISelectable item)
         {
             this.ClearSelection();
             this.AddToSelection(item);
         }
 
-        internal void AddToSelection(ISelectable item)
+        public void AddToSelection(ISelectable item)
         {
             if (item is IGroupable)
             {
@@ -50,7 +50,7 @@ namespace IntegrationTool.DiagramDesigner
             }
         }
 
-        internal void RemoveFromSelection(ISelectable item)
+        public void RemoveFromSelection(ISelectable item)
         {
             if (item is IGroupable)
             {
@@ -69,27 +69,27 @@ namespace IntegrationTool.DiagramDesigner
             }
         }
 
-        internal void ClearSelection()
+        public void ClearSelection()
         {
             CurrentSelection.ForEach(item => item.IsSelected = false);
             CurrentSelection.Clear();
         }
 
-        internal void SelectAll()
+        public void SelectAll()
         {
             ClearSelection();
             CurrentSelection.AddRange(designerCanvas.Children.OfType<ISelectable>());
             CurrentSelection.ForEach(item => item.IsSelected = true);
         }
 
-        internal List<IGroupable> GetGroupMembers(IGroupable item)
+        public List<IGroupable> GetGroupMembers(IGroupable item)
         {
             IEnumerable<IGroupable> list = designerCanvas.Children.OfType<IGroupable>();
             IGroupable rootItem = GetRoot(list, item);
             return GetGroupMembers(list, rootItem);
         }
 
-        internal IGroupable GetGroupRoot(IGroupable item)
+        public IGroupable GetGroupRoot(IGroupable item)
         {
             IEnumerable<IGroupable> list = designerCanvas.Children.OfType<IGroupable>();
             return GetRoot(list, item);

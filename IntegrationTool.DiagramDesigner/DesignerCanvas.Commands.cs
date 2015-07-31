@@ -266,6 +266,10 @@ namespace IntegrationTool.DiagramDesigner
 
         private void Delete_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if(OnDeleteCurrentSelection != null)
+            {
+                OnDeleteCurrentSelection(sender, e);
+            }
             DeleteCurrentSelection();
         }
 

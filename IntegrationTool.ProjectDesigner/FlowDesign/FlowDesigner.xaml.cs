@@ -39,7 +39,7 @@ namespace IntegrationTool.ProjectDesigner.FlowDesign
             this.package = package;
             MyDesigner.ModuleDescriptions = loadedModules;
             MyDesigner.DesignerCanvasType = designerCanvasType;
-            MyDesigner.Clicked += MyDesigner_Clicked;
+            MyDesigner.Clicked += MyDesigner_Clicked;            
             
             switch(designerCanvasType)
             {

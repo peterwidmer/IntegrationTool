@@ -34,12 +34,14 @@ namespace IntegrationTool.DiagramDesigner
 
         public event EventHandler Clicked;
 
+        public event EventHandler OnDeleteCurrentSelection;
+
         public DesignerCanvasType DesignerCanvasType { get; set; }
 
         private Point? rubberbandSelectionStartPoint = null;
 
         private SelectionService selectionService;
-        internal SelectionService SelectionService
+        public SelectionService SelectionService
         {
             get
             {
