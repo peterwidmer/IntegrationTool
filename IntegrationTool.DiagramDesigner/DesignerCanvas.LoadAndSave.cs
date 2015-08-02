@@ -85,13 +85,12 @@ namespace IntegrationTool.DiagramDesigner
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
-            IEnumerable<XElement> itemsXML = root.Elements("DesignerItems").Elements("DesignerItem");
-            foreach (XElement itemXML in itemsXML)
+            List<DesignerItem> designerItems = LoadDiagramDesignerItems(root, this.ModuleDescriptions);
+            foreach (DesignerItem designerItem in designerItems)
             {
-                Guid id = new Guid(itemXML.Element("ID").Value);
-                DesignerItem item = DeserializeDesignerItem(this.ModuleDescriptions, itemXML, id, 0, 0);
-                this.Children.Add(item);
-                SetConnectorDecoratorTemplate(item);
+                designerItem.Content = GetContentItem("Process", "Process_DragThumb", designerItem.ModuleDescription);
+                this.Children.Add(designerItem);
+                SetConnectorDecoratorTemplate(designerItem);
             }
 
             this.InvalidateVisual();
@@ -122,7 +121,20 @@ namespace IntegrationTool.DiagramDesigner
             }
         }
 
-        private DesignerItem DeserializeDesignerItem(List<ModuleDescription> moduleDescriptions, XElement itemXML, Guid id, double OffsetX, double OffsetY)
+        public static List<DesignerItem> LoadDiagramDesignerItems(XElement root, List<ModuleDescription> moduleDescriptions)
+        {
+            List<DesignerItem> designerItems = new List<DesignerItem>();
+            IEnumerable<XElement> itemsXML = root.Elements("DesignerItems").Elements("DesignerItem");
+            foreach (XElement itemXML in itemsXML)
+            {
+                Guid id = new Guid(itemXML.Element("ID").Value);
+                DesignerItem item = DeserializeDesignerItem(moduleDescriptions, itemXML, id, 0, 0);
+                designerItems.Add(item);
+            }
+            return designerItems;
+        }
+
+        private static DesignerItem DeserializeDesignerItem(List<ModuleDescription> moduleDescriptions, XElement itemXML, Guid id, double OffsetX, double OffsetY)
         {
             DesignerItem item = new DesignerItem(id);
             item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
@@ -136,7 +148,7 @@ namespace IntegrationTool.DiagramDesigner
             Canvas.SetZIndex(item, Int32.Parse(itemXML.Element("zIndex").Value));
             
             item.ModuleDescription = moduleDescriptions.Where(t => t.ModuleType.Name == itemXML.Element("ModuleDescription").Value).FirstOrDefault();
-            item.Content = GetContentItem("Process", "Process_DragThumb", item.ModuleDescription);
+            
             return item;
         }
 

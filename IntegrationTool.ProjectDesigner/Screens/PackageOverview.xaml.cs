@@ -78,7 +78,11 @@ namespace IntegrationTool.ProjectDesigner.Screens
                                                     moduleLoader.GetModuleTypeList()
                                                     ) as List<ConfigurationBase>;
 
-            // TODO add the pasted configurations to the package
+            foreach(ConfigurationBase configuration in copiedConfigurations)
+            {
+                configuration.ConfigurationId = e.MappingOldToNewIDs[configuration.ConfigurationId];
+                this.Package.Configurations.Add(configuration);
+            }
         }
 
         void MyDesigner_OnCopyCurrentSelection(object sender, EventArgs e)
@@ -87,6 +91,22 @@ namespace IntegrationTool.ProjectDesigner.Screens
             DesignerCanvas designerCanvas = sender as DesignerCanvas;
             foreach (DesignerItem designerItem in designerCanvas.SelectionService.CurrentSelection.OfType<DesignerItem>())
             {
+                // Copy sub-configurations (diagram and configurations)
+                var subDiagram = this.Package.SubDiagrams.Where(t => t.ParentItemId == designerItem.ID).FirstOrDefault();
+                if (subDiagram != null)
+                {
+                    List<DesignerItem> subdiagramDesignerItems = DesignerCanvas.LoadDiagramDesignerItems(subDiagram.Diagram, this.moduleLoader.Modules);
+                    foreach (DesignerItem subdiagramDesignerItem in subdiagramDesignerItems)
+                    {
+                        var subconfiguration = this.Package.Configurations.Where(t => t.ConfigurationId == subdiagramDesignerItem.ID).FirstOrDefault();
+                        if(subconfiguration != null)
+                        {
+                            configurationsToCopy.Add(subconfiguration);
+                        }
+                    }
+                }
+
+                // Copy main configuration
                 var configuration = this.Package.Configurations.Where(t=> t.ConfigurationId == designerItem.ID).FirstOrDefault();
                 if(configuration != null)
                 {
@@ -101,7 +121,20 @@ namespace IntegrationTool.ProjectDesigner.Screens
         {
             DesignerCanvas designerCanvas = sender as DesignerCanvas;
             foreach(DesignerItem designerItem in designerCanvas.SelectionService.CurrentSelection.OfType<DesignerItem>())
-            {
+            {                
+                // Remove sub-configurations (diagram and configurations)
+                var subDiagram = this.Package.SubDiagrams.Where(t => t.ParentItemId == designerItem.ID).FirstOrDefault();
+                if (subDiagram != null)
+                {
+                    List<DesignerItem> subdiagramDesignerItems = DesignerCanvas.LoadDiagramDesignerItems(subDiagram.Diagram, this.moduleLoader.Modules);
+                    foreach(DesignerItem subdiagramDesignerItem in subdiagramDesignerItems)
+                    {
+                        this.Package.Configurations.RemoveAll(t => t.ConfigurationId == subdiagramDesignerItem.ID);
+                    }
+                }
+                this.Package.SubDiagrams.RemoveAll(t => t.ParentItemId == designerItem.ID);
+
+                // Remove main-configuration
                 this.Package.Configurations.RemoveAll(t => t.ConfigurationId == designerItem.ID);
             }
         }
