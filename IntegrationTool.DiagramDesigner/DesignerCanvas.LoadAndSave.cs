@@ -85,10 +85,13 @@ namespace IntegrationTool.DiagramDesigner
             this.Children.Clear();
             this.SelectionService.ClearSelection();
 
+            Style itemStyle = (Style)FindResource("Process");
+            Style itemControlTemplateStyle = (Style)FindResource("Process_DragThumb");
+
             List<DesignerItem> designerItems = LoadDiagramDesignerItems(root, this.ModuleDescriptions);
             foreach (DesignerItem designerItem in designerItems)
             {
-                designerItem.Content = GetContentItem("Process", "Process_DragThumb", designerItem.ModuleDescription);
+                designerItem.Content = GetContentItem(itemStyle, itemControlTemplateStyle, designerItem.ModuleDescription);
                 this.Children.Add(designerItem);
                 SetConnectorDecoratorTemplate(designerItem);
             }
@@ -129,6 +132,7 @@ namespace IntegrationTool.DiagramDesigner
             {
                 Guid id = new Guid(itemXML.Element("ID").Value);
                 DesignerItem item = DeserializeDesignerItem(moduleDescriptions, itemXML, id, 0, 0);
+                
                 designerItems.Add(item);
             }
             return designerItems;
@@ -152,12 +156,12 @@ namespace IntegrationTool.DiagramDesigner
             return item;
         }
 
-        private object GetContentItem(string itemStyle, string itemControlTemplateStyle, ModuleDescription module)
+        private static object GetContentItem(Style itemStyle, Style itemControlTemplateStyle, ModuleDescription module)
         {
             System.Windows.Shapes.Path path = new System.Windows.Shapes.Path { ToolTip = module.Attributes.DisplayName };
-            path.Style = (Style)FindResource(itemStyle);
+            path.Style = itemStyle;
             var processElement = new FrameworkElementFactory(typeof(System.Windows.Shapes.Path));
-            processElement.SetValue(StyleProperty, (Style)FindResource(itemControlTemplateStyle));
+            processElement.SetValue(StyleProperty, itemControlTemplateStyle);
             ControlTemplate controlTemplate = new ControlTemplate();
             controlTemplate.VisualTree = processElement;
             path.SetValue(DesignerItem.DragThumbTemplateProperty, controlTemplate);

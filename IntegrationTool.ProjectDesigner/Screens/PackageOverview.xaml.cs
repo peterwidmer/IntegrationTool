@@ -25,6 +25,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IntegrationTool.ProjectDesigner.FlowDesign;
+using System.Xml.Linq;
+using System.Globalization;
 
 namespace IntegrationTool.ProjectDesigner.Screens
 {
@@ -37,6 +39,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
         public event EventHandler ProgressReport;
         
         public string copiedConfigurations { get; set; }
+        public string copiedDiagrams { get; set; }
 
         public Package Package { get; set; }
         private ModuleLoader moduleLoader;
@@ -72,13 +75,43 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         void MyDesigner_OnPastedCurrentSelection(object sender, ItemsPastedEventArgs e)
         {
+            List<SerializedDiagram> copiedDiagrams = ConfigurationSerializer.DeserializeObject(
+                                                    this.copiedDiagrams,
+                                                    typeof(List<SerializedDiagram>),
+                                                    moduleLoader.GetModuleTypeList()
+                                                    ) as List<SerializedDiagram>;
+
+            foreach (SerializedDiagram diagram in copiedDiagrams)
+            {
+                foreach (var designerItem in diagram.Diagram.Element("DesignerItems").Elements("DesignerItem"))
+                {
+                    Guid oldGuid = new Guid(designerItem.Element("ID").Value);
+                    Guid newGuid = Guid.NewGuid();
+                    e.MappingOldToNewIDs.Add(oldGuid, newGuid);
+                    designerItem.Element("ID").Value = newGuid.ToString();
+                }
+
+                foreach (var connection in diagram.Diagram.Element("Connections").Elements("Connection"))
+                {
+                    Guid oldSourceID = new Guid(connection.Element("SourceID").Value);
+                    connection.Element("SourceID").Value = e.MappingOldToNewIDs[oldSourceID].ToString();
+
+                    Guid oldSinkID = new Guid(connection.Element("SinkID").Value);
+                    connection.Element("SinkID").Value = e.MappingOldToNewIDs[oldSinkID].ToString();
+                }
+
+                diagram.ParentItemId = e.MappingOldToNewIDs[diagram.ParentItemId];
+
+                this.Package.SubDiagrams.Add(diagram);
+            }
+
             List<ConfigurationBase> copiedConfigurations = ConfigurationSerializer.DeserializeObject(
                                                     this.copiedConfigurations,
                                                     typeof(List<ConfigurationBase>),
                                                     moduleLoader.GetModuleTypeList()
                                                     ) as List<ConfigurationBase>;
 
-            foreach(ConfigurationBase configuration in copiedConfigurations)
+            foreach (ConfigurationBase configuration in copiedConfigurations)
             {
                 configuration.ConfigurationId = e.MappingOldToNewIDs[configuration.ConfigurationId];
                 this.Package.Configurations.Add(configuration);
@@ -88,6 +121,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
         void MyDesigner_OnCopyCurrentSelection(object sender, EventArgs e)
         {
             List<ConfigurationBase> configurationsToCopy = new List<ConfigurationBase>();
+            List<SerializedDiagram> diagramsToCopy = new List<SerializedDiagram>();
+
             DesignerCanvas designerCanvas = sender as DesignerCanvas;
             foreach (DesignerItem designerItem in designerCanvas.SelectionService.CurrentSelection.OfType<DesignerItem>())
             {
@@ -95,11 +130,12 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 var subDiagram = this.Package.SubDiagrams.Where(t => t.ParentItemId == designerItem.ID).FirstOrDefault();
                 if (subDiagram != null)
                 {
+                    diagramsToCopy.Add(subDiagram);
                     List<DesignerItem> subdiagramDesignerItems = DesignerCanvas.LoadDiagramDesignerItems(subDiagram.Diagram, this.moduleLoader.Modules);
                     foreach (DesignerItem subdiagramDesignerItem in subdiagramDesignerItems)
                     {
                         var subconfiguration = this.Package.Configurations.Where(t => t.ConfigurationId == subdiagramDesignerItem.ID).FirstOrDefault();
-                        if(subconfiguration != null)
+                        if (subconfiguration != null)
                         {
                             configurationsToCopy.Add(subconfiguration);
                         }
@@ -107,14 +143,15 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 }
 
                 // Copy main configuration
-                var configuration = this.Package.Configurations.Where(t=> t.ConfigurationId == designerItem.ID).FirstOrDefault();
-                if(configuration != null)
+                var configuration = this.Package.Configurations.Where(t => t.ConfigurationId == designerItem.ID).FirstOrDefault();
+                if (configuration != null)
                 {
                     configurationsToCopy.Add(configuration);
                 }
             }
 
             this.copiedConfigurations = ConfigurationSerializer.SerializeObject(configurationsToCopy, moduleLoader.GetModuleTypeList());
+            this.copiedDiagrams = ConfigurationSerializer.SerializeObject(diagramsToCopy, moduleLoader.GetModuleTypeList());
         }
 
         void MyDesigner_OnDeleteCurrentSelection(object sender, EventArgs e)
@@ -138,7 +175,6 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 this.Package.Configurations.RemoveAll(t => t.ConfigurationId == designerItem.ID);
             }
         }
-
 
         void designerClicked(object sender, EventArgs e)
         {

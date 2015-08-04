@@ -196,12 +196,16 @@ namespace IntegrationTool.DiagramDesigner
             double offsetX = Double.Parse(root.Attribute("OffsetX").Value, CultureInfo.InvariantCulture);
             double offsetY = Double.Parse(root.Attribute("OffsetY").Value, CultureInfo.InvariantCulture);
 
+            Style itemStyle = (Style)FindResource("Process");
+            Style itemControlTemplateStyle = (Style)FindResource("Process_DragThumb");
+
             foreach (XElement itemXML in itemsXML)
             {
                 Guid oldID = new Guid(itemXML.Element("ID").Value);
                 Guid newID = Guid.NewGuid();
                 mappingOldToNewIDs.Add(oldID, newID);
                 DesignerItem item = DeserializeDesignerItem(this.ModuleDescriptions, itemXML, newID, offsetX, offsetY);
+                item.Content = GetContentItem(itemStyle, itemControlTemplateStyle, item.ModuleDescription);
                 this.Children.Add(item);
                 SetConnectorDecoratorTemplate(item);
                 newItems.Add(item);
