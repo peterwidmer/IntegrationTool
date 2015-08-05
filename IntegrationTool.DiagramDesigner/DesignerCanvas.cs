@@ -45,6 +45,9 @@ namespace IntegrationTool.DiagramDesigner
         public delegate void OnPastedCurrentSelectionEventHandler(object sender, ItemsPastedEventArgs e);
         public event OnPastedCurrentSelectionEventHandler OnPastedCurrentSelection;
 
+        public delegate void PasteEnabledEventHandlerobject(object sender, CanExecuteRoutedEventArgs e);
+        public event PasteEnabledEventHandlerobject IsPasteEnabled;
+
         public DesignerCanvasType DesignerCanvasType { get; set; }
 
         private Point? rubberbandSelectionStartPoint = null;

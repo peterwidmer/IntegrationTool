@@ -65,7 +65,6 @@ namespace IntegrationTool.DiagramDesigner
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
 
             this.AllowDrop = true;
-            Clipboard.Clear();
         }
 
         #region New Command
@@ -174,7 +173,7 @@ namespace IntegrationTool.DiagramDesigner
 
         private void Copy_Enabled(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = SelectionService.CurrentSelection.Count() > 0;
+            e.CanExecute = SelectionService.CurrentSelection.Count() > 0;            
         }
 
         #endregion
@@ -271,6 +270,10 @@ namespace IntegrationTool.DiagramDesigner
         private void Paste_Enabled(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = Clipboard.ContainsData(DataFormats.Xaml);
+            if (e.CanExecute && IsPasteEnabled != null)
+            {
+                IsPasteEnabled(sender, e);
+            }
         }
 
         #endregion

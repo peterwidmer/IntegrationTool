@@ -37,9 +37,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
     {
         public event EventHandler BackButtonClicked;
         public event EventHandler ProgressReport;
-        
-        public string copiedConfigurations { get; set; }
-        public string copiedDiagrams { get; set; }
+
+        private StepCopy StepCopy { get; set; }
 
         public Package Package { get; set; }
         private ModuleLoader moduleLoader;
@@ -69,14 +68,22 @@ namespace IntegrationTool.ProjectDesigner.Screens
             mainFlowDesigner.MyDesigner.OnDeleteCurrentSelection += MyDesigner_OnDeleteCurrentSelection;
             mainFlowDesigner.MyDesigner.OnCopyCurrentSelection += MyDesigner_OnCopyCurrentSelection;
             mainFlowDesigner.MyDesigner.OnPastedCurrentSelection += MyDesigner_OnPastedCurrentSelection;
+            mainFlowDesigner.MyDesigner.IsPasteEnabled += MyDesigner_IsPasteEnabled;
             this.mainFlowContent.Content = mainFlowDesigner;
             InitializeSubFlowDesigner();            
+        }
+
+        void MyDesigner_IsPasteEnabled(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = 
+                this.StepCopy != null && 
+                ((DesignerCanvas)sender).DesignerCanvasType == this.StepCopy.Type;
         }
 
         void MyDesigner_OnPastedCurrentSelection(object sender, ItemsPastedEventArgs e)
         {
             List<SerializedDiagram> copiedDiagrams = ConfigurationSerializer.DeserializeObject(
-                                                    this.copiedDiagrams,
+                                                    this.StepCopy.Diagrams,
                                                     typeof(List<SerializedDiagram>),
                                                     moduleLoader.GetModuleTypeList()
                                                     ) as List<SerializedDiagram>;
@@ -106,7 +113,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
             }
 
             List<ConfigurationBase> copiedConfigurations = ConfigurationSerializer.DeserializeObject(
-                                                    this.copiedConfigurations,
+                                                    this.StepCopy.Configurations,
                                                     typeof(List<ConfigurationBase>),
                                                     moduleLoader.GetModuleTypeList()
                                                     ) as List<ConfigurationBase>;
@@ -120,6 +127,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         void MyDesigner_OnCopyCurrentSelection(object sender, EventArgs e)
         {
+            this.StepCopy = new StepCopy();
+            this.StepCopy.Type = ((DesignerCanvas)sender).DesignerCanvasType;
             List<ConfigurationBase> configurationsToCopy = new List<ConfigurationBase>();
             List<SerializedDiagram> diagramsToCopy = new List<SerializedDiagram>();
 
@@ -150,8 +159,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 }
             }
 
-            this.copiedConfigurations = ConfigurationSerializer.SerializeObject(configurationsToCopy, moduleLoader.GetModuleTypeList());
-            this.copiedDiagrams = ConfigurationSerializer.SerializeObject(diagramsToCopy, moduleLoader.GetModuleTypeList());
+            this.StepCopy.Configurations = ConfigurationSerializer.SerializeObject(configurationsToCopy, moduleLoader.GetModuleTypeList());
+            this.StepCopy.Diagrams = ConfigurationSerializer.SerializeObject(diagramsToCopy, moduleLoader.GetModuleTypeList());
         }
 
         void MyDesigner_OnDeleteCurrentSelection(object sender, EventArgs e)
@@ -200,6 +209,10 @@ namespace IntegrationTool.ProjectDesigner.Screens
             var subFlowDesigner = new FlowDesign.FlowDesigner(this.Package, moduleLoader.Modules, DesignerCanvasType.SubFlow);
             subFlowDesigner.DesignerItemDoubleClick += subFlowDesigner_DesignerItemDoubleClick;
             subFlowDesigner.SubflowMagnifyIconDoubleClick += subFlowDesigner_SubflowMagnifyIconDoubleClick;
+            subFlowDesigner.MyDesigner.OnDeleteCurrentSelection += MyDesigner_OnDeleteCurrentSelection;
+            subFlowDesigner.MyDesigner.OnCopyCurrentSelection += MyDesigner_OnCopyCurrentSelection;
+            subFlowDesigner.MyDesigner.OnPastedCurrentSelection += MyDesigner_OnPastedCurrentSelection;
+            subFlowDesigner.MyDesigner.IsPasteEnabled += MyDesigner_IsPasteEnabled;
             propertiesRow.Height = new GridLength(0);
             this.subFlowContent.Content = subFlowDesigner;
         }

@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\StepCopy.cs" />
     <Compile Include="Classes\StepProperty.cs" />
     <Compile Include="Classes\WindowResult.cs" />
     <Compile Include="FlowDesign\FlowToolbox.xaml.cs">

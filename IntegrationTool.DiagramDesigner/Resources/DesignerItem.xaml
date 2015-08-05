@@ -5,11 +5,11 @@
                     xmlns:c="clr-namespace:IntegrationTool.DiagramDesigner.Controls">
 
     <ContextMenu x:Key="DesignerItemContextMenu">
-        <MenuItem Header="Cut" Command="{x:Static ApplicationCommands.Cut}">
+        <!--<MenuItem Header="Cut" Command="{x:Static ApplicationCommands.Cut}">
             <MenuItem.Icon>
                 <Image Source="Images/Cut.png" Width="16"/>
             </MenuItem.Icon>
-        </MenuItem>
+        </MenuItem>-->
         <MenuItem Header="Copy" Command="{x:Static ApplicationCommands.Copy}">
             <MenuItem.Icon>
                 <Image Source="Images/Copy.png" Width="16"/>
