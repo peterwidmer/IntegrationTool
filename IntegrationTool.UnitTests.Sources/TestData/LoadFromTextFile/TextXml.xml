@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProductList xmlns:tst="http://www.freedevelopertutorials.com/testspace">
+  <Products>
+    <tst:Product>
+      <Name>Prod 1</Name>
+      <Description>This is prod 1</Description>
+      <tst:ProductAttributes>
+        <Color>Green</Color>
+        <Price>300$</Price>
+      </tst:ProductAttributes>
+    </tst:Product>
+    <tst:Product>
+      <Name>Prod 2</Name>
+      <Description>This is prod 2</Description>
+      <tst:ProductAttributes>
+        <Color>Blue</Color>
+        <Price>450$</Price>
+      </tst:ProductAttributes>
+    </tst:Product>
+    <tst:Product>
+      <Name>Prod 3</Name>
+      <Description>This is prod 3</Description>
+      <tst:ProductAttributes>
+        <Color>Purple</Color>
+        <Price>145$</Price>
+      </tst:ProductAttributes>
+    </tst:Product>
+  </Products>
+</ProductList>

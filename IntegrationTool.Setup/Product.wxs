@@ -166,6 +166,9 @@
       <Component Id="ModuleComponent_ConnectToODBC" Win64="yes">
         <File Id="ModuleComponent_ConnectToODBC.dll" Source="$(var.IntegrationTool.Module.ConnectToODBC.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_ConnectToTextFile" Win64="yes">
+        <File Id="ModuleComponent_ConnectToTextFile.dll" Source="$(var.IntegrationTool.Module.ConnectToTextFile.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
     
     <!-- Source Module-Files -->
