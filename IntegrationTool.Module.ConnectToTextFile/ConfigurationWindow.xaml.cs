@@ -38,6 +38,8 @@ namespace IntegrationTool.Module.ConnectToTextFile
             {
                 InitializeConnection(fileBrowserDialog.FileName);
             }
+
+            
         }
 
         private void InitializeConnection(string fileName)
@@ -48,6 +50,8 @@ namespace IntegrationTool.Module.ConnectToTextFile
                 MessageBox.Show("Could not load selected excelsheet!");
                 return;
             }
+
+            tbTextFilePath.Text = fileName;
         }
     }
 }

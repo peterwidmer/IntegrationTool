@@ -180,8 +180,11 @@
       <Component Id="ModuleComponent_LoadFromMSSQL" Win64="yes">
         <File Id="ModuleComponent_LoadFromMSSQL.dll" Source="$(var.IntegrationTool.Module.LoadFromMSSQL.TargetPath)" KeyPath="yes" />
       </Component>
-    <Component Id="ModuleComponent_LoadFromODBC" Win64="yes">
+      <Component Id="ModuleComponent_LoadFromODBC" Win64="yes">
         <File Id="ModuleComponent_LoadFromODBC.dll" Source="$(var.IntegrationTool.Module.LoadFromODBC.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_LoadFromTextFile" Win64="yes">
+        <File Id="ModuleComponent_LoadFromTextFile.dll" Source="$(var.IntegrationTool.Module.LoadFromTextFile.TargetPath)" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 

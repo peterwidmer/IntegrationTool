@@ -24,14 +24,35 @@ namespace IntegrationTool.Module.LoadFromTextFile
 
         public System.Windows.Controls.UserControl RenderConfigurationWindow(ConfigurationBase configurationBase, SDK.Database.IDatastore dataObject)
         {
-            throw new NotImplementedException();
+            ConfigurationWindow configurationWindow = new ConfigurationWindow((LoadFromTextFileConfiguration)configurationBase);
+            return configurationWindow;
         }
 
         public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
         {
-            StringReader stringReader = connection.GetConnection() as StringReader;
             datastore.AddColumnMetadata(new ColumnMetadata(0, "TextFile"));
-            datastore.AddData(new object[] { stringReader.ReadToEnd() });
+
+            using (StringReader stringReader = connection.GetConnection() as StringReader)
+            {
+                switch (this.Configuration.LoadType)
+                {
+                    case TextFileLoadType.AllInOneRow:
+                        datastore.AddData(new object[] { stringReader.ReadToEnd() });
+                        break;
+
+                    case TextFileLoadType.OneRowPerLine:
+                        string line = null;
+                        while (true)
+                        {
+                            line = stringReader.ReadLine();
+                            if (line == null) { break; }
+
+                            datastore.AddData(new object[] { line });
+                        }
+                        break;
+                }
+            }
+            
         }
     }
 }

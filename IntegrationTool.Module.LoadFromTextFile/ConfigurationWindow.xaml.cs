@@ -20,9 +20,12 @@ namespace IntegrationTool.Module.LoadFromTextFile
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        public ConfigurationWindow()
+        private LoadFromTextFileConfiguration loadFromTextFileConfiguration;
+
+        public ConfigurationWindow(LoadFromTextFileConfiguration loadFromTextFileConfiguration)
         {
             InitializeComponent();
+            this.DataContext = this.loadFromTextFileConfiguration = loadFromTextFileConfiguration;
         }
     }
 }
