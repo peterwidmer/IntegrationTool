@@ -256,6 +256,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.XmlTransformation\IntegrationTool.Module.XmlTransformation.csproj">
+      <Name>IntegrationTool.Module.XmlTransformation</Name>
+      <Project>{5692a5a6-41c0-49ed-bce8-d1bc3f4f8938}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.ProjectDesigner\IntegrationTool.ProjectDesigner.csproj">
       <Name>IntegrationTool.ProjectDesigner</Name>
       <Project>{69437fda-c9a8-4f03-b20b-e63200d82cbc}</Project>

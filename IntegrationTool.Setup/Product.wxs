@@ -200,6 +200,9 @@
       <Component Id="ModuleComponent_ConcatenateColumns" Win64="yes">
         <File Id="ModuleComponent_ConcatenateColumns.dll" Source="$(var.IntegrationTool.Module.ConcatenateColumns.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_XmlTransformation" Win64="yes">
+        <File Id="ModuleComponent_XmlTransformation.dll" Source="$(var.IntegrationTool.Module.XmlTransformation.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 
     <!-- Target Module-Files -->

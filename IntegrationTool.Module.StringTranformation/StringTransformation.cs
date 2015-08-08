@@ -24,6 +24,7 @@ namespace IntegrationTool.Module.StringTranformation
         {
             Configuration = new StringTransformationConfiguration();
         }
+
         public void SetConfiguration(ConfigurationBase configurationBase)
         {
             this.Configuration = configurationBase as StringTransformationConfiguration;

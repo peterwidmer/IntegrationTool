@@ -19,7 +19,7 @@ namespace IntegrationTool.Module.LoadFromTextFile
         public LoadFromTextFileConfiguration Configuration { get; set; }
         public void SetConfiguration(ConfigurationBase configurationBase)
         {
-            Configuration = new LoadFromTextFileConfiguration();
+            this.Configuration = configurationBase as LoadFromTextFileConfiguration;
         }
 
         public System.Windows.Controls.UserControl RenderConfigurationWindow(ConfigurationBase configurationBase, SDK.Database.IDatastore dataObject)
