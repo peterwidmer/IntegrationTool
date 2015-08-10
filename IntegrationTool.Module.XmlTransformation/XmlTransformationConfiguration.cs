@@ -9,5 +9,6 @@ namespace IntegrationTool.Module.XmlTransformation
 {
     public class XmlTransformationConfiguration : TransformationConfiguration
     {
+        public string TransformationXslt { get; set; }
     }
 }

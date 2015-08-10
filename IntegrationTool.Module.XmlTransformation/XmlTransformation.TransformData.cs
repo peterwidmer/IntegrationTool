@@ -19,7 +19,7 @@ namespace IntegrationTool.Module.XmlTransformation
             // TODO Do the xml-transformation            
         }
 
-        private string TransformXml(string inputXml, string xslTransformation)
+        public static string TransformXml(string inputXml, string xslTransformation)
         {
             XPathDocument doc = new XPathDocument(new StringReader(inputXml));
 

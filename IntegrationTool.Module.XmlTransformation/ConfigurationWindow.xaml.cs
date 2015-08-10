@@ -29,7 +29,13 @@ namespace IntegrationTool.Module.XmlTransformation
             InitializeComponent();
 
             this.dataObject = dataObject;
+            this.tbInputData.Text = this.dataObject[0][0].ToString();
             this.DataContext = this.configuration = configuration;
+        }
+
+        private void btnUpdateTransformationPreview_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
