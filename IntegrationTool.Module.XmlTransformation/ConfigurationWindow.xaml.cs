@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace IntegrationTool.Module.XmlTransformation
 {
@@ -35,7 +36,19 @@ namespace IntegrationTool.Module.XmlTransformation
 
         private void btnUpdateTransformationPreview_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
+            }
+            catch(Exception ex)
+            {
+                string errorMessage = "An error occured while transforming:\n\n" + ex.Message;
+                if(ex.InnerException != null)
+                {
+                    errorMessage += ex.InnerException.Message;
+                }
+                MessageBox.Show(errorMessage);
+            }
         }
     }
 }

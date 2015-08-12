@@ -21,17 +21,27 @@ namespace IntegrationTool.Module.XmlTransformation
 
         public static string TransformXml(string inputXml, string xslTransformation)
         {
-            XPathDocument doc = new XPathDocument(new StringReader(inputXml));
+            XmlDocument source = new XmlDocument();
+            StringReader reader = new StringReader(inputXml);
+            source.Load(reader);
 
-            StringWriter sw = new StringWriter();
+            XslCompiledTransform transformer = new XslCompiledTransform(false);
+            transformer.Load(XmlReader.Create(new StringReader(xslTransformation)));
 
-            XslCompiledTransform transform = new XslCompiledTransform();
-            XsltSettings settings2 = new XsltSettings();
-            settings2.EnableScript = true;
-            transform.Load(XmlReader.Create(new StringReader(xslTransformation)), settings2, null);
-            transform.Transform(doc, null, sw);
+            string transformedXml = string.Empty;
 
-            return sw.ToString();
+            using (MemoryStream ms = new MemoryStream())
+            using (StreamWriter sw = new StreamWriter(ms))
+            {
+                transformer.Transform(source, null, sw);
+                ms.Position = 0;
+                using (StreamReader sr = new StreamReader(ms))
+                {
+                    transformedXml = sr.ReadToEnd();
+                }
+            }
+
+            return transformedXml;
         }
     }
 }
