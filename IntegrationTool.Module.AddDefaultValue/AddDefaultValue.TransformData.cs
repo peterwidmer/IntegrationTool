@@ -15,7 +15,7 @@ namespace IntegrationTool.Module.AddDefaultValue
             {
                 reportProgress(new SimpleProgressReport("Start add default value column " + transformation.ColumnName + ". Value: " + transformation.Value));
 
-                dataObject.AddColumnMetadata(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.ColumnName));
+                dataObject.AddColumn(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.ColumnName));
 
                 for (int i = 0; i < dataObject.Count; i++)
                 {

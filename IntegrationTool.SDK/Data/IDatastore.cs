@@ -13,7 +13,8 @@ namespace IntegrationTool.SDK.Database
         void InitializeDatastore(List<AttributeImplementation> dataConditionAttributes);
         int Count { get; }
         DataMetadata Metadata { get; set; }
-        void AddColumnMetadata(ColumnMetadata columnMetadata);
+        void AddColumn(ColumnMetadata columnMetadata);
+        void RemoveColumn(string columnName);
         void AddData(object[] data);
         void SetValue(int index, int column, object value);
         void ApplyFilter(DataFilter dataFilter);

@@ -62,7 +62,7 @@ namespace IntegrationTool.SDK
             return returnList;
         }
 
-        public void AddColumnMetadata(ColumnMetadata columnMetadata)
+        public void AddColumn(ColumnMetadata columnMetadata)
         {
             this.Metadata.Columns.Add(columnMetadata.ColumnName, columnMetadata);
 
@@ -73,6 +73,27 @@ namespace IntegrationTool.SDK
                     object[] newRecord = new object[this.Metadata.Columns.Count];
                     data[i].CopyTo(newRecord, 0);
                     data[i] = newRecord;
+                }
+            }
+        }
+
+        public void RemoveColumn(string columnName)
+        {
+            if (this.Metadata.Columns.Count == 0) { throw new ArgumentException("Datastore does not contain any columns to remove"); }
+            if (this.Metadata.Columns.ContainsKey(columnName) == false) { throw new ArgumentOutOfRangeException("Column " + columnName + " does not exist in the datastore!"); }
+            
+            ColumnMetadata columnMetadata = this.Metadata.Columns[columnName];
+            this.Metadata.Columns.Remove(columnName);
+
+            foreach(var objectArray in this.data)
+            {
+                object [] newObject = new object [objectArray.Length -1];
+                int indexNewObject = 0;
+                for(int index=0; index < objectArray.Length; index++)
+                {
+                    if (index == columnMetadata.ColumnIndex) { continue; }
+                    newObject[indexNewObject] = objectArray[index];
+                    indexNewObject++;
                 }
             }
         }

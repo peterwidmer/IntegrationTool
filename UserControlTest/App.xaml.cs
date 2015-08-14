@@ -113,10 +113,10 @@ namespace UserControlTest
         private IDatastore GetContactsDatastore()
         {
             IDatastore dataObject = new IntegrationTool.SDK.DataObject();
-            dataObject.AddColumnMetadata(new ColumnMetadata(0, "FirstName"));
-            dataObject.AddColumnMetadata(new ColumnMetadata(1, "LastName"));
-            dataObject.AddColumnMetadata(new ColumnMetadata(2, "City"));
-            dataObject.AddColumnMetadata(new ColumnMetadata(3, "ID"));
+            dataObject.AddColumn(new ColumnMetadata(0, "FirstName"));
+            dataObject.AddColumn(new ColumnMetadata(1, "LastName"));
+            dataObject.AddColumn(new ColumnMetadata(2, "City"));
+            dataObject.AddColumn(new ColumnMetadata(3, "ID"));
 
             dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001 });
             dataObject.AddData(new object[] { "Joachim", "Suter", "Dättwil", 1002 });

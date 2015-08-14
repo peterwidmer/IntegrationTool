@@ -54,7 +54,7 @@ namespace IntegrationTool.Module.LoadFromODBC
                 {
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        datastore.AddColumnMetadata(new ColumnMetadata(i, reader.GetName(i)));
+                        datastore.AddColumn(new ColumnMetadata(i, reader.GetName(i)));
                     }
                 }
 

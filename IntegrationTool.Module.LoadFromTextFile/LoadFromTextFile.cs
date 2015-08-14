@@ -30,7 +30,7 @@ namespace IntegrationTool.Module.LoadFromTextFile
 
         public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
         {
-            datastore.AddColumnMetadata(new ColumnMetadata(0, "TextFile"));
+            datastore.AddColumn(new ColumnMetadata(0, "TextFile"));
 
             using (StringReader stringReader = connection.GetConnection() as StringReader)
             {

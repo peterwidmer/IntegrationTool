@@ -16,7 +16,7 @@ namespace IntegrationTool.Module.ConcatenateColumns
             {
                 reportProgress(new SimpleProgressReport("Start column-cocatenation"));
 
-                dataObject.AddColumnMetadata(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.OutputColumn));
+                dataObject.AddColumn(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.OutputColumn));
                 
                 int leftColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.LeftColumn).First().ColumnIndex;
                 int rightColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.RightColumn).First().ColumnIndex;

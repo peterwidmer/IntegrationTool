@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK.Database;
+﻿using IntegrationTool.SDK.Data;
+using IntegrationTool.SDK.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +24,14 @@ namespace IntegrationTool.Module.XmlTransformation
     public partial class ConfigurationWindow : UserControl
     {
         private XmlTransformationConfiguration configuration;
-        private IDatastore dataObject;
+        private IDatastore datastore;
 
-        public ConfigurationWindow(XmlTransformationConfiguration configuration, IDatastore dataObject)
+        public ConfigurationWindow(XmlTransformationConfiguration configuration, IDatastore datastore)
         {
             InitializeComponent();
 
-            this.dataObject = dataObject;
-            this.tbInputData.Text = this.dataObject[0][0].ToString();
+            this.datastore = datastore;
+            this.tbInputData.Text = this.datastore[0][0].ToString();
             this.DataContext = this.configuration = configuration;
         }
 
@@ -39,6 +40,7 @@ namespace IntegrationTool.Module.XmlTransformation
             try
             {
                 tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
+                this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000);
             }
             catch(Exception ex)
             {

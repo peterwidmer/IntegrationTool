@@ -36,7 +36,7 @@ namespace IntegrationTool.Module.LoadFromExcel
                     for (int columnNumber = 1; columnNumber <= worksheet.Dimension.End.Column; columnNumber++)
                     {
                         string columnName = worksheet.GetValue(rowNumber, columnNumber).ToString();
-                        datastore.AddColumnMetadata(new ColumnMetadata(columnNumber - 1, columnName));
+                        datastore.AddColumn(new ColumnMetadata(columnNumber - 1, columnName));
                     }
                     continue;
                 }
