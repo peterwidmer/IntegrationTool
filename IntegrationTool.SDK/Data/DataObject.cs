@@ -82,20 +82,30 @@ namespace IntegrationTool.SDK
             if (this.Metadata.Columns.Count == 0) { throw new ArgumentException("Datastore does not contain any columns to remove"); }
             if (this.Metadata.Columns.ContainsKey(columnName) == false) { throw new ArgumentOutOfRangeException("Column " + columnName + " does not exist in the datastore!"); }
             
-            ColumnMetadata columnMetadata = this.Metadata.Columns[columnName];
+            ColumnMetadata removedColumnMetadata = this.Metadata.Columns[columnName];
             this.Metadata.Columns.Remove(columnName);
 
-            foreach(var objectArray in this.data)
+            // Remove column from each row
+            for(int rowIndex =0; rowIndex < this.data.Count; rowIndex++)
             {
-                object [] newObject = new object [objectArray.Length -1];
+                object [] objectArray = this.data[rowIndex];
+                this.data[rowIndex] = new object[objectArray.Length - 1];
                 int indexNewObject = 0;
                 for(int index=0; index < objectArray.Length; index++)
                 {
-                    if (index == columnMetadata.ColumnIndex) { continue; }
-                    newObject[indexNewObject] = objectArray[index];
+                    if (index == removedColumnMetadata.ColumnIndex) { continue; }
+                    this.data[rowIndex][indexNewObject] = objectArray[index];
                     indexNewObject++;
                 }
             }
+
+            // Re-Index remaining columns
+            foreach(KeyValuePair<string, ColumnMetadata> columnMetadata in this.Metadata.Columns.Where(t=> t.Value.ColumnIndex > removedColumnMetadata.ColumnIndex))
+            {
+                columnMetadata.Value.ColumnIndex--;
+            }
+
+            
         }
 
         public void AddData(object[] data)
