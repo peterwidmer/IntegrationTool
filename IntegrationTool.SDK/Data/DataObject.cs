@@ -113,6 +113,11 @@ namespace IntegrationTool.SDK
             this.data.Add(data);
         }
 
+        public void RemoveDataAt(int index)
+        {
+            this.data.RemoveAt(index);
+        }
+
         public void SetValue(int index, int column, object value)
         {
             if (this.activeDataFilter == null || this.activeDataFilter.FilterType == null)

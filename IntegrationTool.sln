@@ -130,6 +130,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.Load
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.XmlTransformation", "IntegrationTool.Module.XmlTransformation\IntegrationTool.Module.XmlTransformation.csproj", "{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.LoadFromDynamicsCrm", "IntegrationTool.Module.LoadFromDynamicsCrm\IntegrationTool.Module.LoadFromDynamicsCrm.csproj", "{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -560,6 +562,16 @@ Global
 		{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938}.Release|x86.ActiveCfg = Release|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -602,5 +614,6 @@ Global
 		{3A4D2E2C-ADE3-4D22-A065-AD8F406A7B3F} = {8F8A2EAC-1DA3-49AF-B7AD-A409F99CACEC}
 		{DFE59EB5-4A2F-445B-9FDD-F231A1FD28AC} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 		{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938} = {D2621EB1-4E86-45FA-9900-A5F69FA4E36B}
+		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 	EndGlobalSection
 EndGlobal

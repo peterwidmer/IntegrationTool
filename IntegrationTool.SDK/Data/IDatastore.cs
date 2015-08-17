@@ -16,13 +16,14 @@ namespace IntegrationTool.SDK.Database
         void AddColumn(ColumnMetadata columnMetadata);
         void RemoveColumn(string columnName);
         void AddData(object[] data);
+        void RemoveDataAt(int index);
         void SetValue(int index, int column, object value);
         void ApplyFilter(DataFilter dataFilter);
         void ClearFilter();
         List<NameDisplayName> GetDistinctValuesOfColumn(string columnName);
 
         // Indexer declaration: 
-        object[] this[int index] { get; }
+        object[] this[int rowIndex] { get; }
 
     }
 }

@@ -31,7 +31,7 @@ namespace IntegrationTool.Module.XmlTransformation
             InitializeComponent();
 
             this.datastore = datastore;
-            this.tbInputData.Text = this.datastore[0][0].ToString();
+            this.InputXmlColumn.ItemsSource = datastore.Metadata.GetColumnsAsNameDisplayNameList();
             this.DataContext = this.configuration = configuration;
         }
 
@@ -40,7 +40,7 @@ namespace IntegrationTool.Module.XmlTransformation
             try
             {
                 datastore[0][0] = tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
-                XmlTransformation.TransformToDatastore(datastore);
+                XmlTransformation.TransformToDatastore(datastore, this.configuration.InputXmlColumn);
                 this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000);
             }
             catch(Exception ex)
@@ -52,6 +52,18 @@ namespace IntegrationTool.Module.XmlTransformation
                 }
                 MessageBox.Show(errorMessage);
             }
+        }
+
+        private void InputXmlColumn_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (InputXmlColumn.SelectedItem != null)
+            {
+                int columnIndex = this.datastore.Metadata.Columns[this.configuration.InputXmlColumn].ColumnIndex;
+                this.tbInputData.Text = this.datastore[0][columnIndex].ToString();
+            }
+
+            this.tbTransformedXml.Text = string.Empty;
+            this.DataPreviewGrid.DataContext = null;
         }
     }
 }

@@ -21,11 +21,11 @@ namespace IntegrationTool.Module.XmlTransformation
             // TODO Do the xml-transformation            
         }
 
-        public static void TransformToDatastore(IDatastore datastore)
+        public static void TransformToDatastore(IDatastore datastore, string columnToTransform)
         {
             if (datastore.Count <= 0) { return; }
 
-            int columnIndex = 0;
+            int columnIndex = datastore.Metadata.Columns[columnToTransform].ColumnIndex;
 
             // Transform xml to table?
             if (Regex.IsMatch(datastore[0][columnIndex].ToString(), @"<\?xml.*\?>.*\n<it_table>"))
@@ -40,6 +40,12 @@ namespace IntegrationTool.Module.XmlTransformation
                     {
                         AddDatarowToDatastore(datastore, row);
                     }
+                }
+
+                // Remove transformed rows
+                for (int rowIndex = rowCount - 1; rowIndex >= 0; rowIndex--)
+                {
+                    datastore.RemoveDataAt(rowIndex);
                 }
 
                 datastore.RemoveColumn(datastore.Metadata.Columns.Where(t=> t.Value.ColumnIndex == columnIndex).First().Value.ColumnName);            

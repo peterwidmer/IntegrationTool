@@ -10,6 +10,7 @@ namespace IntegrationTool.Module.XmlTransformation
 {
     public class XmlTransformationConfiguration : TransformationConfiguration
     {
+        public string InputXmlColumn { get; set; }
         public string TransformationXslt { get; set; }
 
         public XmlTransformationConfiguration()
