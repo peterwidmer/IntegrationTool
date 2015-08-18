@@ -18,23 +18,25 @@ namespace IntegrationTool.Module.XmlTransformation
     {
         public void TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
-            // TODO Do the xml-transformation            
+            TransformToDatastore(dataObject, this.Configuration.TransformationXslt, this.Configuration.InputXmlColumn);           
         }
 
-        public static void TransformToDatastore(IDatastore datastore, string columnToTransform)
+        public static void TransformToDatastore(IDatastore datastore, string xslTransformation, string columnToTransform)
         {
             if (datastore.Count <= 0) { return; }
 
             int columnIndex = datastore.Metadata.Columns[columnToTransform].ColumnIndex;
+            int rowCount = datastore.Count; // Rowcount increases while adding data, therefore it must be fixed here!
 
-            // Transform xml to table?
+            // Transform xml to table?            
             if (Regex.IsMatch(datastore[0][columnIndex].ToString(), @"<\?xml.*\?>.*\n<it_table>"))
             {
                 if (datastore[0].Length > 1) { throw new Exception("If data should be transformed to table, you'll allowed to have only one column in the inputdata!"); }
-                int rowCount = datastore.Count; // Rowcount increases while adding data, therefore it must be fixed here!
+                
                 for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                 {
-                    XDocument xDocument = XDocument.Parse(datastore[rowIndex][columnIndex].ToString(), LoadOptions.PreserveWhitespace);
+                    string transformedXml = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
+                    XDocument xDocument = XDocument.Parse(transformedXml, LoadOptions.PreserveWhitespace);
 
                     foreach (var row in xDocument.Root.Elements("it_row"))
                     {
@@ -49,6 +51,13 @@ namespace IntegrationTool.Module.XmlTransformation
                 }
 
                 datastore.RemoveColumn(datastore.Metadata.Columns.Where(t=> t.Value.ColumnIndex == columnIndex).First().Value.ColumnName);            
+            }
+            else
+            {
+                for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+                {
+                    datastore[rowIndex][columnIndex] = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
+                }
             }
         }
 

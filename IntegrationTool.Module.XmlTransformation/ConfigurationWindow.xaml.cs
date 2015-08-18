@@ -40,7 +40,7 @@ namespace IntegrationTool.Module.XmlTransformation
             try
             {
                 datastore[0][0] = tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
-                XmlTransformation.TransformToDatastore(datastore, this.configuration.InputXmlColumn);
+                XmlTransformation.TransformToDatastore(datastore, this.configuration.TransformationXslt, this.configuration.InputXmlColumn);
                 this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000);
             }
             catch(Exception ex)
