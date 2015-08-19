@@ -18,8 +18,8 @@ namespace IntegrationTool.ApplicationCore
     {
         private ObjectResolver objectResolver;
 
-        private BlockingCollection<DesignerItemBase> designerItems;
-        private BlockingCollection<ConnectionBase> designerConnections;
+        public BlockingCollection<DesignerItemBase> designerItems;
+        public BlockingCollection<ConnectionBase> designerConnections;
         private Dictionary<string, object> connectionInstances;
         private DesignerItemBase parentDesignerItem;
         private ItemLog parentItemLog;

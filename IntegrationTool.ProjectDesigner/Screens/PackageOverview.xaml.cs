@@ -249,7 +249,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
             SaveSubflowConfiguration();
 
             SubFlowExecution subFlowExecution = GetSubflowExecution();
-            IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
+            Guid loadUntilDesignerItemId = subFlowExecution.designerConnections.Where(t => t.SinkID == designerItem.ID).First().SourceID;
+            IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
 
             ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
 

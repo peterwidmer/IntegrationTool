@@ -28,14 +28,15 @@ namespace IntegrationTool.Module.XmlTransformation
             int columnIndex = datastore.Metadata.Columns[columnToTransform].ColumnIndex;
             int rowCount = datastore.Count; // Rowcount increases while adding data, therefore it must be fixed here!
 
-            // Transform xml to table?            
-            if (Regex.IsMatch(datastore[0][columnIndex].ToString(), @"<\?xml.*\?>.*\n<it_table>"))
+            // Transform xml to table?
+            string transformedXml = TransformXml(datastore[0][columnIndex].ToString(), xslTransformation);
+            if (Regex.IsMatch(transformedXml, @"<\?xml.*\?>.*\n<it_table>"))
             {
                 if (datastore[0].Length > 1) { throw new Exception("If data should be transformed to table, you'll allowed to have only one column in the inputdata!"); }
                 
                 for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                 {
-                    string transformedXml = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
+                    transformedXml = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
                     XDocument xDocument = XDocument.Parse(transformedXml, LoadOptions.PreserveWhitespace);
 
                     foreach (var row in xDocument.Root.Elements("it_row"))
