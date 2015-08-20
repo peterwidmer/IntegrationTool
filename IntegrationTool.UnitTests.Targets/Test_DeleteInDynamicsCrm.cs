@@ -50,7 +50,7 @@ namespace IntegrationTool.UnitTests.Targets
             deleteInCrmConfig.DeleteMapping.Add(new DataMapping() { Source = "CompanyName", Target = "name" });
 
             IDatastore dataObject = new IntegrationTool.SDK.DataObject();
-            dataObject.AddColumn(new ColumnMetadata(0, "CompanyName"));
+            dataObject.AddColumn(new ColumnMetadata("CompanyName"));
 
             dataObject.AddData(new object[] { accountName1 });
 

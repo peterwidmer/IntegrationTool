@@ -81,13 +81,13 @@ namespace IntegrationTool.UnitTests.Targets
                 }
             });
             IDatastore dataObject = new IntegrationTool.SDK.DataObject();
-            dataObject.AddColumn(new ColumnMetadata(0, "FirstName"));
-            dataObject.AddColumn(new ColumnMetadata(1, "LastName"));
-            dataObject.AddColumn(new ColumnMetadata(2, "City"));
-            dataObject.AddColumn(new ColumnMetadata(3, "ID"));
-            dataObject.AddColumn(new ColumnMetadata(4, "CompanyName"));
-            dataObject.AddColumn(new ColumnMetadata(5, "Status"));
-            dataObject.AddColumn(new ColumnMetadata(6, "Birthdate"));
+            dataObject.AddColumn(new ColumnMetadata("FirstName"));
+            dataObject.AddColumn(new ColumnMetadata("LastName"));
+            dataObject.AddColumn(new ColumnMetadata("City"));
+            dataObject.AddColumn(new ColumnMetadata("ID"));
+            dataObject.AddColumn(new ColumnMetadata("CompanyName"));
+            dataObject.AddColumn(new ColumnMetadata("Status"));
+            dataObject.AddColumn(new ColumnMetadata("Birthdate"));
 
             dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
             dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, accountName1, "Inactive", new DateTime(2004, 12, 03) });
@@ -134,9 +134,9 @@ namespace IntegrationTool.UnitTests.Targets
             writeToCrmConfig.SelectedConnectionConfigurationId = CRMCONNECTIONID;
             
             IDatastore dataObject = new IntegrationTool.SDK.DataObject();
-            dataObject.AddColumn(new ColumnMetadata(0, "CaseID"));
-            dataObject.AddColumn(new ColumnMetadata(1, "CaseTitle"));
-            dataObject.AddColumn(new ColumnMetadata(2, "CompanyName"));
+            dataObject.AddColumn(new ColumnMetadata("CaseID"));
+            dataObject.AddColumn(new ColumnMetadata("CaseTitle"));
+            dataObject.AddColumn(new ColumnMetadata("CompanyName"));
 
 
             dataObject.AddData(new object[] { "CA-100", "101 Title", accountName1 });

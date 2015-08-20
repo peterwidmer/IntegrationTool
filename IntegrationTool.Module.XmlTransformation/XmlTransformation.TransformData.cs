@@ -31,17 +31,15 @@ namespace IntegrationTool.Module.XmlTransformation
             // Transform xml to table?
             string transformedXml = TransformXml(datastore[0][columnIndex].ToString(), xslTransformation);
             if (Regex.IsMatch(transformedXml, @"<\?xml.*\?>.*\n<it_table>"))
-            {
-                if (datastore[0].Length > 1) { throw new Exception("If data should be transformed to table, you'll allowed to have only one column in the inputdata!"); }
-                
-                for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+            {                
+                for (int sourceRowIndex = 0; sourceRowIndex < rowCount; sourceRowIndex++)
                 {
-                    transformedXml = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
+                    transformedXml = TransformXml(datastore[sourceRowIndex][columnIndex].ToString(), xslTransformation);
                     XDocument xDocument = XDocument.Parse(transformedXml, LoadOptions.PreserveWhitespace);
 
                     foreach (var row in xDocument.Root.Elements("it_row"))
                     {
-                        AddDatarowToDatastore(datastore, row);
+                        AddDatarowToDatastore(datastore, sourceRowIndex, row);
                     }
                 }
 
@@ -57,24 +55,37 @@ namespace IntegrationTool.Module.XmlTransformation
             {
                 for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                 {
-                    datastore[rowIndex][columnIndex] = TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation);
+                    datastore.SetValue(rowIndex, columnIndex, TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation));
                 }
             }
         }
 
-        public static void AddDatarowToDatastore(IDatastore datastore, XElement row)
+        public static void AddDatarowToDatastore(IDatastore datastore, int sourceRowIndex, XElement row)
         {
             datastore.AddData(new object[datastore.Metadata.Columns.Count]);
+
+            // Copy values from sourcerow to new row
+            for(int i=0; i < datastore[sourceRowIndex].Length; i++)
+            {
+                datastore[datastore.Count - 1][i] = datastore[sourceRowIndex][i];
+            }
+
+            // Add new columns if necessary and fill the values
             foreach(var column in row.Elements())
             {
                 if(datastore.Metadata.Columns.ContainsKey(column.Name.LocalName) == false)
                 {
-                    datastore.AddColumn(new ColumnMetadata(datastore.Metadata.Columns.Count, column.Name.LocalName));
+                    datastore.AddColumn(new ColumnMetadata(column.Name.LocalName));
                 }
 
-                datastore[datastore.Count - 1][datastore.Metadata[column.Name.LocalName].ColumnIndex] = column.Value;
+                datastore.SetValue(datastore.Count - 1, datastore.Metadata[column.Name.LocalName].ColumnIndex, column.Value);
             }
         }
+
+        private static void CopyValuesFromSourceRowToNewRow(IDatastore datastore, int sourceRowIndex, int newRowIndex)
+        { 
+
+}
 
         public static string TransformXml(string inputXml, string xslTransformation)
         {

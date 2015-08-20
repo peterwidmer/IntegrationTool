@@ -15,11 +15,11 @@ namespace IntegrationTool.Module.AddDefaultValue
             {
                 reportProgress(new SimpleProgressReport("Start add default value column " + transformation.ColumnName + ". Value: " + transformation.Value));
 
-                dataObject.AddColumn(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.ColumnName));
+                dataObject.AddColumn(new ColumnMetadata(transformation.ColumnName));
 
                 for (int i = 0; i < dataObject.Count; i++)
                 {
-                    dataObject.SetValue(i, (int)(dataObject.Metadata.Columns.Count - 1), transformation.Value);
+                    dataObject.SetValue(i, dataObject.Metadata.Columns[transformation.ColumnName].ColumnIndex, transformation.Value);
                 }
 
                 reportProgress(new SimpleProgressReport("Finished add default value column " + transformation.ColumnName + ". Value: " + transformation.Value));

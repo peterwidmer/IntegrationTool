@@ -64,6 +64,15 @@ namespace IntegrationTool.SDK
 
         public void AddColumn(ColumnMetadata columnMetadata)
         {
+            if(this.Metadata.Columns.Count == 0)
+            {
+                columnMetadata.ColumnIndex = 0;
+            }
+            else
+            {
+                columnMetadata.ColumnIndex = this.Metadata.Columns.Max(t => t.Value.ColumnIndex) + 1;
+            }
+
             this.Metadata.Columns.Add(columnMetadata.ColumnName, columnMetadata);
 
             for(int i=0; i < data.Count; i++)

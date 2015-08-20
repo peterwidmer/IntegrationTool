@@ -16,7 +16,7 @@ namespace IntegrationTool.Module.ConcatenateColumns
             {
                 reportProgress(new SimpleProgressReport("Start column-cocatenation"));
 
-                dataObject.AddColumn(new ColumnMetadata(dataObject.Metadata.Columns.Count, transformation.OutputColumn));
+                dataObject.AddColumn(new ColumnMetadata(transformation.OutputColumn));
                 
                 int leftColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.LeftColumn).First().ColumnIndex;
                 int rightColumnIndex = dataObject.Metadata.Columns.Values.Where(t => t.ColumnName == transformation.RightColumn).First().ColumnIndex;
@@ -27,7 +27,7 @@ namespace IntegrationTool.Module.ConcatenateColumns
                     string rightValue = (dataObject[i][rightColumnIndex] == null || dataObject[i][rightColumnIndex] == DBNull.Value) ? "" : dataObject[i][rightColumnIndex].ToString();
                     string concatenatedValue = leftValue + transformation.ColumnSeparation + rightValue;
 
-                    dataObject.SetValue(i, (int)(dataObject.Metadata.Columns.Count - 1), concatenatedValue);
+                    dataObject.SetValue(i, dataObject.Metadata.Columns[transformation.OutputColumn].ColumnIndex, concatenatedValue);
                 }
 
                 reportProgress(new SimpleProgressReport("Finished column concatenation"));

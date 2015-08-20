@@ -13,9 +13,9 @@ namespace IntegrationTool.SDK.Data
         public static DataTable ConvertDatastoreToTable(IDatastore datastore, int numberOfRecordsToLoad) 
         {
             DataTable dt = new DataTable();
-            foreach (var column in datastore.Metadata.Columns.Values)
+            foreach (var column in datastore.Metadata.Columns.OrderBy(t=>t.Value.ColumnIndex))
             {
-                dt.Columns.Add(column.ColumnName);
+                dt.Columns.Add(column.Value.ColumnName);
             }
 
             for (int i = 0; i < datastore.Count; i++)

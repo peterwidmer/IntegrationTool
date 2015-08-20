@@ -13,9 +13,8 @@ namespace IntegrationTool.SDK
 
         }
 
-        public ColumnMetadata(int columnIndex, string columnName)
+        public ColumnMetadata(string columnName)
         {
-            this.ColumnIndex = columnIndex;
             this.ColumnName = columnName;
         }
 

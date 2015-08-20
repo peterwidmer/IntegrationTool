@@ -48,7 +48,7 @@ namespace IntegrationTool.Module.LoadFromMSSQL
                             {
                                 for (int i = 0; i < reader.FieldCount; i++)
                                 {
-                                    datastore.AddColumn(new ColumnMetadata(i, reader.GetName(i)));
+                                    datastore.AddColumn(new ColumnMetadata(reader.GetName(i)));
                                 }
                             }
 
