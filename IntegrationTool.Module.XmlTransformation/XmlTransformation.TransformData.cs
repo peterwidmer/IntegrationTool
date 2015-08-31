@@ -14,16 +14,30 @@ using System.Xml.Xsl;
 
 namespace IntegrationTool.Module.XmlTransformation
 {
+    public class TransformationLog
+    {
+        public List<string> NewColumns { get; set; }
+        public List<int> RowNumbersToHide { get; set; }
+
+        public TransformationLog()
+        {
+            this.NewColumns = new List<string>();
+            this.RowNumbersToHide = new List<int>();
+        }    
+    }
+
     public partial class XmlTransformation
     {
         public void TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
-            TransformToDatastore(dataObject, this.Configuration.TransformationXslt, this.Configuration.InputXmlColumn);           
+            TransformToDatastore(dataObject, this.Configuration.TransformationXslt, this.Configuration.InputXmlColumn, false);           
         }
 
-        public static void TransformToDatastore(IDatastore datastore, string xslTransformation, string columnToTransform)
+        public static TransformationLog TransformToDatastore(IDatastore datastore, string xslTransformation, string columnToTransform, bool isRunFromPreview)
         {
-            if (datastore.Count <= 0) { return; }
+            TransformationLog transformationLog = new TransformationLog();
+
+            if (datastore.Count <= 0) { return transformationLog; }
 
             int columnIndex = datastore.Metadata.Columns[columnToTransform].ColumnIndex;
             int rowCount = datastore.Count; // Rowcount increases while adding data, therefore it must be fixed here!
@@ -39,17 +53,26 @@ namespace IntegrationTool.Module.XmlTransformation
 
                     foreach (var row in xDocument.Root.Elements("it_row"))
                     {
-                        AddDatarowToDatastore(datastore, sourceRowIndex, row);
+                        AddDatarowToDatastore(datastore, transformationLog, sourceRowIndex, row);
                     }
                 }
 
                 // Remove transformed rows
-                for (int rowIndex = rowCount - 1; rowIndex >= 0; rowIndex--)
+                if (isRunFromPreview == false)
                 {
-                    datastore.RemoveDataAt(rowIndex);
+                    for (int rowIndex = rowCount - 1; rowIndex >= 0; rowIndex--)
+                    {
+                        datastore.RemoveDataAt(rowIndex);
+                    }
+                    datastore.RemoveColumn(datastore.Metadata.Columns.Where(t => t.Value.ColumnIndex == columnIndex).First().Value.ColumnName);
                 }
-
-                datastore.RemoveColumn(datastore.Metadata.Columns.Where(t=> t.Value.ColumnIndex == columnIndex).First().Value.ColumnName);            
+                else
+                {
+                    for (int rowIndex = rowCount - 1; rowIndex >= 0; rowIndex--)
+                    {
+                        transformationLog.RowNumbersToHide.Add(rowIndex);
+                    }
+                }
             }
             else
             {
@@ -58,9 +81,11 @@ namespace IntegrationTool.Module.XmlTransformation
                     datastore.SetValue(rowIndex, columnIndex, TransformXml(datastore[rowIndex][columnIndex].ToString(), xslTransformation));
                 }
             }
+
+            return transformationLog;
         }
 
-        public static void AddDatarowToDatastore(IDatastore datastore, int sourceRowIndex, XElement row)
+        public static void AddDatarowToDatastore(IDatastore datastore, TransformationLog transformationLog, int sourceRowIndex, XElement row)
         {
             datastore.AddData(new object[datastore.Metadata.Columns.Count]);
 
@@ -75,6 +100,7 @@ namespace IntegrationTool.Module.XmlTransformation
             {
                 if(datastore.Metadata.Columns.ContainsKey(column.Name.LocalName) == false)
                 {
+                    transformationLog.NewColumns.Add(column.Name.LocalName);
                     datastore.AddColumn(new ColumnMetadata(column.Name.LocalName));
                 }
 

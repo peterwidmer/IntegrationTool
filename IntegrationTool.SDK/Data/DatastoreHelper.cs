@@ -10,7 +10,7 @@ namespace IntegrationTool.SDK.Data
 {
     public class DatastoreHelper
     {
-        public static DataTable ConvertDatastoreToTable(IDatastore datastore, int numberOfRecordsToLoad) 
+        public static DataTable ConvertDatastoreToTable(IDatastore datastore, int numberOfRecordsToLoad, string [] columnsToRemove = null, int [] rowsNumbersToRemove = null) 
         {
             DataTable dt = new DataTable();
             foreach (var column in datastore.Metadata.Columns.OrderBy(t=>t.Value.ColumnIndex))
@@ -37,6 +37,24 @@ namespace IntegrationTool.SDK.Data
                 if (dt.Rows.Count == numberOfRecordsToLoad) { break; }
             }
 
+            if (columnsToRemove != null)
+            {
+                foreach (string columnToRemove in columnsToRemove)
+                {
+                    if (dt.Columns.Contains(columnToRemove))
+                    {
+                        dt.Columns.Remove(columnToRemove);
+                    }
+                }
+            }
+
+            if(rowsNumbersToRemove != null)
+            {
+                foreach(int rowIndex in rowsNumbersToRemove.OrderByDescending( t=> t))
+                {
+                    dt.Rows.RemoveAt(rowIndex);
+                }
+            }
             return dt;
         }
     }

@@ -42,8 +42,12 @@ namespace IntegrationTool.Module.XmlTransformation
                 int columnIndex = datastore.Metadata.Columns[this.configuration.InputXmlColumn].ColumnIndex;
                 string originalDataStore = (string)datastore[0][columnIndex];
                 tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
-                XmlTransformation.TransformToDatastore(datastore, this.configuration.TransformationXslt, this.configuration.InputXmlColumn);
-                this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000);
+                var transformationLog = XmlTransformation.TransformToDatastore(datastore, this.configuration.TransformationXslt, this.configuration.InputXmlColumn, true);
+                this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000, new string[] { this.configuration.InputXmlColumn }, transformationLog.RowNumbersToHide.ToArray());
+                foreach(var newColumn in transformationLog.NewColumns)
+                {
+                    datastore.RemoveColumn(newColumn);
+                }
                 datastore[0][columnIndex] = originalDataStore;
             }
             catch(Exception ex)
