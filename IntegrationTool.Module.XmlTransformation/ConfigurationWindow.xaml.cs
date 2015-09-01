@@ -41,12 +41,17 @@ namespace IntegrationTool.Module.XmlTransformation
             {
                 int columnIndex = datastore.Metadata.Columns[this.configuration.InputXmlColumn].ColumnIndex;
                 string originalDataStore = (string)datastore[0][columnIndex];
+                int originalRowCount = datastore.Count;
                 tbTransformedXml.Text = XmlTransformation.TransformXml(tbInputData.Text, this.configuration.TransformationXslt);
                 var transformationLog = XmlTransformation.TransformToDatastore(datastore, this.configuration.TransformationXslt, this.configuration.InputXmlColumn, true);
                 this.DataPreviewGrid.DataContext = DatastoreHelper.ConvertDatastoreToTable(this.datastore, 10000, new string[] { this.configuration.InputXmlColumn }, transformationLog.RowNumbersToHide.ToArray());
                 foreach(var newColumn in transformationLog.NewColumns)
                 {
                     datastore.RemoveColumn(newColumn);
+                }
+                for (int rowIndex = datastore.Count -1; rowIndex != originalRowCount -1; rowIndex--)
+                {
+                    datastore.RemoveDataAt(rowIndex);
                 }
                 datastore[0][columnIndex] = originalDataStore;
             }

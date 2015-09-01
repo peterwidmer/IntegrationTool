@@ -108,11 +108,6 @@ namespace IntegrationTool.Module.XmlTransformation
             }
         }
 
-        private static void CopyValuesFromSourceRowToNewRow(IDatastore datastore, int sourceRowIndex, int newRowIndex)
-        { 
-
-}
-
         public static string TransformXml(string inputXml, string xslTransformation)
         {
             XmlDocument source = new XmlDocument();
