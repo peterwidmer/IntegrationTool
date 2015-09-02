@@ -186,6 +186,9 @@
       <Component Id="ModuleComponent_LoadFromTextFile" Win64="yes">
         <File Id="ModuleComponent_LoadFromTextFile.dll" Source="$(var.IntegrationTool.Module.LoadFromTextFile.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_LoadFromDynamicsCrm" Win64="yes">
+        <File Id="ModuleComponent_LoadFromDynamicsCrm.dll" Source="$(var.IntegrationTool.Module.LoadFromDynamicsCrm.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 
     <!-- Transformation Module-Files -->

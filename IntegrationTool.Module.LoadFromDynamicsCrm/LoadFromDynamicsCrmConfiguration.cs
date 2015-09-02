@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.LoadFromDynamicsCrm
 {
+    public enum DynamicsCrmQueryType
+    {
+        ExecuteFetchXml
+    }
+
     public class LoadFromDynamicsCrmConfiguration : SourceConfiguration
     {
+        public DynamicsCrmQueryType QueryType { get; set; }
+        public string FetchXml { get; set; }
     }
 }
