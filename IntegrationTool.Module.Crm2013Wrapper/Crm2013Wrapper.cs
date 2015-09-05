@@ -180,5 +180,37 @@ namespace IntegrationTool.Module.Crm2013Wrapper
         {
             service.Delete(entityName, entityId);
         }
+
+        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml)
+        {
+            int pageNumber = 1;
+            string pagingCookie = null;
+            int fetchCount = 3;
+
+            while (true)
+            {
+                string pagingString = BuildFetchXmlCookie(pageNumber, pagingCookie, fetchCount);
+
+                RetrieveMultipleRequest retrieveMultipleRequest = new RetrieveMultipleRequest();
+                retrieveMultipleRequest.Query = new FetchExpression(fetchXml);
+
+                EntityCollection retrievedEntities = ((RetrieveMultipleResponse)service.Execute(retrieveMultipleRequest)).EntityCollection;
+
+                if(retrievedEntities.MoreRecords)
+                {
+                    pageNumber++;
+                    pagingCookie = retrievedEntities.PagingCookie;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        public static string BuildFetchXmlCookie(int pageNumber, string pagingCookie, int fetchCount)
+        {
+            return string.Format("page='{0}' paging-cookie='{1}' count='{2}'", pageNumber, pagingCookie, fetchCount);
+        }
     }
 }
