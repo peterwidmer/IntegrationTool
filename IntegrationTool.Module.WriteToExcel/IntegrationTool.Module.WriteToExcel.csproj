@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82}</ProjectGuid>
+    <ProjectGuid>{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IntegrationTool.Module.LoadFromDynamicsCrm</RootNamespace>
-    <AssemblyName>IntegrationTool.Module.LoadFromDynamicsCrm</AssemblyName>
+    <RootNamespace>IntegrationTool.Module.WriteToExcel</RootNamespace>
+    <AssemblyName>IntegrationTool.Module.WriteToExcel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\IntegrationTool.ProjectDesigner\bin\Debug\Modules\Sources\</OutputPath>
+    <OutputPath>..\IntegrationTool.ProjectDesigner\bin\Debug\Modules\Targets\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,19 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Xrm.Client">
-      <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.Xrm.Sdk">
-      <HintPath>..\References\Microsoft.Xrm.Sdk.dll</HintPath>
+    <Reference Include="EPPlus">
+      <HintPath>..\References\EPPlus.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,22 +51,12 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoadFromDynamicsCrm.cs" />
-    <Compile Include="LoadFromDynamicsCrmConfiguration.cs" />
+    <Compile Include="WriteToExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserControls\FetchXmlControl.xaml.cs">
-      <DependentUpon>FetchXmlControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="WriteToExcel.WriteData.cs" />
+    <Compile Include="WriteToExcelConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Icon.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
-      <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
-      <Name>IntegrationTool.Module.CrmWrapper</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>
@@ -83,10 +68,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\FetchXmlControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

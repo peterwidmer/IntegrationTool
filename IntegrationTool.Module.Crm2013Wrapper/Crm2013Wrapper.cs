@@ -181,7 +181,9 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             service.Delete(entityName, entityId);
         }
 
-        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml)
+        public delegate void RetrievedEntityCollectionMethod(EntityCollection retrievedEntityCollection);
+
+        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml, RetrievedEntityCollectionMethod retrievedEntityCollection)
         {
             int pageNumber = 1;
             string pagingCookie = null;
@@ -195,6 +197,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 retrieveMultipleRequest.Query = new FetchExpression(fetchXml);
 
                 EntityCollection retrievedEntities = ((RetrieveMultipleResponse)service.Execute(retrieveMultipleRequest)).EntityCollection;
+                retrievedEntityCollection(retrievedEntities);
 
                 if(retrievedEntities.MoreRecords)
                 {
