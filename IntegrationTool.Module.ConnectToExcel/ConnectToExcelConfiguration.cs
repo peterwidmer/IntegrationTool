@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.ConnectToExcel
 {
+    public enum ExcelConnectionType
+    {
+        ExistingFileAndSheet, NewFileAndSheet
+    }
+
     public class ConnectToExcelConfiguration : ConnectionConfigurationBase, IConfigurationValidation
     {
         public string FilePath { get; set; }

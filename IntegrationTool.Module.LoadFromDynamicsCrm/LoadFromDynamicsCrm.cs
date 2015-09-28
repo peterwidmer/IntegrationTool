@@ -53,7 +53,23 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
 
         private void FetchXmlEntityCollectionRetrieved(EntityCollection retrievedEntityCollection)
         {
+            foreach (Entity entity in retrievedEntityCollection.Entities)
+            {
+                foreach (var attribute in entity.Attributes)
+                {
+                    if (datastore.Metadata.ContainsColumn(attribute.Key) == false)
+                    {
+                        datastore.AddColumn(new ColumnMetadata(attribute.Key));
+                    }
+                }
 
+                object[] data = new object[datastore.Metadata.Columns.Count];
+                foreach (var attribute in entity.Attributes)
+                {
+                    data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
+                }
+                datastore.AddData(data);
+            }
         }
     }
 }

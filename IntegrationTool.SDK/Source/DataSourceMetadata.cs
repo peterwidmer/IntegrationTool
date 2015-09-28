@@ -41,5 +41,10 @@ namespace IntegrationTool.SDK
         {
             get { return this.Columns[columnName]; }
         }
+
+        public bool ContainsColumn(string columnName)
+        {
+            return this.Columns.ContainsKey(columnName);
+        }
     }
 }
