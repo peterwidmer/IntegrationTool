@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using IntegrationTool.Module.ConnectToExcel.UserControls;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,61 +23,26 @@ namespace IntegrationTool.Module.ConnectToExcel
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        private ConnectToExcelConfiguration configuration;
+
         public ConfigurationWindow(ConnectToExcelConfiguration configuration)
         {
             InitializeComponent();
-            this.DataContext = configuration;
-            if(String.IsNullOrEmpty(configuration.FilePath) == false)
-            {
-                InitializeConnection(configuration.FilePath);
-            }
-
-            if(String.IsNullOrEmpty(configuration.SheetName) == false)
-            {
-                ddSheetsInWorkbook.SelectedItem = ddSheetsInWorkbook.Items.Cast<string>().
-                                                            Where(t => t == configuration.SheetName).FirstOrDefault();
-            }
-            
+            this.DataContext = this.configuration = configuration;   
         }
 
-        private void btnOpenFileDialog_Click(object sender, RoutedEventArgs e)
+        private void ddConnectionType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog fileBrowserDialog = new System.Windows.Forms.OpenFileDialog();
-            if (fileBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            switch(this.configuration.ConnectionType)
             {
-                InitializeConnection(fileBrowserDialog.FileName);                
-            }
-        }
+                case ExcelConnectionType.ExistingFileAndSheet:
+                    ConfigurationContent.Content = new ExistingFileAndSheetControl(this.configuration);
+                    break;
 
-        private void InitializeConnection(string fileName)
-        {
-            FileInfo file = new FileInfo(fileName);
-            if (file.Exists == false)
-            {
-                MessageBox.Show("Could not load selected excelsheet!");
-                return;
+                case ExcelConnectionType.NewFileAndSheet:
+                    ConfigurationContent.Content = new NewFileAndSheetControl(this.configuration);
+                    break;
             }
-
-            try
-            {
-                tbExcelsheetFilePath.Text = fileName;
-
-                ExcelPackage pck = new ExcelPackage(file);
-                ddSheetsInWorkbook.Items.Clear();
-                foreach (var sheet in pck.Workbook.Worksheets)
-                {
-                    ddSheetsInWorkbook.Items.Add(sheet.Name);
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Error when loading excelsheet: " + ex.Message);
-            }
-        }
-
-        private void ddSheetsInWorkbook_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ((ConnectToExcelConfiguration)this.DataContext).SheetName = ddSheetsInWorkbook.SelectedItem as string;
         }
     }
 }

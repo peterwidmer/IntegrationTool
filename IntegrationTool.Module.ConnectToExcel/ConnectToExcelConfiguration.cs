@@ -19,6 +19,8 @@ namespace IntegrationTool.Module.ConnectToExcel
 
         public string SheetName { get; set; }
 
+        public ExcelConnectionType ConnectionType { get; set; }
+
         public ConfigurationValidationResult ValidateConfiguration()
         {
             ConfigurationValidationResult validationResult = new ConfigurationValidationResult();

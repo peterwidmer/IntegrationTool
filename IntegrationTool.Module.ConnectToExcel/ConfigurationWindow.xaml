@@ -13,18 +13,21 @@
             <ColumnDefinition Width="36"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="0"/>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="23"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="23"/>
-            <RowDefinition Height="223*"/>
+            <RowDefinition Height="122*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <Label Content="Path to Excelsheet" Grid.Row="1" Grid.Column="0"/>
-        <TextBox x:Name="tbExcelsheetFilePath" Grid.Column="1" Grid.Row="1" Text="{Binding Path=FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        <Button x:Name="btnOpenFileDialog" Content="..." Grid.Column="3" Grid.Row="1"  Margin="0,2,0,0" Click="btnOpenFileDialog_Click"/>
-        <Label Content="Select Sheet" Grid.Column="0" Grid.Row="3"/>
-        <ComboBox x:Name="ddSheetsInWorkbook" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" SelectionChanged="ddSheetsInWorkbook_SelectionChanged"/>
+        <Label Content="Select Sheet" Grid.Column="0" Grid.Row="6" Margin="0,1,0,9"/>
+        <Label Content="Type" Grid.Row="3"/>
+        <ComboBox x:Name="ddConnectionType" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" SelectedValue="{Binding Path=ConnectionType}" SelectedValuePath="Tag" SelectionChanged="ddConnectionType_SelectionChanged" >
+            <ComboBoxItem Content="Connect to existing excelsheet" Tag="ExistingFileAndSheet" />
+            <ComboBoxItem Content="Create always new excelsheet" Tag="NewFileAndSheet" />
+        </ComboBox>
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="5" Grid.ColumnSpan="4"/>
 
     </Grid>
 </UserControl>
