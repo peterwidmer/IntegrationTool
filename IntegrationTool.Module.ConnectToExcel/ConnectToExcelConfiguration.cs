@@ -15,7 +15,12 @@ namespace IntegrationTool.Module.ConnectToExcel
 
     public class ConnectToExcelConfiguration : ConnectionConfigurationBase, IConfigurationValidation
     {
+        /// <summary>
+        /// Depending on connectiontype this is either the full filepath or the folderpath
+        /// </summary>
         public string FilePath { get; set; }
+
+        public string FileName { get; set; }
 
         public string SheetName { get; set; }
 

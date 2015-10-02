@@ -27,5 +27,14 @@ namespace IntegrationTool.Module.ConnectToExcel.UserControls
             InitializeComponent();
             this.DataContext = this.configuration = configuration;
         }
+
+        private void btnOpenFolderDialog_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.FolderBrowserDialog folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            if(folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                tbExcelsheetFilePath.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
     }
 }

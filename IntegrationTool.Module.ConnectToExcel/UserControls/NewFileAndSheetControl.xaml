@@ -6,6 +6,29 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="36"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="199*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Label Content="Path to Excelsheet" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="tbExcelsheetFilePath" Grid.Column="1" Grid.Row="0" Text="{Binding Path=FilePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0"/>
+        <Button x:Name="btnOpenFolderDialog" Content="..." Grid.Column="3" Grid.Row="0"  Margin="0,2,0,0" Click="btnOpenFolderDialog_Click"/>
+        <Label Content="Filename (.xlsx)" Grid.Row="2"/>
+        <TextBox Grid.ColumnSpan="3" Grid.Column="1" Grid.Row="2" Text="{Binding Path=FileName}" />
+        <Label Content="Sheetname" Grid.Column="0" Grid.Row="4"/>
+        <TextBox x:Name="tbExcelsheetName" Text="{Binding Path=SheetName}" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" />
+        
     </Grid>
 </UserControl>
