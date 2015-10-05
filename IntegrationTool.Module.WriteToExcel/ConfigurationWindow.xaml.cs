@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK.Database;
+﻿using IntegrationTool.Module.WriteToExcel.UserControls;
+using IntegrationTool.SDK.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,16 @@ namespace IntegrationTool.Module.WriteToExcel
             InitializeComponent();
             this.dataObject = dataObject;
             this.configuration = configuration;
+        }
+
+        private void ddWriteType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (this.configuration.WriteType)
+            {
+                case WriteToExcelType.Simple:
+                    this.ConfigurationContent.Content = new SimpleExcelTarget();
+                    break;
+            }
         }
     }
 }

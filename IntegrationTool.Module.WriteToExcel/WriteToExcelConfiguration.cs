@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.WriteToExcel
 {
+    public enum WriteToExcelType
+    {
+        Simple
+    }
+
     public class WriteToExcelConfiguration : TargetConfiguration
     {
+        public WriteToExcelType WriteType { get; set; }
     }
 }

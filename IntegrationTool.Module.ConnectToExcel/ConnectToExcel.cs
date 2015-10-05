@@ -39,6 +39,7 @@ namespace IntegrationTool.Module.ConnectToExcel
                     return worksheet;
 
                 case ExcelConnectionType.NewFileAndSheet:
+                    this.Configuration.FilePath = this.Configuration.FilePath.TrimEnd('\\') + "\\";
                     string fullFilePath = this.Configuration.FilePath + this.Configuration.FileName;
                     if (File.Exists(fullFilePath))
                     {
@@ -50,9 +51,10 @@ namespace IntegrationTool.Module.ConnectToExcel
                     newPackage.Save();
 
                     return newWorksheet;
-            }
 
-            throw new NotImplementedException();
+                default:
+                    throw new InvalidOperationException("Invalid ConnectionType passed.");
+            }
             
         }
 

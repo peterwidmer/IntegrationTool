@@ -6,6 +6,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="305*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Configuration-Type:" Grid.Row="0"/>
+        <ComboBox x:Name="ddWriteType" SelectedValue="{Binding Path=WriteType}" SelectedValuePath="Tag" Grid.Column="1" Grid.Row="0" SelectionChanged="ddWriteType_SelectionChanged"  >
+            <ComboBoxItem Content="Simple" Tag="Simple" />
+        </ComboBox>
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="2" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>
