@@ -34,13 +34,23 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             foreach (var column in mappings)
             {
                 AttributeMetadata attributeMetadata = entityMetadata.Attributes.Where(t => t.LogicalName == column.Target).First();
-                attributeMetadataDictionary.Add(attributeMetadata.LogicalName, attributeMetadata);
+                if (attributeMetadataDictionary.ContainsKey(attributeMetadata.LogicalName) == false)
+                {
+                    attributeMetadataDictionary.Add(attributeMetadata.LogicalName, attributeMetadata);
+                }
             }
 
             columnMetadataDictionary = new Dictionary<string, ColumnMetadata>();
             foreach(var column in dataMetadata.Columns.Values)
             {
-                columnMetadataDictionary.Add(column.ColumnName, column);
+                if (columnMetadataDictionary.ContainsKey(column.ColumnName) == false)
+                {
+                    columnMetadataDictionary.Add(column.ColumnName, column);
+                }
+                else
+                {
+                    throw new Exception("Column " + column.ColumnName + " exists twice. Please make sure the columnnames are unique!");
+                }
             }
         }
     }

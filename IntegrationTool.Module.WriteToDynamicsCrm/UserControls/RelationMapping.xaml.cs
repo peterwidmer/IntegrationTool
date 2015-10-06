@@ -49,7 +49,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
 
             foreach(var relation in entityMetadata.ManyToOneRelationships.OrderBy(t=> t.ReferencingAttribute))
             {
-                if (relationAttributes.Contains(relation.ReferencedAttribute))
+                if (relationAttributes.Contains(relation.ReferencingAttribute))
                 {
                     continue;
                 }
