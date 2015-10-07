@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="EPPlus">
       <HintPath>..\References\EPPlus.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

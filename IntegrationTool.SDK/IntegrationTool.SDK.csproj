@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\References\EPPlus.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -116,6 +120,7 @@
     <Compile Include="Controls\Generic\LoadingControl.xaml.cs">
       <DependentUpon>LoadingControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExcelConnectionObject.cs" />
     <Compile Include="Logging\ILogRendering.cs" />
     <Compile Include="Logging\ItemLog.cs" />
     <Compile Include="Module\ModuleAttributes\ConnectionModuleAttribute.cs" />

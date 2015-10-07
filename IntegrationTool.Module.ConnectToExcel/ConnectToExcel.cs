@@ -1,5 +1,6 @@
 ﻿using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.Helpers;
 using IntegrationTool.SDK.Module.ModuleAttributes;
 using OfficeOpenXml;
 using System;
@@ -36,7 +37,11 @@ namespace IntegrationTool.Module.ConnectToExcel
                     if (worksheet == null)
                         throw new Exception("Sheet with name " + this.Configuration.SheetName + " could not be found");
 
-                    return worksheet;
+                    return new ExcelConnectionObject()
+                    {
+                        Package = pck,
+                        Worksheet = worksheet
+                    };
 
                 case ExcelConnectionType.NewFileAndSheet:
                     this.Configuration.FilePath = this.Configuration.FilePath.TrimEnd('\\') + "\\";
@@ -48,9 +53,12 @@ namespace IntegrationTool.Module.ConnectToExcel
 
                     ExcelPackage newPackage = new ExcelPackage(new FileInfo(fullFilePath));
                     var newWorksheet = newPackage.Workbook.Worksheets.Add(this.Configuration.SheetName);
-                    newPackage.Save();
 
-                    return newWorksheet;
+                    return new ExcelConnectionObject()
+                    {
+                        Package = newPackage,
+                        Worksheet = newWorksheet
+                    };
 
                 default:
                     throw new InvalidOperationException("Invalid ConnectionType passed.");

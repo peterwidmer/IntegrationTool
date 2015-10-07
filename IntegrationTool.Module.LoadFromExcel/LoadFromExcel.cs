@@ -1,5 +1,6 @@
 ﻿using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.Helpers;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,8 @@ namespace IntegrationTool.Module.LoadFromExcel
 
         public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
         {
-            ExcelWorksheet worksheet = (ExcelWorksheet)connection.GetConnection();
+            ExcelConnectionObject excelConnection = (ExcelConnectionObject)connection.GetConnection();
+            ExcelWorksheet worksheet = excelConnection.Worksheet;
 
             for(int rowNumber=1; rowNumber <= worksheet.Dimension.End.Row; rowNumber++)
             {
