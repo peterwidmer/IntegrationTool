@@ -220,6 +220,9 @@
       <Component Id="ModuleComponent_DeleteInDynamicsCrm" Win64="yes">
         <File Id="ModuleComponent_DeleteInDynamicsCrm.dll" Source="$(var.IntegrationTool.Module.DeleteInDynamicsCrm.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_WriteToExcel" Win64="yes">
+        <File Id="ModuleComponent_WriteToExcel.dll" Source="$(var.IntegrationTool.Module.WriteToExcel.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 	</Fragment>
 </Wix>

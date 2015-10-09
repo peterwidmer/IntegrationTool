@@ -134,6 +134,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.Load
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.WriteToExcel", "IntegrationTool.Module.WriteToExcel\IntegrationTool.Module.WriteToExcel.csproj", "{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.LoadFromCSV", "IntegrationTool.Module.LoadFromCSV\IntegrationTool.Module.LoadFromCSV.csproj", "{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -584,6 +586,16 @@ Global
 		{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355}.Release|x86.ActiveCfg = Release|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -628,5 +640,6 @@ Global
 		{5692A5A6-41C0-49ED-BCE8-D1BC3F4F8938} = {D2621EB1-4E86-45FA-9900-A5F69FA4E36B}
 		{109CA0CC-E8E3-4D35-8622-C3A60BCA2A82} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 		{6E9E43F1-8E86-4F2F-A7A9-E9AEA2F4A355} = {E33D817F-B24A-448D-9181-5EC51753A901}
+		{CC6225EB-311C-4F61-8A3B-C6501DDB2CCE} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 	EndGlobalSection
 EndGlobal
