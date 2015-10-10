@@ -26,6 +26,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{B02585DE-0A12-41D1-8E27-CB03F6FBB91F}"
 	ProjectSection(SolutionItems) = preProject
 		References\CommandLine.dll = References\CommandLine.dll
+		References\CsvHelper.dll = References\CsvHelper.dll
 		References\EPPlus.dll = References\EPPlus.dll
 		References\Microsoft.Crm.Sdk.Proxy.dll = References\Microsoft.Crm.Sdk.Proxy.dll
 		References\Microsoft.Xrm.Client.dll = References\Microsoft.Xrm.Client.dll

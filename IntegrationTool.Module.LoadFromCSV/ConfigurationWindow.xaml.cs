@@ -20,9 +20,12 @@ namespace IntegrationTool.Module.LoadFromCSV
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        public ConfigurationWindow()
+        private LoadFromCSVConfiguration loadFromCSVConfiguration;
+
+        public ConfigurationWindow(LoadFromCSVConfiguration loadFromCSVConfiguration)
         {
             InitializeComponent();
+            this.DataContext = this.loadFromCSVConfiguration = loadFromCSVConfiguration;
         }
     }
 }

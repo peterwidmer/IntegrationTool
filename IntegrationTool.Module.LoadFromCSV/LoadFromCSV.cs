@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using CsvHelper;
+using IntegrationTool.SDK;
 using IntegrationTool.SDK.ConfigurationsBase;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,35 @@ namespace IntegrationTool.Module.LoadFromCSV
 
         public System.Windows.Controls.UserControl RenderConfigurationWindow(ConfigurationBase configurationBase, SDK.Database.IDatastore dataObject)
         {
-            throw new NotImplementedException();
+            ConfigurationWindow configurationWindow = new ConfigurationWindow((LoadFromCSVConfiguration)configurationBase);
+            return configurationWindow;
         }
 
         public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
         {
-            throw new NotImplementedException();
+            using (StringReader stringReader = connection.GetConnection() as StringReader)
+            {
+                var reader = new CsvReader(stringReader);
+                while (reader.Read())
+                {
+                    // Read the metadata from the source
+                    if (datastore.Count == 0)
+                    {
+                        for (int i = 0; i < reader.FieldHeaders.Length; i++)
+                        {
+                            datastore.AddColumn(new ColumnMetadata(reader.FieldHeaders[i]));
+                        }
+                    }
+
+                    // Add data to the datastore
+                    object[] data = new object[reader.FieldHeaders.Length];
+                    for (int dataIndex = 0; dataIndex < reader.FieldHeaders.Length; dataIndex++)
+                    {
+                        data[dataIndex] = reader.GetField(dataIndex);
+                    }
+                    datastore.AddData(data);
+                }
+            }
         }
     }
 }
