@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper">
+      <HintPath>..\References\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -52,13 +55,40 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Test_LoadFromExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test_LoadFromCSV.cs" />
+    <Compile Include="Test_LoadFromDynamicsCRM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToDynamicsCrm\IntegrationTool.Module.ConnectToDynamicsCrm.csproj">
+      <Project>{42d951a0-a901-4bce-ac49-b735c1ff99ca}</Project>
+      <Name>IntegrationTool.Module.ConnectToDynamicsCrm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToExcel\IntegrationTool.Module.ConnectToExcel.csproj">
       <Project>{78ab131a-7b8e-40ed-b8cd-861c274cf14d}</Project>
       <Name>IntegrationTool.Module.ConnectToExcel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToTextFile\IntegrationTool.Module.ConnectToTextFile.csproj">
+      <Project>{3a4d2e2c-ade3-4d22-a065-ad8f406a7b3f}</Project>
+      <Name>IntegrationTool.Module.ConnectToTextFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
+      <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
+      <Name>IntegrationTool.Module.CrmWrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromCSV\IntegrationTool.Module.LoadFromCSV.csproj">
+      <Project>{cc6225eb-311c-4f61-8a3b-c6501ddb2cce}</Project>
+      <Name>IntegrationTool.Module.LoadFromCSV</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromDynamicsCrm\IntegrationTool.Module.LoadFromDynamicsCrm.csproj">
+      <Project>{109ca0cc-e8e3-4d35-8622-c3a60bca2a82}</Project>
+      <Name>IntegrationTool.Module.LoadFromDynamicsCrm</Name>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromExcel\IntegrationTool.Module.LoadFromExcel.csproj">
       <Project>{fed4145d-5fe4-4fdf-a11f-d637df37721f}</Project>
@@ -70,6 +100,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="TestData\LoadFromCSV\TestCSV.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TestData\LoadFromExcel\TestData.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="IntegrationTool.UnitTests.Sources.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CrmConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Url=http://devserv/DataProc; Domain=DEV; Username=johntest; Password=12ab!12ab;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

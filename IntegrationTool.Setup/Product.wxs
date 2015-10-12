@@ -106,6 +106,9 @@
       <Component Id="MainComponent_System_Data_SQLite" Win64="yes">
         <File Id="MainComponent_System.Data.SQLite.dll" Source="..\References\System.Data.SQLite.dll" KeyPath="yes" />
       </Component>
+      <Component Id="MainComponent_CsvHelper" Win64="yes">
+        <File Id="MainComponent_CsvHelper.dll" Source="..\References\CsvHelper.dll" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 
     <!-- Startmenu entries -->

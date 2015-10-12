@@ -13,7 +13,7 @@ namespace IntegrationTool.UnitTests.Sources
     public class Test_LoadFromExcel
     {
         [TestMethod]
-        public void GeneralLoadTest()
+        public void GeneralLoadTestExcel()
         {
             ConnectToExcelConfiguration configuration = new ConnectToExcelConfiguration();
             configuration.FilePath = @"TestData\LoadFromExcel\TestData.xlsx";
