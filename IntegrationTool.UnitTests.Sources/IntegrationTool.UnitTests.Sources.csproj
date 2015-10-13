@@ -40,7 +40,14 @@
     <Reference Include="CsvHelper">
       <HintPath>..\References\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xrm.Client">
+      <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk">
+      <HintPath>..\References\Microsoft.Xrm.Sdk.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

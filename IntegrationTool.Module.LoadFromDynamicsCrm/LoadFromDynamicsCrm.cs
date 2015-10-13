@@ -66,7 +66,14 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                 object[] data = new object[datastore.Metadata.Columns.Count];
                 foreach (var attribute in entity.Attributes)
                 {
-                    data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
+                    if (attribute.Value as AliasedValue == null)
+                    {
+                        data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
+                    }
+                    else
+                    {
+                        data[datastore.Metadata[attribute.Key].ColumnIndex] = ((AliasedValue)attribute.Value).Value;
+                    }
                 }
                 datastore.AddData(data);
             }
