@@ -40,6 +40,9 @@
     <Reference Include="CsvHelper">
       <HintPath>..\References\CsvHelper.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\References\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xrm.Client">
       <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
     </Reference>

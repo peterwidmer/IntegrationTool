@@ -87,6 +87,10 @@
       <Project>{329f3ea9-9ea5-4610-9fde-e8169282b022}</Project>
       <Name>IntegrationTool.ApplicationCore</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
+      <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
+      <Name>IntegrationTool.DataMappingControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.DBAccess\IntegrationTool.DBAccess.csproj">
       <Project>{953f8dc5-dd92-4b2b-be8e-72fbaffa8420}</Project>
       <Name>IntegrationTool.DBAccess</Name>
