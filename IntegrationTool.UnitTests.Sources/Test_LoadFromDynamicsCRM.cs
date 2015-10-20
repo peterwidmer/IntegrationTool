@@ -61,6 +61,8 @@ namespace IntegrationTool.UnitTests.Sources
                     "<entity name=\"contact\">" +
                     "<attribute name=\"fullname\" />" +
                     "<attribute name=\"contactid\" />" +
+                    "<attribute name=\"parentcustomerid\"/>" +
+                    "<attribute name=\"leadsourcecode\"/>" +
                     "<order attribute=\"fullname\" descending=\"false\" />" +
                     "<filter type=\"and\">" +
                     "<condition attribute=\"firstname\" operator=\"eq\" value=\"" + contactName1 +"\" />" +
