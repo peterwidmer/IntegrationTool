@@ -35,6 +35,11 @@ namespace IntegrationTool.Module.LoadFromCSV
             using (StringReader stringReader = connection.GetConnection() as StringReader)
             {
                 var reader = new CsvReader(stringReader);
+                reader.Configuration.Delimiter = this.Configuration.Delimiter;
+                reader.Configuration.Comment = this.Configuration.Comment[0];
+                reader.Configuration.Quote = this.Configuration.Quote[0];
+                reader.Configuration.QuoteAllFields = this.Configuration.QuoteAllFields;
+
                 while (reader.Read())
                 {
                     // Read the metadata from the source
