@@ -18,7 +18,8 @@ namespace IntegrationTool.UnitTests.Sources
 
             IConnection csvConnection = new ConnectToTextFile() { Configuration = configuration };
 
-            IDataSource loadFromCSV = new LoadFromCSV();
+            LoadFromCSV loadFromCSV = new LoadFromCSV();
+            loadFromCSV.SetConfiguration(new LoadFromCSVConfiguration());
 
             IDatastore dataObject = new DataObject();
             loadFromCSV.LoadData(csvConnection, dataObject, ReportProgressMethod);

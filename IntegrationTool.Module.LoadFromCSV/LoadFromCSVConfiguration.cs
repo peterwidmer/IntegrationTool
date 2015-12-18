@@ -13,5 +13,13 @@ namespace IntegrationTool.Module.LoadFromCSV
         public string Comment { get; set; }
         public string Quote { get; set; }
         public bool QuoteAllFields { get; set; }
+
+        public LoadFromCSVConfiguration()
+        {
+            this.Delimiter = ",";
+            this.Comment = "#";
+            this.Quote = "\"";
+            this.QuoteAllFields = false;
+        }
     }
 }
