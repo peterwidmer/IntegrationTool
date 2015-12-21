@@ -168,6 +168,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromCSV\IntegrationTool.Module.LoadFromCSV.csproj">
+      <Name>IntegrationTool.Module.LoadFromCSV</Name>
+      <Project>{cc6225eb-311c-4f61-8a3b-c6501ddb2cce}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromDynamicsCrm\IntegrationTool.Module.LoadFromDynamicsCrm.csproj">
       <Name>IntegrationTool.Module.LoadFromDynamicsCrm</Name>
       <Project>{109ca0cc-e8e3-4d35-8622-c3a60bca2a82}</Project>
