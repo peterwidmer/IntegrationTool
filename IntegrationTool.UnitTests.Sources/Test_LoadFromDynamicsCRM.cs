@@ -31,7 +31,7 @@ namespace IntegrationTool.UnitTests.Sources
         {
             CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
             IOrganizationService service = new OrganizationService(crmConnection);
-
+            
             Guid account1 = CreateAccount1(service);
 
             string contactName1 = Guid.NewGuid().ToString();
