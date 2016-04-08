@@ -219,12 +219,19 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         void subFlowDesigner_SubflowMagnifyIconDoubleClick(object sender, EventArgs e)
         {
-            DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
-            SubFlowExecution subFlowExecution = GetSubflowExecution();
-            IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
+            try
+            {
+                DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
+                SubFlowExecution subFlowExecution = GetSubflowExecution();
+                IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
 
-            DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStore);
-            dataPreviewWindow.Show();
+                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStore);
+                dataPreviewWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                HandleWindowOpenExceptions(ex);
+            }
         }
 
         private StepConfigurationBase GetStepConfiguration(Guid designerItemId, ModuleDescription itemModuleDescription, Package package)
@@ -242,25 +249,37 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         void subFlowDesigner_DesignerItemDoubleClick(object sender, EventArgs e)
         {
-            DesignerItem designerItem = sender as DesignerItem;
-
-            StepConfigurationBase configuration = GetStepConfiguration(designerItem.ID, designerItem.ModuleDescription, this.Package);
-
-            SaveSubflowConfiguration();
-
-            SubFlowExecution subFlowExecution = GetSubflowExecution();
-
-            Guid loadUntilDesignerItemId = designerItem.ID;
-            ConnectionBase incomingConnection = subFlowExecution.designerConnections.Where(t => t.SinkID == designerItem.ID).FirstOrDefault();
-            if (incomingConnection != null)
+            try
             {
-                loadUntilDesignerItemId = incomingConnection.SourceID;
+                DesignerItem designerItem = sender as DesignerItem;
+
+                StepConfigurationBase configuration = GetStepConfiguration(designerItem.ID, designerItem.ModuleDescription, this.Package);
+
+                SaveSubflowConfiguration();
+
+                SubFlowExecution subFlowExecution = GetSubflowExecution();
+
+                Guid loadUntilDesignerItemId = designerItem.ID;
+                ConnectionBase incomingConnection = subFlowExecution.designerConnections.Where(t => t.SinkID == designerItem.ID).FirstOrDefault();
+                if (incomingConnection != null)
+                {
+                    loadUntilDesignerItemId = incomingConnection.SourceID;
+                }
+                IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
+
+                ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
+
+                ShowConfiguationWindow(configurationWindowSettings);
             }
-            IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
+            catch(Exception ex)
+            {
+                HandleWindowOpenExceptions(ex);
+            }
+        }
 
-            ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
-
-            ShowConfiguationWindow(configurationWindowSettings);
+        public void HandleWindowOpenExceptions(Exception ex)
+        {
+            MessageBox.Show(ex.ToString());
         }
 
         void ShowConfiguationWindow(ConfigurationWindowSettings configurationWindowSettings)
@@ -300,16 +319,23 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         void mainFlowDesigner_DesignerItemDoubleClick(object sender, EventArgs e)
         {
-            doubleClickedMainflowDesignerItem = sender as DesignerItem;
-            if (doubleClickedMainflowDesignerItem.ModuleDescription.Attributes.ContainsSubConfiguration)
+            try
             {
-                packageDesignerTabControl.SelectedIndex = 1;
+                doubleClickedMainflowDesignerItem = sender as DesignerItem;
+                if (doubleClickedMainflowDesignerItem.ModuleDescription.Attributes.ContainsSubConfiguration)
+                {
+                    packageDesignerTabControl.SelectedIndex = 1;
+                }
+                else
+                {
+                    StepConfigurationBase configuration = GetStepConfiguration(doubleClickedMainflowDesignerItem.ID, doubleClickedMainflowDesignerItem.ModuleDescription, this.Package);
+                    ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(doubleClickedMainflowDesignerItem, configuration, this.moduleLoader, null, Connections);
+                    ShowConfiguationWindow(configurationWindowSettings);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                StepConfigurationBase configuration = GetStepConfiguration(doubleClickedMainflowDesignerItem.ID, doubleClickedMainflowDesignerItem.ModuleDescription, this.Package);
-                ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(doubleClickedMainflowDesignerItem, configuration, this.moduleLoader, null, Connections);
-                ShowConfiguationWindow(configurationWindowSettings);
+                HandleWindowOpenExceptions(ex);
             }
         }
 
