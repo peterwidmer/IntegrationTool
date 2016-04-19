@@ -80,6 +80,11 @@ namespace IntegrationTool.ProjectDesigner.FlowDesign
 
         private void StartDrag(MouseEventArgs e)
         {
+            if (_dragTreeviewItem == null)
+            {
+                return;
+            }
+
             IsDragging = true;
             DragObject dragObject = new DragObject();
             dragObject.ModuleDescription = _dragTreeviewItem.Tag as ModuleDescription;

@@ -24,6 +24,7 @@ namespace IntegrationTool.Flowmanagement
         public event EventHandler DesignerItemStart;
         public event EventHandler DesignerItemStop;
         public event EventHandler ProgressReport;
+        public event EventHandler RunCompleted;
 
         private IProgress<ProgressReport> progress;
 
@@ -175,6 +176,10 @@ namespace IntegrationTool.Flowmanagement
                     List<ItemWorker> unfinishedItemWorkers = itemWorkers.Where(t => t.State != ItemState.Stopped && t.State != ItemState.Error && t.State != ItemState.NotExecuted).ToList();
                     if (unfinishedItemWorkers.Count == 0)
                     {
+                        if (RunCompleted != null)
+                        {
+                            RunCompleted(this, new EventArgs());
+                        }
                         break;
                     }
 

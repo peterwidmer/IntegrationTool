@@ -73,6 +73,12 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
+            if(ddSelectConnection.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a connection before saving!", "Information");
+                return;
+            }
+
             bool validationSuccessful = ConfigurationValidationHelper.ValidateCurrentConfiguration(ConfigurationWindowSettings.configuration);            
             if (validationSuccessful)
             {

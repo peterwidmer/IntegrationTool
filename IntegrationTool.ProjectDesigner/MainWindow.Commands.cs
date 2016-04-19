@@ -181,6 +181,10 @@ namespace IntegrationTool.ProjectDesigner
 
         void packageOverview_ProgressReport(object sender, EventArgs e)
         {
+            if(this.mainWindowContent.Content as Screens.PackageOverview == null)
+            {
+                return;
+            }
             ProgressReport d = sender as ProgressReport;
 
             ((Screens.PackageOverview)this.mainWindowContent.Content).PackageRunStatus.AddStatusMessage(d);

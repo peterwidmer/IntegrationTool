@@ -116,6 +116,7 @@
     <Compile Include="Screens\LogOverview.xaml.cs">
       <DependentUpon>LogOverview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\PackageOverview.Commands.cs" />
     <Compile Include="Screens\PackageOverview.xaml.cs">
       <DependentUpon>PackageOverview.xaml</DependentUpon>
     </Compile>

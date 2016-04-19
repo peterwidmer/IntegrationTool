@@ -35,6 +35,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
     /// </summary>
     public partial class PackageOverview : UserControl
     {
+        public RoutedCommand RunPackage = new RoutedCommand();
         public event EventHandler BackButtonClicked;
         public event EventHandler ProgressReport;
 
@@ -50,6 +51,10 @@ namespace IntegrationTool.ProjectDesigner.Screens
         public PackageOverview(ModuleLoader moduleLoader, ObservableCollection<ConnectionConfigurationBase> connections, Package package)
         {
             InitializeComponent();
+            
+            this.CommandBindings.Add(new CommandBinding(this.RunPackage, RunPackage_Executed, RunPackage_Enabled));
+            btnRunPackage.Command = RunPackage;
+
             this.moduleLoader = moduleLoader;
             this.Connections = connections;
             this.DataContext = this.Package = package;
@@ -419,35 +424,10 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         private void btnRunPackage_Click(object sender, RoutedEventArgs e)
         {
-            if (mainFlowContent.Content == null)
-            {
-                return;
-            }
-
-            SaveDiagram();            
-
-            FlowManager flowManager = new FlowManager(this.Connections, this.moduleLoader.Modules,  this.Package);
-
-            FlowDesign.FlowDesigner mainFlowDesigner = mainFlowContent.Content as FlowDesign.FlowDesigner;
-            mainFlowDesigner.MyDesigner.ExecuteFlow(flowManager);
-            flowManager.DesignerItemStart += flowManager_ProgressReport;
-            flowManager.ProgressReport += flowManager_ProgressReport;
-            flowManager.DesignerItemStop += flowManager_ProgressReport;
-
-            AdditionalInfosArea.Height = new GridLength(120);
-
-            RunLog runLog = new RunLog();
-            this.Package.ParentProject.RunLogs.Add(runLog);
-            flowManager.Run(runLog);
+            
         }
 
-        void flowManager_ProgressReport(object sender, EventArgs e)
-        {
-            if(ProgressReport != null)
-            {
-                ProgressReport(sender, e);
-            }
-        }
+        
         
     }
 }

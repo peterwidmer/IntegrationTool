@@ -71,7 +71,7 @@ namespace IntegrationTool.ApplicationCore
         public IDatastore GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
         {
             // Get source
-            DesignerItemBase sourceItem = this.designerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Source).FirstOrDefault();
+            DesignerItemBase sourceItem = this.designerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Source);
             if (sourceItem == null)
             {
                 throw new Exception("Could not find any sources to load data!");

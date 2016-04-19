@@ -3,7 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:UserControls="clr-namespace:IntegrationTool.ProjectDesigner.Screens.UserControls" x:Class="IntegrationTool.ProjectDesigner.Screens.PackageOverview" 
+
+             xmlns:UserControls="clr-namespace:IntegrationTool.ProjectDesigner.Screens.UserControls" 
+             xmlns:scr="clr-namespace:IntegrationTool.ProjectDesigner.Screens"
+             x:Class="IntegrationTool.ProjectDesigner.Screens.PackageOverview" 
              mc:Ignorable="d" d:DesignHeight="412" d:DesignWidth="686">
 
     <Grid>
@@ -25,7 +28,7 @@
                     VerticalAlignment="Stretch" HorizontalAlignment="Right" Grid.RowSpan="3"/>
         <GridSplitter x:Name="propertiesSplitter" Focusable="False" Height="1" Margin="0 0 5 0" Background="LightGray"
                     VerticalAlignment="Top" HorizontalAlignment="Stretch" Grid.Row="4" Grid.ColumnSpan="1" Visibility="Hidden"/>
-
+       
         <TabControl x:Name="packageDesignerTabControl" Grid.Row="1" SelectionChanged="packageDesignerTabControl_SelectionChanged" Grid.Column="1" Grid.RowSpan="4" >
             <TabItem x:Name="mainFlowTab" Header="Main Flow">
                 <ContentControl x:Name="mainFlowContent" />
@@ -50,7 +53,7 @@
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="22" />
                 </Grid.ColumnDefinitions>
-                <Label Foreground="White"  FontSize="16" Grid.Column="1" Content="▶" Margin="10 -2 -30 0" Padding="0 0 0 0" />
+                <Label Foreground="White" FontSize="16" Grid.Column="1" Content="▶" Margin="10 -2 -30 0" Padding="0 0 0 0" />
                 <Label Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Grid.Column="0" Content=" Run Package" Margin="0 -2" Padding="0 0 0 0" />
             </Grid>
         </Button>
