@@ -111,10 +111,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                 string key = BuildExistingCheckKey(sourceEntities[i], primaryKeyAttributeMetadataDictionary);
                 DataCollection<Entity> entities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, this.entityMetadata.LogicalName, new ColumnSet(new string[] { this.entityMetadata.PrimaryIdAttribute }), conditions);
-                keyDictionary.Add(key, new Guid [entities.Count]);
-                for (int iRetrievedEntity = 0; iRetrievedEntity < entities.Count; iRetrievedEntity++)
+                if (keyDictionary.ContainsKey(key) == false)
                 {
-                    keyDictionary[key][iRetrievedEntity] = entities[iRetrievedEntity].Id;
+                    keyDictionary.Add(key, new Guid[entities.Count]);
+                    for (int iRetrievedEntity = 0; iRetrievedEntity < entities.Count; iRetrievedEntity++)
+                    {
+                        keyDictionary[key][iRetrievedEntity] = entities[iRetrievedEntity].Id;
+                    }
                 }
             }
 

@@ -12,10 +12,45 @@ namespace IntegrationTool.ProjectDesigner.Screens
 {
     public partial class PackageOverview
     {
+        public RoutedCommand RunPackage = new RoutedCommand();
+        public RoutedCommand GoBack = new RoutedCommand();
 
         private bool packageIsRunning;
 
+        public void InitializeCommands()
+        {
+            this.CommandBindings.Add(new CommandBinding(this.RunPackage, RunPackage_Executed, RunPackage_Enabled));
+            btnRunPackage.Command = this.RunPackage;
+
+            this.CommandBindings.Add(new CommandBinding(this.GoBack, GoBack_Executed, GoBack_Enabled));
+            btnBack.Command = this.GoBack;
+        }
+
         private void RunPackage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            ExecutePackageFlow();   
+        }
+
+        private void RunPackage_Enabled(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !packageIsRunning;
+        }
+
+        private void GoBack_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            SaveDiagram();
+            if (BackButtonClicked != null)
+            {
+                BackButtonClicked(sender, e);
+            }
+        }
+
+        private void GoBack_Enabled(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !packageIsRunning;
+        }
+
+        private void ExecutePackageFlow()
         {
             if (mainFlowContent.Content == null)
             {
@@ -51,11 +86,6 @@ namespace IntegrationTool.ProjectDesigner.Screens
             {
                 ProgressReport(sender, e);
             }
-        }
-
-        private void RunPackage_Enabled(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = !packageIsRunning;
         }
     }
 }

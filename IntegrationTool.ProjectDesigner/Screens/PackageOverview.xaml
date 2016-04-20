@@ -37,7 +37,7 @@
                 <ContentControl x:Name="subFlowContent" />
             </TabItem>
         </TabControl>
-        <Button x:Name="btnBack" Style="{StaticResource ButtonStyle}"  Padding="0 0 0 0" HorizontalAlignment="Left" Margin="18,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="26" Click="btnBack_Click">
+        <Button x:Name="btnBack" Style="{StaticResource ButtonStyle}"  Padding="0 0 0 0" HorizontalAlignment="Left" Margin="18,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Height="26">
             <Grid Margin="-5 0 0 0" Height="20" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="22" />
@@ -47,7 +47,7 @@
                 <Label Foreground="White" FontFamily="Segoe UI" FontWeight="Light" FontSize="16" Grid.Column="1" Content="Back" Margin="0 -2" Padding="0 0 0 0" />
             </Grid>
         </Button>
-        <Button x:Name="btnRunPackage" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Height="26" Grid.Row="1" VerticalAlignment="Top" Width="125" Click="btnRunPackage_Click" Margin="110,0,0,0" >
+        <Button x:Name="btnRunPackage" Style="{StaticResource ButtonStyle}" HorizontalAlignment="Left" Height="26" Grid.Row="1" VerticalAlignment="Top" Width="125" Margin="110,0,0,0" >
             <Grid Margin="-5 0 0 0" Height="20" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />

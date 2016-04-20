@@ -47,7 +47,7 @@ namespace IntegrationTool.UnitTests.Sources
             loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod);
 
             var firstObject = dataObject[0];
-            Assert.AreEqual<string>(contactName1, firstObject[0].ToString());
+            Assert.AreEqual<string>(contactName1, firstObject[dataObject.Metadata["firstname"].ColumnIndex].ToString());
 
             service.Delete("contact", contact1);
             service.Delete("account", account1);
@@ -59,7 +59,7 @@ namespace IntegrationTool.UnitTests.Sources
         {
             return "<fetch version=\"1.0\" output-format=\"xml-platform\" mapping=\"logical\" distinct=\"false\">" +
                     "<entity name=\"contact\">" +
-                    "<attribute name=\"fullname\" />" +
+                    "<attribute name=\"firstname\" />" +
                     "<attribute name=\"contactid\" />" +
                     "<attribute name=\"parentcustomerid\"/>" +
                     "<attribute name=\"leadsourcecode\"/>" +
@@ -67,7 +67,7 @@ namespace IntegrationTool.UnitTests.Sources
                     "<filter type=\"and\">" +
                     "<condition attribute=\"firstname\" operator=\"eq\" value=\"" + contactName1 +"\" />" +
                     "</filter>" +
-                    "<link-entity name=\"account\" from=\"accountid\" to=\"parentcustomerid\" visible=\"false\" link-type=\"outer\" alias=\"account_alias\">" +
+                    "<link-entity name=\"account\" from=\"accountid\" to=\"parentcustomerid\" visible=\"false\" alias=\"account_alias\">" +
                     "<attribute name=\"name\" />" +
                     "</link-entity>" +
                     "</entity>" +

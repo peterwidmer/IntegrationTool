@@ -81,6 +81,11 @@ namespace IntegrationTool.ApplicationCore
             IConnection connectionObject = objectResolver.GetConnection(sourceItem.ID);
             if(connectionObject == null)
             {
+                if(runLog != null)
+                {
+                    string label = String.IsNullOrEmpty(sourceItem.ItemLabel) ? "-- No Label --" : sourceItem.ItemLabel;
+                    throw new Exception("No connection was selected for the source '" + label + "'.");
+                }
                 return null;  // TODO Decide if dummy datastore should be returned!
             }
             IDatabaseInterface databaseInterface = null;            

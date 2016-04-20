@@ -92,6 +92,8 @@ namespace IntegrationTool.UnitTests.Targets
             dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
             dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, accountName1, "Inactive", new DateTime(2004, 12, 03) });
             dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null });
+            // Doublekey to test it works too
+            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
 
             IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
             module.SetConfiguration(writeToCrmConfig);

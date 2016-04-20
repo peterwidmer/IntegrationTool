@@ -35,7 +35,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
     /// </summary>
     public partial class PackageOverview : UserControl
     {
-        public RoutedCommand RunPackage = new RoutedCommand();
+        
         public event EventHandler BackButtonClicked;
         public event EventHandler ProgressReport;
 
@@ -51,9 +51,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
         public PackageOverview(ModuleLoader moduleLoader, ObservableCollection<ConnectionConfigurationBase> connections, Package package)
         {
             InitializeComponent();
-            
-            this.CommandBindings.Add(new CommandBinding(this.RunPackage, RunPackage_Executed, RunPackage_Enabled));
-            btnRunPackage.Command = RunPackage;
+            InitializeCommands();
 
             this.moduleLoader = moduleLoader;
             this.Connections = connections;
@@ -355,15 +353,6 @@ namespace IntegrationTool.ProjectDesigner.Screens
             SaveSubflowConfiguration();
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
-        {
-            SaveDiagram();
-            if(BackButtonClicked != null)
-            {
-                BackButtonClicked(sender, e);
-            }
-        }
-
         private void packageDesignerTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             switch(packageDesignerTabControl.SelectedIndex)
@@ -420,14 +409,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
                     }
                 }
             }
-        }
-
-        private void btnRunPackage_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        
+        }       
         
     }
 }
