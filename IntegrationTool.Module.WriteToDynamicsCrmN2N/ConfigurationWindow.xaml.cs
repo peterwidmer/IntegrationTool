@@ -46,7 +46,27 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
         void ddEntity1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ConfigurationContent.Content = new ConfigurationContent();
+            configuration.Entity1Name = ((ComboBoxItem)ddEntity1.SelectedItem).Content.ToString();
+            ConfigurationContent.Content = new LoadingControl();
+
+            BackgroundWorker bgwEntityChanged = new BackgroundWorker();
+            bgwEntityChanged.DoWork += bgwEntityChanged_DoWork;
+            bgwEntityChanged.RunWorkerCompleted += bgwEntityChanged_RunWorkerCompleted;
+            bgwEntityChanged.RunWorkerAsync(((ComboBoxItem)ddEntity1.SelectedItem).Content);
+        }
+
+        void bgwEntityChanged_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.entityMetadata = ((object[])e.Result)[0] as EntityMetadata;
+
+            ConfigurationContent.Content = new ConfigurationContent(this.configuration, entityMetadata, this.dataObject);
+        }
+
+        void bgwEntityChanged_DoWork(object sender, DoWorkEventArgs e)
+        {
+            string selectedEntity = e.Argument as string;
+            var entityMetaData = IntegrationTool.Module.Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(orgServiceInstance, selectedEntity);
+            e.Result = new object[] { entityMetaData };
         }
 
         public void ConnectionChanged(IConnection connection)

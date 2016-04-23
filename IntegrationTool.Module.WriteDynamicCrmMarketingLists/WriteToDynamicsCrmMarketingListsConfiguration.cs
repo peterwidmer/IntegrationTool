@@ -35,5 +35,11 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
         public List<DataMapping> ListMemberMapping { get; set; }
         public MarketinglistMemberType ListMemberType { get; set; }
 
+        public WriteToDynamicsCrmMarketingListsConfiguration()
+        {
+            this.ListMapping = new List<DataMapping>();
+            this.ListMemberMapping = new List<DataMapping>();
+        }
+
     }
 }

@@ -16,5 +16,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
         public List<DataMapping> Entity1Mapping { get; set; }
         public List<DataMapping> Entity2Mapping { get; set; }
+
+        public WriteToDynamicsCrmN2NConfiguration()
+        {
+            this.Entity1Mapping = new List<DataMapping>();
+            this.Entity2Mapping = new List<DataMapping>();
+        }
     }
 }

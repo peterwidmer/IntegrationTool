@@ -18,9 +18,9 @@
             <RowDefinition Height="4"/>
             <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        <DataMappingControl:MappingControl x:Name="entity1Mapping"  Grid.ColumnSpan="2"/>
+        <DataMappingControl:MappingControl x:Name="entity1MappingControl"  Grid.ColumnSpan="2"/>
         <Label Content="Entity 2" Grid.Row="2"/>
         <ComboBox x:Name="ddEntity2" Grid.Column="1" Margin="0,2,0,0" Grid.Row="2" />       
-        <DataMappingControl:MappingControl x:Name="entity2Mapping" Grid.Row="4"  Grid.ColumnSpan="2"/>
+        <DataMappingControl:MappingControl x:Name="entity2MappingControl" Grid.Row="4"  Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>
