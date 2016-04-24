@@ -59,7 +59,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
         {
             this.entityMetadata = ((object[])e.Result)[0] as EntityMetadata;
 
-            ConfigurationContent.Content = new ConfigurationContent(this.configuration, entityMetadata, this.dataObject);
+            ConfigurationContent.Content = new ConfigurationContent(this.configuration, this.orgServiceInstance, entityMetadata, this.dataObject);
         }
 
         void bgwEntityChanged_DoWork(object sender, DoWorkEventArgs e)
