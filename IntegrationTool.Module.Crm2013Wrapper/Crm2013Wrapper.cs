@@ -25,7 +25,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
         public static EntityMetadata GetEntityMetadata(IOrganizationService service, string entityName)
         {            
-            RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest()
+            var retrieveEntityRequest = new RetrieveEntityRequest()
             {
                 EntityFilters = EntityFilters.All,
                 LogicalName = entityName,
@@ -34,8 +34,24 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
             try
             {
-                RetrieveEntityResponse retrieveEntityResponse = (RetrieveEntityResponse)service.Execute(retrieveEntityRequest);
+                var retrieveEntityResponse = (RetrieveEntityResponse)service.Execute(retrieveEntityRequest);
                 return retrieveEntityResponse.EntityMetadata;
+            }
+            catch (FaultException<OrganizationServiceFault> ex)
+            {
+                throw new Exception("Error on loading metadata: " + ex.Detail.Message);
+            }
+        }
+
+        public static RelationshipMetadataBase GetRelationshipMetadata(IOrganizationService service, string relationshipName)
+        {
+            var retrieveRelationshipRequest = new RetrieveRelationshipRequest() { Name = relationshipName };
+
+            try
+            {
+                var retrieveRelationshipResponse = (RetrieveRelationshipResponse)service.Execute(retrieveRelationshipRequest);
+
+                return retrieveRelationshipResponse.RelationshipMetadata;
             }
             catch (FaultException<OrganizationServiceFault> ex)
             {

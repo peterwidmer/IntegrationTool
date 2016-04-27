@@ -71,7 +71,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
         void bgwEntity2Changed_DoWork(object sender, DoWorkEventArgs e)
         {
-            EntityMetadata entityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(organizationService, configuration.Entity2Name);
+            EntityMetadata entityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(organizationService, configuration.Entity2Name.Split(';')[0]);
             e.Result = new object[] { entityMetadata };
         }
 
@@ -105,9 +105,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             foreach (var m2mRelationship in entity1Metadata.ManyToManyRelationships)
             {
                 if (m2mRelationship.Entity2LogicalName == entity1Metadata.LogicalName)
-                    ddEntity2.Items.Add(new ComboBoxItem() { Content = m2mRelationship.Entity1LogicalName + " (" + m2mRelationship.SchemaName + ")", ToolTip = m2mRelationship.SchemaName, Tag = m2mRelationship.Entity1LogicalName });
+                    ddEntity2.Items.Add(new ComboBoxItem() { Content = m2mRelationship.Entity1LogicalName + " (" + m2mRelationship.SchemaName + ")", ToolTip = m2mRelationship.SchemaName, Tag = m2mRelationship.Entity1LogicalName + ";" + m2mRelationship.SchemaName });
                 else
-                    ddEntity2.Items.Add(new ComboBoxItem() { Content = m2mRelationship.Entity2LogicalName + " (" + m2mRelationship.SchemaName + ")", ToolTip = m2mRelationship.SchemaName, Tag = m2mRelationship.Entity2LogicalName });
+                    ddEntity2.Items.Add(new ComboBoxItem() { Content = m2mRelationship.Entity2LogicalName + " (" + m2mRelationship.SchemaName + ")", ToolTip = m2mRelationship.SchemaName, Tag = m2mRelationship.Entity2LogicalName + ";" + m2mRelationship.SchemaName });
             }
         }
     }

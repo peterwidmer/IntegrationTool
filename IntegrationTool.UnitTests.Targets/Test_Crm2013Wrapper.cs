@@ -42,5 +42,11 @@ namespace IntegrationTool.UnitTests.Targets
                 Assert.Fail("Could not find account in entitylist");
             }
         }
+
+        [TestMethod]
+        public void GetEntityMetadata_GetRelationshipMetata()
+        {
+
+        }
     }
 }
