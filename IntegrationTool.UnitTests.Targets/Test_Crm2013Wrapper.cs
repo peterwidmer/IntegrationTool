@@ -46,7 +46,7 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void GetEntityMetadata_GetRelationshipMetata()
         {
-
+            var relationShipMetadata = Crm2013Wrapper.GetRelationshipMetadata(orgServiceInstance, "contactinvoices_association");
         }
     }
 }
