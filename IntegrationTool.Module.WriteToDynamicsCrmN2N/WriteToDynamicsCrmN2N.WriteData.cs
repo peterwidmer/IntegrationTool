@@ -22,6 +22,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
         private Dictionary<string, Guid[]> existingEntities1;
         private Dictionary<string, Guid[]> existingEntities2;
 
+        private EntityMetadata entity1Metadata;
+        private EntityMetadata entity2Metadata;
+
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
             this.reportProgress = reportProgress;
@@ -32,8 +35,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             this.dataObject = dataObject;
 
             reportProgress(new SimpleProgressReport("Load required metadata from crm"));
-            var entity1Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity1Name);
-            var entity2Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity2Name.Split(';')[0]);
+            entity1Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity1Name);
+            entity2Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity2Name.Split(';')[0]);
             var relationshipMetadata = Crm2013Wrapper.Crm2013Wrapper.GetRelationshipMetadata(this.service, this.Configuration.Entity2Name.Split(';')[1]) as ManyToManyRelationshipMetadata;
 
             reportProgress(new SimpleProgressReport("Cache keys of existing " + entity1Metadata.LogicalName + "-records"));
@@ -53,6 +56,24 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             {
                 string joinKeyEntity1 = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.Entity1Mapping, this.dataObject.Metadata);
                 string joinKeyEntity2 = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.Entity2Mapping, this.dataObject.Metadata);
+                
+                if(!this.existingEntities1.ContainsKey(joinKeyEntity1) || !this.existingEntities2.ContainsKey(joinKeyEntity2))
+                {
+                    continue;
+                    // TODO Log, that one of the 2 entities could not be resolved!
+                }
+
+                if(this.existingEntities1[joinKeyEntity1].Length > 1 || this.existingEntities2[joinKeyEntity2].Length > 1)
+                {
+                    continue;
+                    // TODO Log, that more than one entities were resolved by this key
+                }
+
+                Guid entity1id = this.existingEntities1[joinKeyEntity1][0];
+                Guid entity2id = this.existingEntities2[joinKeyEntity2][0];
+
+                Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, entity1Metadata.LogicalName, entity1id,entity2Metadata.LogicalName, entity2id);
+
             }
         }
     }

@@ -192,6 +192,15 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             service.Execute(setStateRequest);
         }
 
+        public static void AssociateEntities(IOrganizationService service, string entityName1, Guid entity1id, string entityName2, Guid entity2id)
+        {
+            AssociateEntitiesRequest associateEntitiesRequest = new AssociateEntitiesRequest();
+            associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
+            associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
+
+            service.Execute(associateEntitiesRequest);
+        }
+
         public static void DeleteRecordInCrm(IOrganizationService service, string entityName, Guid entityId)
         {
             service.Delete(entityName, entityId);
