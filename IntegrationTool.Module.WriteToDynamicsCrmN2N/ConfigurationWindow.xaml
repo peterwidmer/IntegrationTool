@@ -12,11 +12,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="4"/>
             <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        <Label Content="Entity 1" Grid.Row="1"/>
-        <ComboBox x:Name="ddEntity1" Grid.Column="1" Margin="0,2,0,0" Grid.Row="1" />
-        <ContentControl x:Name="ConfigurationContent" Grid.Row="3" Grid.ColumnSpan="2"/>
+        <Label Content="If Multiple Resolve By Keys" Grid.Row="1"/>
+        <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="1" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Do not create relation" Tag="None" />
+        </ComboBox>
+        <Label Content="Entity 1" Grid.Row="3"/>
+        <ComboBox x:Name="ddEntity1" Grid.Column="1" Margin="0,2,0,0" Grid.Row="3" />
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="5" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

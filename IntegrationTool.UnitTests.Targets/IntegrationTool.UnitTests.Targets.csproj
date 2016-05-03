@@ -75,7 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_DbMetadataAbstraction.cs" />
     <Compile Include="Test_DeleteInDynamicsCrm.cs" />
+    <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_WriteToDynamicsCrm.cs" />
+    <Compile Include="Test_WriteToDynamicsCrmN2N.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">

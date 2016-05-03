@@ -10,6 +10,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 {
     public class WriteToDynamicsCrmN2NConfiguration : TargetConfiguration
     {
+        public N2NMultipleFoundMode MultipleFoundMode { get; set; }
+
         public string Entity1Name { get; set; }
         public string Entity2Name { get; set; }
         public string RelationshipName { get; set; }
