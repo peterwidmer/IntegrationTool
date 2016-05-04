@@ -104,6 +104,10 @@
       <Project>{efabd2f9-e72b-4183-8119-08a1ce4ca01e}</Project>
       <Name>IntegrationTool.Module.DeleteInDynamicsCrm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrmN2N\IntegrationTool.Module.WriteToDynamicsCrmN2N.csproj">
+      <Project>{6b4e8f13-9067-46a2-8619-70275f6d20d6}</Project>
+      <Name>IntegrationTool.Module.WriteToDynamicsCrmN2N</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrm\IntegrationTool.Module.WriteToDynamicsCrm.csproj">
       <Project>{cd0ef612-415e-4a40-8d40-c77186a083c9}</Project>
       <Name>IntegrationTool.Module.WriteToDynamicsCrm</Name>
