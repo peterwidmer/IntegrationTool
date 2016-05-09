@@ -43,6 +43,11 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
         {
             this.datastore = datastore;
 
+            if(String.IsNullOrEmpty(this.Configuration.FetchXml))
+            {
+                return;
+            }
+
             reportProgress(new SimpleProgressReport("Connection to crm"));
             CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
             this.service = new OrganizationService(crmConnection);
