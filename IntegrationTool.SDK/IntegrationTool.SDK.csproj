@@ -102,6 +102,7 @@
     <Compile Include="Data\DataFilter.cs" />
     <Compile Include="Data\DataFilterHelper.cs" />
     <Compile Include="Data\DatastoreHelper.cs" />
+    <Compile Include="Data\DummyDataStore.cs" />
     <Compile Include="Data\IDatabaseInterface.cs" />
     <Compile Include="Data\IDatastore.cs" />
     <Compile Include="Data\DataObject.cs" />

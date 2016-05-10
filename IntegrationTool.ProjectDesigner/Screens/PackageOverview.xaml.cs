@@ -27,6 +27,7 @@ using System.Windows.Shapes;
 using IntegrationTool.ProjectDesigner.FlowDesign;
 using System.Xml.Linq;
 using System.Globalization;
+using IntegrationTool.SDK.Data;
 
 namespace IntegrationTool.ProjectDesigner.Screens
 {
@@ -268,7 +269,10 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 {
                     loadUntilDesignerItemId = incomingConnection.SourceID;
                 }
-                IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
+
+                IDatastore dataStore = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
+                    new DummyDataStore() :
+                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
 
                 ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
 

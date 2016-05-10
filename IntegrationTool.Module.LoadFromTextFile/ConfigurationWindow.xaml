@@ -28,7 +28,7 @@
             <ComboBoxItem Content="One row per line" Tag="OneRowPerLine" />
             <ComboBoxItem Content="Load complete file into one row" Tag="AllInOneRow" />
         </ComboBox>
-        <ContentControl x:Name="LoadTypeContentControl" Content="ContentControl" Grid.Row="5" Grid.ColumnSpan="5"/>
+        <ContentControl x:Name="LoadTypeContentControl" Content="" Grid.Row="5" Grid.ColumnSpan="5"/>
 
     </Grid>
 </UserControl>
