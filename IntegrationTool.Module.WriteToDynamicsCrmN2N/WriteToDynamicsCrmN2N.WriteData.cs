@@ -24,6 +24,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
         private EntityMetadata entity1Metadata;
         private EntityMetadata entity2Metadata;
+        private RelationshipMetadataBase relationshipMetadata;
 
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
@@ -37,7 +38,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             reportProgress(new SimpleProgressReport("Load required metadata from crm"));
             entity1Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity1Name);
             entity2Metadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(this.service, this.Configuration.Entity2Name.Split(';')[0]);
-            var relationshipMetadata = Crm2013Wrapper.Crm2013Wrapper.GetRelationshipMetadata(this.service, this.Configuration.Entity2Name.Split(';')[1]) as ManyToManyRelationshipMetadata;
+            relationshipMetadata = Crm2013Wrapper.Crm2013Wrapper.GetRelationshipMetadata(this.service, this.Configuration.Entity2Name.Split(';')[1]) as ManyToManyRelationshipMetadata;
 
             reportProgress(new SimpleProgressReport("Cache keys of existing " + entity1Metadata.LogicalName + "-records"));
             var entity1Resolver = new JoinResolver(this.service, entity1Metadata, this.Configuration.Entity1Mapping);
@@ -72,7 +73,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
                 Guid entity1id = this.existingEntities1[joinKeyEntity1][0];
                 Guid entity2id = this.existingEntities2[joinKeyEntity2][0];
 
-                Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, entity1Metadata.LogicalName, entity1id,entity2Metadata.LogicalName, entity2id);
+                Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, relationshipMetadata.SchemaName, entity1Metadata.LogicalName, entity1id,entity2Metadata.LogicalName, entity2id);
 
             }
         }

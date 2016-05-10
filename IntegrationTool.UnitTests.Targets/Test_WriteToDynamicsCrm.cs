@@ -94,7 +94,7 @@ namespace IntegrationTool.UnitTests.Targets
             IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
             module.SetConfiguration(writeToCrmConfig);
 
-            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, ReportProgressMethod);
+            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
             service.Delete("account", account1);
         }
@@ -144,11 +144,9 @@ namespace IntegrationTool.UnitTests.Targets
             IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrm)) as IModule;
             module.SetConfiguration(writeToCrmConfig);
 
-            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, ReportProgressMethod);
+            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
             service.Delete("account", account1);
         }
-
-        private void ReportProgressMethod(SimpleProgressReport progress) { }   
     }
 }

@@ -192,9 +192,12 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             service.Execute(setStateRequest);
         }
 
-        public static void AssociateEntities(IOrganizationService service, string entityName1, Guid entity1id, string entityName2, Guid entity2id)
+        public static void AssociateEntities(IOrganizationService service, string relationshipName, string entityName1, Guid entity1id, string entityName2, Guid entity2id)
         {
+            // AddItemCampaignRequest addItemCampaignRequest = new AddItemCampaignRequest();
+            
             AssociateEntitiesRequest associateEntitiesRequest = new AssociateEntitiesRequest();
+            associateEntitiesRequest.RelationshipName = relationshipName;
             associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
             associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
 

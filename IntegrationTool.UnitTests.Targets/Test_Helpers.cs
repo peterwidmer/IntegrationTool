@@ -50,5 +50,7 @@ namespace IntegrationTool.UnitTests.Targets
 
             return new CrmDefaultUnits() { DefaultUnitGroupId = defaultUnitGroupId, PrimaryUnitId = primaryUnitId };
         }
+
+        public static void ReportProgressMethod(SimpleProgressReport progress) { }   
     }
 }

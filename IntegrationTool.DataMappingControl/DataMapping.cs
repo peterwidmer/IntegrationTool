@@ -11,5 +11,13 @@ namespace IntegrationTool.DataMappingControl
         public string Source { get; set; }
         public string Target { get; set; }
         public string ValueFormat { get; set; }
+
+        public DataMapping() { }
+
+        public DataMapping(string source, string target)
+        {
+            this.Source = source;
+            this.Target = target;
+        }
     }
 }
