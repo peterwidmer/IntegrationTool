@@ -51,6 +51,24 @@ namespace IntegrationTool.UnitTests.Targets
             return new CrmDefaultUnits() { DefaultUnitGroupId = defaultUnitGroupId, PrimaryUnitId = primaryUnitId };
         }
 
-        public static void ReportProgressMethod(SimpleProgressReport progress) { }   
+        public static void ReportProgressMethod(SimpleProgressReport progress) { } 
+  
+        public static Entity CreateDummyContact()
+        {
+            Entity contact = new Entity("contact");
+            contact.Attributes.Add("firstname", Guid.NewGuid().ToString());
+            contact.Attributes.Add("lastname", Guid.NewGuid().ToString());
+
+            return contact;
+        }
+
+        public static Entity CreateDummyInvoice()
+        {
+            Entity invoice = new Entity("invoice");
+            invoice.Attributes.Add("name", "invoice 1");
+            invoice.Attributes.Add("invoicenumber", "inv 1");
+
+            return invoice;
+        }
     }
 }

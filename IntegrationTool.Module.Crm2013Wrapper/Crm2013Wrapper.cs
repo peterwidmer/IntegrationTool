@@ -194,14 +194,32 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
         public static void AssociateEntities(IOrganizationService service, string relationshipName, string entityName1, Guid entity1id, string entityName2, Guid entity2id)
         {
-            // AddItemCampaignRequest addItemCampaignRequest = new AddItemCampaignRequest();
-            
-            AssociateEntitiesRequest associateEntitiesRequest = new AssociateEntitiesRequest();
-            associateEntitiesRequest.RelationshipName = relationshipName;
-            associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
-            associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
+            if (entityName1 == "campaign" || entityName2 == "campaign")
+            {
+                AddItemCampaignRequest addItemCampaignRequest = new AddItemCampaignRequest();
+                if (entityName1 == "campaign")
+                {
+                    addItemCampaignRequest.CampaignId = entity1id;
+                    addItemCampaignRequest.EntityName = entityName2;
+                    addItemCampaignRequest.EntityId = entity2id;
+                }
+                else
+                {
+                    addItemCampaignRequest.CampaignId = entity2id;
+                    addItemCampaignRequest.EntityName = entityName1;
+                    addItemCampaignRequest.EntityId = entity1id;
+                }
+                service.Execute(addItemCampaignRequest);
+            }
+            else
+            {
+                AssociateEntitiesRequest associateEntitiesRequest = new AssociateEntitiesRequest();
+                associateEntitiesRequest.RelationshipName = relationshipName;
+                associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
+                associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
 
-            service.Execute(associateEntitiesRequest);
+                service.Execute(associateEntitiesRequest);
+            }
         }
 
         public static void DeleteRecordInCrm(IOrganizationService service, string entityName, Guid entityId)
