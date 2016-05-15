@@ -35,7 +35,13 @@ namespace IntegrationTool.Module.ConnectToUrl
 
         public object GetConnection()
         {
-            return WebRequest.Create("");
+            var httpWebRequest = WebRequest.Create(this.Configuration.Url) as HttpWebRequest;
+            if(this.Configuration.UseProxySettings)
+            {
+                // TODO Implement proxy
+            }
+
+            return httpWebRequest;
         }
     }
 }

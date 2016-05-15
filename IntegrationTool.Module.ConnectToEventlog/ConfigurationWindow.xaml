@@ -13,8 +13,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="26"/>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="27*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
             <RowDefinition Height="262*"/>
         </Grid.RowDefinitions>
         <Label Content="Source:" ToolTip="I.e. the application or packagename." Grid.Row="3"/>
