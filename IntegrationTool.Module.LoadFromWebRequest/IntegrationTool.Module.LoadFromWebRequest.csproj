@@ -51,6 +51,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToUrl\IntegrationTool.Module.ConnectToUrl.csproj">
+      <Project>{5d9e07dd-1406-4463-9dc3-e7d7e1763d9b}</Project>
+      <Name>IntegrationTool.Module.ConnectToUrl</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>

@@ -10,19 +10,20 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="26"/>
             <RowDefinition Height="4"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="4"/>
             <RowDefinition Height="80"/>
-            <RowDefinition Height="208*"/>
+            <RowDefinition Height="7*"/>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="128*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="165"/>
             <ColumnDefinition Width="63*"/>
         </Grid.ColumnDefinitions>
-        <Label Content="Url" Grid.Row="1"/>
-        <TextBox Grid.Column="1" Height="23" Grid.Row="1" Text="{Binding Path=Url}"  Margin="0,4,0,0" />
-        <Label Content="Use proxy" Grid.Row="3" />
-        <CheckBox Content="{Binding Path=UseProxySettings}" Grid.Column="1" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="3"/>
+        <Label Content="Use proxy" Grid.Row="1" />
+        <CheckBox IsChecked="{Binding Path=UseProxySettings}" Grid.Column="1" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="1"/>
+        <Label Content="Send Client-Certificate" Grid.Row="5"/>
+        <CheckBox IsChecked="{Binding Path=SendClientCertificate}" Grid.Column="1" HorizontalAlignment="Left" Margin="0,6,0,0" Grid.Row="5"/>
 
     </Grid>
 </UserControl>

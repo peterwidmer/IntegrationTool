@@ -9,5 +9,10 @@ namespace IntegrationTool.Module.LoadFromWebRequest
 {
     public class LoadFromWebRequestConfiguration : SourceConfiguration
     {
+        public string Url { get; set; }
+        public string Method { get; set; }
+        public string Accept { get; set; }
+        public string ContentType { get; set; }
+        public string RequestContent { get; set; }
     }
 }

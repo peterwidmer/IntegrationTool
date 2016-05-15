@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.ConnectToUrl;
+using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,7 @@ namespace IntegrationTool.Module.LoadFromWebRequest
                            DisplayName = "Web-Request",
                            ModuleType = ModuleType.Source,
                            GroupName = ModuleGroup.Source,
-                           ConnectionType = typeof(HttpWebRequest),
+                           ConnectionType = typeof(ConnectToUrlConfiguration),
                            ConfigurationType = typeof(LoadFromWebRequestConfiguration))]
     public class LoadFromWebRequest : IModule, IDataSource
     {
@@ -31,6 +32,41 @@ namespace IntegrationTool.Module.LoadFromWebRequest
 
         public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
         {
+            HttpWebRequest webRequest = WebRequest.CreateHttp(this.Configuration.Url);
+            webRequest.Method = this.Configuration.Method;
+            webRequest.Accept = this.Configuration.Accept;
+            webRequest.ContentType = this.Configuration.ContentType;
+
+            var webConfiguration = connection.GetConnection() as ConnectToUrlConfiguration;
+            if(webConfiguration.UseProxySettings)
+            {
+                // TODO Implement
+            }
+
+            if(webConfiguration.SendClientCertificate)
+            {
+                // TODO Implement
+            }
+
+            using (WebResponse response = ExecuteWebRequest(webRequest))
+            using (Stream dataStream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(dataStream))
+            {
+                string responseFromServer = reader.ReadToEnd();
+            }
+        }
+
+        public WebResponse ExecuteWebRequest(HttpWebRequest webRequest)
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes(this.Configuration.RequestContent);
+            webRequest.ContentLength = byteArray.Length;
+
+            using (Stream dataStream = webRequest.GetRequestStream())
+            {
+                dataStream.Write(byteArray, 0, byteArray.Length);
+            }
+
+            return webRequest.GetResponse();
         }
     }
 }

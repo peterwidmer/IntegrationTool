@@ -4,8 +4,32 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" Width="469">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="167*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="29*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Request-Url" Grid.Row="1" VerticalAlignment="Top"/>
+        <TextBox Grid.Column="2" Height="23" Grid.Row="1" Text="{Binding Path=Url}" VerticalAlignment="Top" />
+        <Label Content="Method (e.g. POST, GET...)" Grid.Row="3"/>
+        <TextBox Grid.Column="2" Height="23" Grid.Row="3" Text="{Binding Path=Method}" VerticalAlignment="Top" />
+        <Label Content="Accept" Grid.Row="5"/>
+        <TextBox Grid.Column="2" Height="23" Grid.Row="5" Text="{Binding Path=Accept}" VerticalAlignment="Top" />
+        <Label Content="ContentType" Grid.Row="7"/>
+        <TextBox Grid.Column="2" Height="23" Grid.Row="7" Text="{Binding Path=ContentType}" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

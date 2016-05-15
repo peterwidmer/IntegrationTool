@@ -9,7 +9,8 @@ namespace IntegrationTool.Module.ConnectToUrl
 {
     public class ConnectToUrlConfiguration : ConnectionConfigurationBase
     {
-        public string Url { get; set; }
         public bool UseProxySettings { get; set; }
+
+        public bool SendClientCertificate { get; set; }
     }
 }

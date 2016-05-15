@@ -16,7 +16,7 @@ namespace IntegrationTool.Module.ConnectToUrl
         Name = "ConnectToUrl",
         ContainsSubConfiguration = false,
         ModuleType = ModuleType.Connection,
-        ConnectionType = typeof(HttpWebRequest),
+        ConnectionType = typeof(ConnectToUrlConfiguration),
         ConfigurationType = typeof(ConnectToUrlConfiguration))]
     public class ConnectToUrl : IModule, IConnection
     {
@@ -35,13 +35,7 @@ namespace IntegrationTool.Module.ConnectToUrl
 
         public object GetConnection()
         {
-            var httpWebRequest = WebRequest.Create(this.Configuration.Url) as HttpWebRequest;
-            if(this.Configuration.UseProxySettings)
-            {
-                // TODO Implement proxy
-            }
-
-            return httpWebRequest;
+            return Configuration;
         }
     }
 }
