@@ -48,22 +48,32 @@ namespace IntegrationTool.Module.LoadFromWebRequest
                 // TODO Implement
             }
 
+            datastore.AddColumn(new ColumnMetadata("ResponseContent"));
+
+            reportProgress(new SimpleProgressReport("Start retrieving data from " + this.Configuration.Url));
             using (WebResponse response = ExecuteWebRequest(webRequest))
             using (Stream dataStream = response.GetResponseStream())
             using (StreamReader reader = new StreamReader(dataStream))
             {
+                reportProgress(new SimpleProgressReport("Retrieved " + response.ContentLength + " bytes."));
+                object [] receivedData = new object[datastore.Metadata.Columns.Count];
+
                 string responseFromServer = reader.ReadToEnd();
+                receivedData[datastore.Metadata["ResponseContent"].ColumnIndex] = responseFromServer;
             }
         }
 
         public WebResponse ExecuteWebRequest(HttpWebRequest webRequest)
         {
-            byte[] byteArray = Encoding.UTF8.GetBytes(this.Configuration.RequestContent);
-            webRequest.ContentLength = byteArray.Length;
-
-            using (Stream dataStream = webRequest.GetRequestStream())
+            if (!String.IsNullOrEmpty(this.Configuration.RequestContent))
             {
-                dataStream.Write(byteArray, 0, byteArray.Length);
+                byte[] byteArray = Encoding.UTF8.GetBytes(this.Configuration.RequestContent);
+                webRequest.ContentLength = byteArray.Length;
+
+                using (Stream dataStream = webRequest.GetRequestStream())
+                {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                }
             }
 
             return webRequest.GetResponse();

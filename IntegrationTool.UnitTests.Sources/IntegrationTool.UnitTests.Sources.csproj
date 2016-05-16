@@ -70,10 +70,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_LoadFromExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_LoadFromCSV.cs" />
     <Compile Include="Test_LoadFromDynamicsCRM.cs" />
+    <Compile Include="Test_LoadFromWebRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToDynamicsCrm\IntegrationTool.Module.ConnectToDynamicsCrm.csproj">
@@ -87,6 +89,10 @@
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToTextFile\IntegrationTool.Module.ConnectToTextFile.csproj">
       <Project>{3a4d2e2c-ade3-4d22-a065-ad8f406a7b3f}</Project>
       <Name>IntegrationTool.Module.ConnectToTextFile</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToUrl\IntegrationTool.Module.ConnectToUrl.csproj">
+      <Project>{5d9e07dd-1406-4463-9dc3-e7d7e1763d9b}</Project>
+      <Name>IntegrationTool.Module.ConnectToUrl</Name>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
       <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
@@ -103,6 +109,10 @@
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromExcel\IntegrationTool.Module.LoadFromExcel.csproj">
       <Project>{fed4145d-5fe4-4fdf-a11f-d637df37721f}</Project>
       <Name>IntegrationTool.Module.LoadFromExcel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromWebRequest\IntegrationTool.Module.LoadFromWebRequest.csproj">
+      <Project>{6008825d-1ac4-4654-a1b6-9a7e3be02751}</Project>
+      <Name>IntegrationTool.Module.LoadFromWebRequest</Name>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
