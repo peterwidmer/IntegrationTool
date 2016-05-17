@@ -46,6 +46,20 @@ namespace IntegrationTool.UnitTests.Targets
             writeToDynamicsCrmN2NConfig.Entity2Mapping = new List<DataMapping>() { new DataMapping("InvoiceNo", "invoicenumber") };
             writeToDynamicsCrmN2NConfig.ConfigurationId = Guid.NewGuid();
             writeToDynamicsCrmN2NConfig.SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID;
+
+            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            dataObject.AddColumn(new ColumnMetadata("FirstName"));
+            dataObject.AddColumn(new ColumnMetadata("InvoiceNo"));
+
+            dataObject.AddData(new object[] { contact["firstname"], invoice["invoicenumber"] });
+
+            IModule module = Activator.CreateInstance(typeof(WriteToDynamicsCrmN2N)) as IModule;
+            module.SetConfiguration(writeToDynamicsCrmN2NConfig);
+
+            ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
+
+            service.Delete("contact", contactId);
+            service.Delete("invoice", invoiceId);
         }
 
         [TestMethod]
