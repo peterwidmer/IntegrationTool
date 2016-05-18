@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:ui="http://schemas.microsoft.com/wix/UIExtension">
-	<Product Id="*" Name="IntegrationTool 1.15" Language="1033" Version="1.15.0.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
+	<Product Id="*" Name="IntegrationTool 1.15.1" Language="1033" Version="1.15.1.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -228,6 +228,9 @@
       </Component>
       <Component Id="ModuleComponent_WriteToExcel" Win64="yes">
         <File Id="ModuleComponent_WriteToExcel.dll" Source="$(var.IntegrationTool.Module.WriteToExcel.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_WriteToDynamicsCrmN2N" Win64="yes">
+        <File Id="ModuleComponent_WriteToDynamicsCrmN2N.dll" Source="$(var.IntegrationTool.Module.WriteToDynamicsCrmN2N.TargetPath)" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 	</Fragment>

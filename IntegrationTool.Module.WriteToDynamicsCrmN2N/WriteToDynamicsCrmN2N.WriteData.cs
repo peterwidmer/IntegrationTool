@@ -75,6 +75,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
                 Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, relationshipMetadata.SchemaName, entity1Metadata.LogicalName, entity1id,entity2Metadata.LogicalName, entity2id);
 
+                if (StatusHelper.MustShowProgress(i, dataObject.Count) == true)
+                {
+                    reportProgress(new SimpleProgressReport("Processed " + (i + 1) + " of " + dataObject.Count + " many2many-records"));
+                }
             }
         }
     }
