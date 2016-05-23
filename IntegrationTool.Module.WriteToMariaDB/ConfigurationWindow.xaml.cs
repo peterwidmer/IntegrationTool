@@ -35,7 +35,7 @@ namespace IntegrationTool.Module.WriteToMySql
         private IDatastore dataObject;
         private WriteToMySQLConfiguration configuration;
         private IConnection connection;
-        private MySQLDbMetadataProvider metadataProvider;
+        private IDatabaseMetadataProvider metadataProvider;
 
         // UserControls
         private AttributeMapping attributeMapping;
@@ -65,7 +65,7 @@ namespace IntegrationTool.Module.WriteToMySql
         {
             try
             {
-                MySQLDbMetadataProvider mySQLDbMetadataProvider = new MySQLDbMetadataProvider(this.connection);
+                IDatabaseMetadataProvider mySQLDbMetadataProvider = new MySQLDbMetadataProvider(this.connection);
                 mySQLDbMetadataProvider.Initialize();
 
                 e.Result = new object[] { mySQLDbMetadataProvider };
@@ -78,7 +78,7 @@ namespace IntegrationTool.Module.WriteToMySql
 
         void bgwConnectionChanged_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.metadataProvider = ((object[])e.Result)[0] as MySQLDbMetadataProvider;
+            this.metadataProvider = ((object[])e.Result)[0] as IDatabaseMetadataProvider;
             if (this.metadataProvider != null)
             {
                 ConfigurationContent.Content = null;
@@ -103,7 +103,7 @@ namespace IntegrationTool.Module.WriteToMySql
             DbMetadataTable selectedTable = ((ComboBoxItem)ddTargetTables.SelectedItem).Tag as DbMetadataTable;
             this.configuration.TargetTable = selectedTable.TableName;
 
-            attributeMapping = CreateAttributeMappingWindow();
+            attributeMapping = new AttributeMapping(this.configuration, this.dataObject, selectedTable);
             existingCheck = CreateExistingCheckWindow();
             relationMapping = CreateRelationmappingWindow();
 
@@ -118,12 +118,6 @@ namespace IntegrationTool.Module.WriteToMySql
                 existingCheck.AvailablePrimaryKeyAttributes.Add(new NameDisplayName(mapping.Target, mapping.Target));
             }
             return existingCheck;
-        }
-
-        private AttributeMapping CreateAttributeMappingWindow()
-        {
-            // TODO Implement
-            return null;
         }
 
         private RelationMapping CreateRelationmappingWindow()

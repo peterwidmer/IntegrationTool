@@ -66,6 +66,7 @@ namespace IntegrationTool.DataMappingControl
             {
                 mapping = value;
                 this.OnPropertyChanged("Mapping");
+                this.RedrawLines();
             }
         }
 
@@ -77,10 +78,10 @@ namespace IntegrationTool.DataMappingControl
         public MappingControl()
         {
             this.InitializeComponent();
-            this.Mapping = new List<DataMapping>();
 
             this.TargetList = new ObservableCollection<ListViewItem>();
             this.SourceList = new ObservableCollection<ListViewItem>();
+            this.Mapping = new List<DataMapping>();
 
             InitializeComponent();
             this.mainCanvas.AllowDrop = true;

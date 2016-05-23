@@ -32,8 +32,6 @@ namespace IntegrationTool.DBAccess
             List<DbMetadataTable> tables = new List<DbMetadataTable>();
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
-                //"SELECT * FROM `mydb`.`account` 
-
                 var dataReader = odbcWrapper.ExecuteQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES where table_schema=?", new OdbcParameter[] { new OdbcParameter("@dbname", odbcWrapper.DatabaseName) });
 
                 dt = DatabaseHelper.ConvertDataReaderToDataTable(dataReader);                

@@ -9,5 +9,6 @@ namespace IntegrationTool.DBAccess
     public interface IDatabaseMetadataProvider
     {
         List<DbMetadataTable> DatabaseTables { get; set; }
+        void Initialize();
     }
 }

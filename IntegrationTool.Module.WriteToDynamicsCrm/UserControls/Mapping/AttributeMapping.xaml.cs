@@ -118,8 +118,6 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
             }
 
             SourceTargetMapping.Mapping = mapping;
-
-            SourceTargetMapping.RedrawLines();
         }
     }
 }
