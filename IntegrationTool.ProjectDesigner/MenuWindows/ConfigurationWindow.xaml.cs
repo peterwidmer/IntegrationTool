@@ -73,7 +73,7 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
-            if(ddSelectConnection.SelectedItem == null)
+            if (this.ConfigurationWindowSettings.moduleDescription.Attributes.RequiresConnection && ddSelectConnection.SelectedItem == null)
             {
                 MessageBox.Show("Please select a connection before saving!", "Information");
                 return;

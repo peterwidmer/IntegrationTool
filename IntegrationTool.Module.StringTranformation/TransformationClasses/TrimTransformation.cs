@@ -10,22 +10,22 @@ using System.Windows;
 namespace IntegrationTool.Module.StringTranformation.TransformationClasses
 {
     [StringTransformationAttribute(
-        TransformationType = StringTransformationType.TrimEnd,
+        TransformationType = StringTransformationType.Trim,
         Param1Label = "Trimcharacter",
         Param1Visibility = Visibility.Visible,
         Param2Label = "",
         Param2Visibility = Visibility.Hidden)]
-    public class TrimEndTransformation : ITransformationExecutor
+    public class TrimTransformation : ITransformationExecutor
     {
         public string ExecuteTransformation(string inputString, StringTransformationParameter stringTransformation)
         {
             if (!String.IsNullOrEmpty(stringTransformation.Parameter1))
             {
-                return inputString.TrimEnd(stringTransformation.Parameter1[0]);
+                return inputString.Trim(stringTransformation.Parameter1[0]);
             }
             else
             {
-                return inputString.TrimEnd();
+                return inputString.Trim();
             }
         }
     }

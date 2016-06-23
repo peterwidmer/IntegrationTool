@@ -19,7 +19,14 @@ namespace IntegrationTool.Module.StringTranformation.TransformationClasses
     {
         public string ExecuteTransformation(string inputString, StringTransformationParameter stringTransformation)
         {
-            return inputString.TrimStart(stringTransformation.Parameter1[0]);
+            if (!String.IsNullOrEmpty(stringTransformation.Parameter1))
+            {
+                return inputString.TrimStart(stringTransformation.Parameter1[0]);
+            }
+            else
+            {
+                return inputString.TrimStart();
+            }
         }
     }
 }

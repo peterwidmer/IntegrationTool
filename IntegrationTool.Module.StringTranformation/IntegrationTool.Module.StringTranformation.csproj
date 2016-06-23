@@ -62,6 +62,7 @@
     <Compile Include="TransformationClasses\ReplaceStringTransformation.cs" />
     <Compile Include="TransformationClasses\TrimEndTransformation.cs" />
     <Compile Include="TransformationClasses\TrimStartTransformation.cs" />
+    <Compile Include="TransformationClasses\TrimTransformation.cs" />
     <Compile Include="UserControls\StringTransformationControl.xaml.cs">
       <DependentUpon>StringTransformationControl.xaml</DependentUpon>
     </Compile>
