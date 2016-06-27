@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 namespace IntegrationTool.ApplicationCore.Serialization
 {
@@ -13,6 +14,7 @@ namespace IntegrationTool.ApplicationCore.Serialization
         public static string SerializeObject(object obj, Type [] extraTypes)
         {
             System.Xml.XmlDocument xmlDoc = new System.Xml.XmlDocument();
+            xmlDoc.PreserveWhitespace = true;
             XmlSerializer serializer = new XmlSerializer(obj.GetType(), extraTypes);
             using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
             {
@@ -27,7 +29,7 @@ namespace IntegrationTool.ApplicationCore.Serialization
         {
             XmlSerializer serializer = new XmlSerializer(objectType, extraTypes);
 
-            using (var reader = new StringReader(objectToDeserialize))
+            using (var reader = XmlReader.Create(new StringReader(objectToDeserialize), new XmlReaderSettings() { IgnoreWhitespace=false }))
             {
                 try
                 {
