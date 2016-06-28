@@ -113,11 +113,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                             case SDK.Enums.PicklistMappingType.Manual:
                                 var mapping = picklistMapping.Mapping.Where(t => t.Source == obj.ToString()).FirstOrDefault();
-                                if (mapping == null)
+                                if (mapping == null && !String.IsNullOrEmpty(obj.ToString()))
                                 {
                                     throw new Exception("Could not map picklist " + dataMapping.Target + ": Mapping for source-value " + obj.ToString() + " could not be found!");
                                 }
-                                optionValue = Convert.ToInt32(mapping.Target);
+                                if (mapping != null)
+                                {
+                                    optionValue = Convert.ToInt32(mapping.Target);
+                                }
                                 break;
                         }
 
