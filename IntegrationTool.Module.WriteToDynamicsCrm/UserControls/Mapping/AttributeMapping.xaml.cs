@@ -76,6 +76,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                     }
 
                     List<NameDisplayName> sourceList = this.dataObject.GetDistinctValuesOfColumn(item.Source);
+                    foreach (var alreadyMappedValue in picklistMappingEntry.Mapping)
+                    {
+                        if (!sourceList.Any(t => t.Name == alreadyMappedValue.Source))
+                        {
+                            sourceList.Add(new NameDisplayName(alreadyMappedValue.Source, alreadyMappedValue.Source));
+                        }
+                    }
                     List<NameDisplayName> targetList = Crm2013Wrapper.Crm2013Wrapper.GetPicklistValuesOfPicklistAttributeMetadata(attributeMetadata);
 
                     PicklistMapping picklistMapping = new PicklistMapping(picklistMappingEntry, sourceList, targetList);
