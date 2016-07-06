@@ -11,12 +11,7 @@ namespace IntegrationTool.SDK.Data.DataConditionClasses
     {
         public bool ConditionIsFullfilled(DataCondition dataCondition, object value)
         {
-            if (value == null || String.IsNullOrEmpty(value.ToString()) || value == DBNull.Value)
-            {
-                return true;
-            }
-
-            return false;
+            return (value == null || String.IsNullOrEmpty(value.ToString()) || value == DBNull.Value);
         }
     }
 }

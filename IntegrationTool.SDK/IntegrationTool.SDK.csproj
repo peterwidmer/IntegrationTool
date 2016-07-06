@@ -94,9 +94,12 @@
     <Compile Include="Data\DataConditionClasses\IntegerLowerThanCondition.cs" />
     <Compile Include="Data\DataConditionClasses\IntegerNotNullCondition.cs" />
     <Compile Include="Data\DataConditionClasses\IntegerNullCondition.cs" />
+    <Compile Include="Data\DataConditionClasses\StringNotNullOrEmpty.cs" />
+    <Compile Include="Data\DataConditionClasses\StringRegexMatched.cs" />
     <Compile Include="Data\DataConditionClasses\StringEndsWithCondition.cs" />
     <Compile Include="Data\DataConditionClasses\StringEqualCondition.cs" />
     <Compile Include="Data\DataConditionClasses\StringNullOrEmptyCondition.cs" />
+    <Compile Include="Data\DataConditionClasses\StringRegexNotMatched.cs" />
     <Compile Include="Data\DataConditionClasses\StringStartsWithCondition.cs" />
     <Compile Include="Data\DataFilter.ConditionChecks.cs" />
     <Compile Include="Data\DataFilter.cs" />

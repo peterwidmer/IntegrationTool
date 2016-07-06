@@ -60,6 +60,7 @@
     <Compile Include="TransformationClasses\PadLeftTransformation.cs" />
     <Compile Include="TransformationClasses\PadRight.cs" />
     <Compile Include="TransformationClasses\ReplaceStringTransformation.cs" />
+    <Compile Include="TransformationClasses\SetValue.cs" />
     <Compile Include="TransformationClasses\TrimEndTransformation.cs" />
     <Compile Include="TransformationClasses\TrimStartTransformation.cs" />
     <Compile Include="TransformationClasses\TrimTransformation.cs" />

@@ -26,6 +26,7 @@
             <ComboBoxItem Content="Pad Left" Tag="PadLeft" />
             <ComboBoxItem Content="Pad Left" Tag="PadRight" />
             <ComboBoxItem Content="Replace" Tag="Replace" />
+            <ComboBoxItem Content="Set Value" Tag="SetValue" />
             <ComboBoxItem Content="Trim" Tag="Trim" />
             <ComboBoxItem Content="Trim Start" Tag="TrimStart" />
             <ComboBoxItem Content="Trim End" Tag="TrimEnd" />
