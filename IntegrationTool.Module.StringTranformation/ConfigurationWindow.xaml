@@ -41,6 +41,7 @@
                     <ComboBoxItem Content="Pad Left" Tag="PadLeft" />
                     <ComboBoxItem Content="Pad Right" Tag="PadRight" />
                     <ComboBoxItem Content="Replace" Tag="Replace" />
+                    <ComboBoxItem Content="Regex Replace" Tag="Regex" />
                     <ComboBoxItem Content="Set Value" Tag="SetValue" />
                     <ComboBoxItem Content="Trim" Tag="Trim" />
                     <ComboBoxItem Content="Trim Start" Tag="TrimStart" />

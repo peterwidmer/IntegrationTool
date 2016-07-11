@@ -8,6 +8,6 @@ namespace IntegrationTool.Module.StringTranformation.SDK.Enums
 {
     public enum StringTransformationType
     {
-        Replace, Trim, TrimStart, TrimEnd, PadLeft, PadRight, SetValue
+        Replace, Trim, TrimStart, TrimEnd, PadLeft, PadRight, SetValue, Regex
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="TransformationClasses\ITransformationExecutor.cs" />
     <Compile Include="TransformationClasses\PadLeftTransformation.cs" />
     <Compile Include="TransformationClasses\PadRight.cs" />
+    <Compile Include="TransformationClasses\RegexReplace.cs" />
     <Compile Include="TransformationClasses\ReplaceStringTransformation.cs" />
     <Compile Include="TransformationClasses\SetValue.cs" />
     <Compile Include="TransformationClasses\TrimEndTransformation.cs" />
