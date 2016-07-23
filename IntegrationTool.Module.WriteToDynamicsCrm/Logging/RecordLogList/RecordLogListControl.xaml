@@ -7,9 +7,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"/>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="62*"/>
+            <ColumnDefinition Width="45"/>
+            <ColumnDefinition Width="99*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="4"/>
@@ -22,8 +22,11 @@
         </Grid.RowDefinitions>
         <Label Content="Record-Details" Grid.Row="1"/>
         <Label Content="Filter:" Grid.Column="2" Grid.Row="1"/>
-        <ComboBox Grid.Column="3" Grid.Row="1" >
-            <ComboBoxItem Content="Show All" />
+        <ComboBox x:Name="ddLogFilter" Grid.Column="3" Grid.Row="1" SelectionChanged="ddLogFilter_SelectionChanged" >
+            <ComboBoxItem Content="Show All" Tag="all" />
+            <ComboBoxItem Content="Show Successful" Tag="successful" />
+            <ComboBoxItem Content="Show Errors" Tag="errors" />
+            <ComboBoxItem Content="Mutiple existing combined keys" Tag="multiple_combined_key" />
         </ComboBox>
         <DataGrid ItemsSource="{Binding}" RowHeaderWidth="0" AutoGenerateColumns="False" Grid.Row="3" Grid.ColumnSpan="4" SelectionUnit="Cell" SelectionMode="Single" >
             <DataGrid.Columns>
@@ -39,7 +42,7 @@
 
                 </DataGridTextColumn>
             </DataGrid.Columns>
-            
+
         </DataGrid>
 
     </Grid>
