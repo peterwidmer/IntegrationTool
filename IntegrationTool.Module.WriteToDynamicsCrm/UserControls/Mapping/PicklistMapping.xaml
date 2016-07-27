@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl" x:Class="IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping.PicklistMapping" 
-             mc:Ignorable="d" 
-             d:DesignHeight="314" d:DesignWidth="468">
+             mc:Ignorable="d" d:DesignHeight="347" d:DesignWidth="543">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -17,8 +16,12 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="24"/>
-            <RowDefinition Height="5*"/>
-            <RowDefinition Height="117*"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition x:Name="DefaultValueRow" Height="24"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="234*"/>
         </Grid.RowDefinitions>
         <Label Content="Picklist-Mapping" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
         <Label Content="Mapping Type:" Grid.Column="1" Grid.Row="3"/>
@@ -26,6 +29,14 @@
             <ComboBoxItem Content="Automatic" Tag="Automatic" />
             <ComboBoxItem Content="Manual" Tag="Manual" />
         </ComboBox>
-        <DataMappingControl:MappingControl x:Name="PicklistMappingControl" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2"/>
+        <DataMappingControl:MappingControl x:Name="PicklistMappingControl" Grid.Column="1" Grid.Row="9" Grid.ColumnSpan="2"/>
+        <Label Content="If mapping not found:" Grid.Column="1" Grid.Row="5"/>
+        <ComboBox x:Name="ddMappingNotFound" Grid.Column="2" Grid.Row="5" SelectedValue="{Binding MappingNotFound}" SelectedValuePath="Tag" SelectionChanged="ddMappingNotFound_SelectionChanged">
+            <ComboBoxItem Content="Fail Import" Tag="FailImport" />
+            <ComboBoxItem Content="Ignore (do not set anything)" Tag="Ignore" />
+            <ComboBoxItem Content="Set Default Value" Tag="SetDefaultValue" />
+        </ComboBox>
+        <Label Content="Default Value:" Grid.Column="1" Grid.Row="7"/>
+        <ComboBox x:Name="ddDefaultValue" Grid.Column="2" Grid.Row="7" SelectedValue="{Binding DefaultValue}" SelectedValuePath="Tag" />
     </Grid>
 </UserControl>

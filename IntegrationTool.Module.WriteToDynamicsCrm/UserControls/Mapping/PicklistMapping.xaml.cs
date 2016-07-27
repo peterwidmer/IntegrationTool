@@ -42,6 +42,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping
             foreach (NameDisplayName item in targetList)
             {
                 PicklistMappingControl.TargetList.Add(new ListViewItem() { Content = item.DisplayName, ToolTip = item.Name });
+                ddDefaultValue.Items.Add(new ComboBoxItem() { Content = item.DisplayName, ToolTip = item.Name, Tag = item.Name });
             }
 
             PicklistMappingControl.Mapping = this.picklistMappingConfiguration.Mapping;
@@ -60,6 +61,18 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping
                 case SDK.Enums.PicklistMappingType.Automatic:
                     this.PicklistMappingControl.Visibility = System.Windows.Visibility.Hidden;
                     break;
+            }
+        }
+
+        private void ddMappingNotFound_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ComboBoxItem)ddMappingNotFound.SelectedItem).Tag.ToString() == "SetDefaultValue")
+            {
+                DefaultValueRow.Height = new GridLength(24);
+            }
+            else
+            {
+                DefaultValueRow.Height = new GridLength(0);
             }
         }
 

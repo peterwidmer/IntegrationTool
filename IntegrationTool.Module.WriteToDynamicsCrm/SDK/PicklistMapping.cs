@@ -12,7 +12,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.SDK
     {
         public string LogicalName { get; set; }
         public PicklistMappingType MappingType { get; set; }
+        public MappingNotFoundType MappingNotFound { get; set; }
         public List<DataMapping> Mapping { get; set; }
+        public string DefaultValue { get; set; }
 
         public PicklistMapping()
         {

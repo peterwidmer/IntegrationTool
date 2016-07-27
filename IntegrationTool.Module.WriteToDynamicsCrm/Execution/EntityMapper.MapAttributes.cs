@@ -115,7 +115,20 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                                 var mapping = picklistMapping.Mapping.Where(t => t.Source == obj.ToString()).FirstOrDefault();
                                 if (mapping == null && !String.IsNullOrEmpty(obj.ToString()))
                                 {
-                                    throw new Exception("Could not map picklist " + dataMapping.Target + ": Mapping for source-value " + obj.ToString() + " could not be found!");
+                                    switch(picklistMapping.MappingNotFound)
+                                    {
+                                        case SDK.Enums.MappingNotFoundType.FailImport:
+                                            throw new Exception("Could not map picklist " + dataMapping.Target + ": Mapping for source-value " + obj.ToString() + " could not be found!");
+                                        
+                                        case SDK.Enums.MappingNotFoundType.Ignore:
+                                            // Ignore simply does nothing
+                                            break;
+
+                                        case SDK.Enums.MappingNotFoundType.SetDefaultValue:
+                                            optionValue = Convert.ToInt32(picklistMapping.DefaultValue);
+                                            break;
+                                    }
+                                    
                                 }
                                 if (mapping != null)
                                 {

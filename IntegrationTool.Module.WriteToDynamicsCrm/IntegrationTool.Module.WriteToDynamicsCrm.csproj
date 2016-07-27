@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Logging\RecordLogList\RecordLog.cs" />
     <Compile Include="SDK\Enums\ImportMode.cs" />
+    <Compile Include="SDK\Enums\MappingNotFoundType.cs" />
     <Compile Include="SDK\Enums\MultipleFoundMode.cs" />
     <Compile Include="SDK\Enums\PicklistMappingType.cs" />
     <Compile Include="SDK\Enums\RelationMappingType.cs" />
