@@ -8,6 +8,6 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
 {
     public interface IDatabaseTargetProvider
     {
-        void ResolveRecordInDatabase(string tableName, KeyValuePair<string, object> [] recordIdentifiers);
+        List<object[]> ResolveRecordInDatabase(string tableName, KeyValuePair<string, object>[] recordIdentifiers);
     }
 }

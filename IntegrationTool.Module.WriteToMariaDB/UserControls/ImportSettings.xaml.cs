@@ -33,7 +33,7 @@ namespace IntegrationTool.Module.WriteToMySQL.UserControls
             this.DataContext = this.Configuration = configuration;
             AvailablePrimaryKeyAttributes = new ObservableCollection<NameDisplayName>();
             ddAvailablePrimaryKeyAttributes.ItemsSource = AvailablePrimaryKeyAttributes;
-            lbSelectedPrimaryKeyAttributes.ItemsSource = this.Configuration.PrimaryKeyAttributes;
+            lbSelectedPrimaryKeyAttributes.ItemsSource = this.Configuration.PrimaryKeyFields;
         }
 
         private void btnAddPrimaryKey_Click(object sender, RoutedEventArgs e)
@@ -41,7 +41,7 @@ namespace IntegrationTool.Module.WriteToMySQL.UserControls
             NameDisplayName selectedPrimaryKey = ddAvailablePrimaryKeyAttributes.SelectedItem as NameDisplayName;
             if (selectedPrimaryKey != null)
             {
-                this.Configuration.PrimaryKeyAttributes.Add(selectedPrimaryKey.Name);
+                this.Configuration.PrimaryKeyFields.Add(selectedPrimaryKey.Name);
             }
         }
 
@@ -68,7 +68,7 @@ namespace IntegrationTool.Module.WriteToMySQL.UserControls
                 string primaryKey = ((ListBox)sender).SelectedItem.ToString();
                 if (MessageBox.Show("Do you really want to delete the primarykey \"" + primaryKey + "\"?", "Warning", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
-                    this.Configuration.PrimaryKeyAttributes.Remove(primaryKey);
+                    this.Configuration.PrimaryKeyFields.Remove(primaryKey);
                 }
             }
         }

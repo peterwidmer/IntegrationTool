@@ -39,6 +39,17 @@ namespace IntegrationTool.DBAccess
             return odbcDataReader;
         }
 
+        public object [] ReadCurrentRow(OdbcDataReader reader)
+        {
+            object[] row = new object[reader.FieldCount];
+            for (int dataIndex = 0; dataIndex < reader.FieldCount; dataIndex++)
+            {
+                row[dataIndex] = reader.GetValue(dataIndex);
+            }
+
+            return row;
+        }
+
         public void Dispose()
         {
             this.odbcConnection.Dispose();

@@ -15,13 +15,10 @@ namespace IntegrationTool.Module.WriteToMySql
     {
         public MySqlImportMode ImportMode { get; set; }
         public MySqlMultipleFoundMode MultipleFoundMode { get; set; }
-        public ObservableCollection<string> PrimaryKeyAttributes { get; set; }
-        public List<DataMapping> Mapping { get; set; }
 
         public WriteToMySQLConfiguration()
         {
-            Mapping = new List<DataMapping>();
-            PrimaryKeyAttributes = new ObservableCollection<string>();
+            
         }
     }
 }

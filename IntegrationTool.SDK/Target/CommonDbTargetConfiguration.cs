@@ -14,5 +14,11 @@ namespace IntegrationTool.SDK
         public string TargetTable { get; set; }
         public ObservableCollection<string> PrimaryKeyFields { get; set; }
         public List<DataMapping> Mapping { get; set; }
+
+        public CommonDbTargetConfiguration()
+        {
+            Mapping = new List<DataMapping>();
+            PrimaryKeyFields = new ObservableCollection<string>();
+        }
     }
 }

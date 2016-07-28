@@ -17,20 +17,35 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
             this.connection = connection;
         }
 
-        public void ResolveRecordInDatabase(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
+        public List<object[]> ResolveRecordInDatabase(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
         {
-            string query = "SELECT * FROM " + tableName + " WHERE 1=1";
-            foreach(var recordIdentifier in recordIdentifiers)
-            {
-                query += " AND " + recordIdentifier.Key + "=?"; 
-            }
+            List<object[]> result = new List<object[]>();
 
-            // NEXT TODO -> Add parameter-values to command
+            string query = BuildSqlQuery(tableName, recordIdentifiers);
+            var odbcParameters= recordIdentifiers.Select(t=> new OdbcParameter(t.Key, t.Value)).ToArray();
 
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
-                
+                var odbcReader = odbcWrapper.ExecuteQuery(query, odbcParameters);
+                while (odbcReader.Read())
+                {
+                    var row = odbcWrapper.ReadCurrentRow(odbcReader);
+                    result.Add(row);
+                }
             }
+
+            return result;
+        }
+
+        private string BuildSqlQuery(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
+        {
+            string query = "SELECT * FROM " + tableName + " WHERE 1=1";
+            foreach (var recordIdentifier in recordIdentifiers)
+            {
+                query += " AND " + recordIdentifier.Key + "=?";
+            }
+
+            return query;
         }
     }
 }
