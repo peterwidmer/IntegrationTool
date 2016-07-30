@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.DBAccess.DatabaseTargetProviders;
+using IntegrationTool.Module.WriteToMySQL.SDK.Enums;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using System;
@@ -15,17 +16,29 @@ namespace IntegrationTool.Module.WriteToMySql
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
             reportProgress(new SimpleProgressReport("Aquire database-connection"));
-            OdbcConnection odbcConnection = (OdbcConnection)connection.GetConnection();
+            IDatabaseTargetProvider mySqlTarget = new MySqlTargetProvider(connection);
 
             reportProgress(new SimpleProgressReport("Write records to database"));
             for (int i = 0; i < dataObject.Count; i++)
             {
                 object[] rowData = dataObject[i];
-
                 var recordIdentifiers = BuildRecordIdentifiers(rowData, dataObject.Metadata);
-                MySqlTargetProvider mySqlTarget = new MySqlTargetProvider(connection);
                 var existingRecords = mySqlTarget.ResolveRecordInDatabase(Configuration.TargetTable, recordIdentifiers);
-                
+            }
+        }
+
+        public void UpsertRecordInDatabase(IDatabaseTargetProvider databaseTargetProvider, object[] rowData, List<Object []> existingRecords)
+        {
+            if(existingRecords.Count > 0)
+            {
+                if(this.Configuration.ImportMode == MySqlImportMode.Create || this.Configuration.ImportMode == MySqlImportMode.All)
+                {
+                    databaseTargetProvider.CreateRecordInDatabase(this.Configuration.TargetTable, rowData, this.Configuration.Mapping);
+                }
+            }
+            else
+            {
+
             }
         }
 

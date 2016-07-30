@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
 using System.Data.Odbc;
@@ -21,7 +22,7 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
         {
             List<object[]> result = new List<object[]>();
 
-            string query = BuildSqlQuery(tableName, recordIdentifiers);
+            string query = BuildResolverQuery(tableName, recordIdentifiers);
             var odbcParameters= recordIdentifiers.Select(t=> new OdbcParameter(t.Key, t.Value)).ToArray();
 
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
@@ -37,15 +38,42 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
             return result;
         }
 
-        private string BuildSqlQuery(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
+        private string BuildResolverQuery(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
         {
-            string query = "SELECT * FROM " + tableName + " WHERE 1=1";
+            return "SELECT * FROM " + tableName + BuildRecordIdentifierClause(recordIdentifiers);
+        }
+
+        public void CreateRecordInDatabase(string tableName, object[] recordToCreate, List<DataMapping> dataMapping)
+        {
+            string createQuery = BuildCreateString(tableName, dataMapping);
+            // TODO Resolve values to insert
+        }
+
+        private string BuildCreateString(string tableName, List<DataMapping> dataMapping)
+        {
+            string columnsToInsert = string.Join(",", dataMapping.Select(t => t.Target));
+            string valuePlaceholders = string.Join(",", dataMapping.Select(t => "?"));
+            return
+                "INSERT INTO TABLE "
+                + tableName
+                + " (" + columnsToInsert + ") values"
+                + " (" + valuePlaceholders + ")";
+        }
+
+        public void UpdateRecordInDatabase(string tableName, object[] recordToCreate, KeyValuePair<string, object>[] recordIdentifiers)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string BuildRecordIdentifierClause(KeyValuePair<string, object>[] recordIdentifiers)
+        {
+            var query = new StringBuilder(" WHERE 1=1");
             foreach (var recordIdentifier in recordIdentifiers)
             {
-                query += " AND " + recordIdentifier.Key + "=?";
+                query.Append(" AND " + recordIdentifier.Key + "=?");
             }
 
-            return query;
+            return query.ToString();
         }
     }
 }
