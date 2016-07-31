@@ -43,24 +43,29 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
             return "SELECT * FROM " + tableName + BuildRecordIdentifierClause(recordIdentifiers);
         }
 
-        public void CreateRecordInDatabase(string tableName, object[] recordToCreate, List<DataMapping> dataMapping)
+        public void CreateRecordInDatabase(DbRecord dbRecord)
         {
-            string createQuery = BuildCreateString(tableName, dataMapping);
-            // TODO Resolve values to insert
+            string createQuery = BuildCreateString(dbRecord);
+            var odbcParameters = dbRecord.Values.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
+
+            using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
+            {
+                odbcWrapper.ExecuteNonQuery(createQuery, odbcParameters);
+            }
         }
 
-        private string BuildCreateString(string tableName, List<DataMapping> dataMapping)
+        private string BuildCreateString(DbRecord dbRecord)
         {
-            string columnsToInsert = string.Join(",", dataMapping.Select(t => t.Target));
-            string valuePlaceholders = string.Join(",", dataMapping.Select(t => "?"));
+            string columnsToInsert = string.Join(",", dbRecord.Values.Select(t => t.Key));
+            string valuePlaceholders = string.Join(",", dbRecord.Values.Select(t => "?"));
             return
-                "INSERT INTO TABLE "
-                + tableName
+                "INSERT INTO "
+                + dbRecord.TableName
                 + " (" + columnsToInsert + ") values"
                 + " (" + valuePlaceholders + ")";
         }
 
-        public void UpdateRecordInDatabase(string tableName, object[] recordToCreate, KeyValuePair<string, object>[] recordIdentifiers)
+        public void UpdateRecordInDatabase(DbRecord dbRecord, KeyValuePair<string, object>[] recordIdentifiers)
         {
             throw new NotImplementedException();
         }

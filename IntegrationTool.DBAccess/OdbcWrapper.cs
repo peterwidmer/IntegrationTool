@@ -39,6 +39,17 @@ namespace IntegrationTool.DBAccess
             return odbcDataReader;
         }
 
+        public int ExecuteNonQuery(string sqlQuery, OdbcParameter [] parameters = null)
+        {
+            OdbcCommand odbcCommand = new OdbcCommand(sqlQuery, this.odbcConnection);
+            if (parameters != null)
+            {
+                odbcCommand.Parameters.AddRange(parameters);
+            }
+            int result = odbcCommand.ExecuteNonQuery();
+            return result;
+        }
+
         public object [] ReadCurrentRow(OdbcDataReader reader)
         {
             object[] row = new object[reader.FieldCount];

@@ -49,8 +49,10 @@
     <Compile Include="DatabaseMetadataProviders\MySqlMetadataProvider.cs" />
     <Compile Include="DatabaseTargetProviders\IDatabaseTargetProviders.cs" />
     <Compile Include="DatabaseTargetProviders\MySqlTargetProvider.cs" />
+    <Compile Include="DataStoreConverter.cs" />
     <Compile Include="DbMetadataColumn.cs" />
     <Compile Include="DbMetadataTable.cs" />
+    <Compile Include="DbRecord.cs" />
     <Compile Include="DummyDatabaseInterface.cs" />
     <Compile Include="OdbcWrapper.cs" />
     <Compile Include="DatabaseMetadataProviders\IDatabaseMetadataProvider.cs" />
