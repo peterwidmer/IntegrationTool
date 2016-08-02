@@ -9,8 +9,8 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
 {
     public interface IDatabaseTargetProvider
     {
-        List<object[]> ResolveRecordInDatabase(string tableName, KeyValuePair<string, object>[] recordIdentifiers);
+        List<object[]> ResolveRecordInDatabase(DbRecord dbRecord);
         void CreateRecordInDatabase(DbRecord dbRecord);
-        void UpdateRecordInDatabase(DbRecord dbRecord, KeyValuePair<string, object>[] recordIdentifiers);
+        void UpdateRecordInDatabase(DbRecord dbRecord);
     }
 }

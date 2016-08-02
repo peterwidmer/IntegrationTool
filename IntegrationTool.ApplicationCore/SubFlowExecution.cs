@@ -135,10 +135,6 @@ namespace IntegrationTool.ApplicationCore
                 {
                     break; // Obviously the targetitem, so we need to break here
                 }
-                //if(transformationDesignerItem.ID == loadUntildesignerItemId)
-                //{
-                //    break; // Loaded until current item, so we need to break here
-                //}
 
                 var transformationItemConfiguration = objectResolver.LoadItemConfiguration(transformationDesignerItem.ID) as TransformationConfiguration;
 

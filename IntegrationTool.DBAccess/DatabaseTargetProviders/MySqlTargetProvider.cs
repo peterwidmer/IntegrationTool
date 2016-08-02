@@ -18,12 +18,12 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
             this.connection = connection;
         }
 
-        public List<object[]> ResolveRecordInDatabase(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
+        public List<object[]> ResolveRecordInDatabase(DbRecord dbRecord)
         {
             List<object[]> result = new List<object[]>();
 
-            string query = BuildResolverQuery(tableName, recordIdentifiers);
-            var odbcParameters= recordIdentifiers.Select(t=> new OdbcParameter(t.Key, t.Value)).ToArray();
+            string query = BuildResolverQuery(dbRecord.TableName, dbRecord.Identifiers);
+            var odbcParameters = dbRecord.Identifiers.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
 
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
@@ -38,7 +38,7 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
             return result;
         }
 
-        private string BuildResolverQuery(string tableName, KeyValuePair<string, object> [] recordIdentifiers)
+        private string BuildResolverQuery(string tableName, List<KeyValuePair<string, object>> recordIdentifiers)
         {
             return "SELECT * FROM " + tableName + BuildRecordIdentifierClause(recordIdentifiers);
         }
@@ -46,11 +46,11 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
         public void CreateRecordInDatabase(DbRecord dbRecord)
         {
             string createQuery = BuildCreateString(dbRecord);
-            var odbcParameters = dbRecord.Values.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
+            var odbcColumnParameters = dbRecord.Values.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
 
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
-                odbcWrapper.ExecuteNonQuery(createQuery, odbcParameters);
+                odbcWrapper.ExecuteNonQuery(createQuery, odbcColumnParameters);
             }
         }
 
@@ -65,12 +65,30 @@ namespace IntegrationTool.DBAccess.DatabaseTargetProviders
                 + " (" + valuePlaceholders + ")";
         }
 
-        public void UpdateRecordInDatabase(DbRecord dbRecord, KeyValuePair<string, object>[] recordIdentifiers)
+        public void UpdateRecordInDatabase(DbRecord dbRecord)
         {
-            throw new NotImplementedException();
+            string updateQuery = BuildUpdateString(dbRecord);
+            var odbcColumnParameters = dbRecord.Values.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
+            var odbcWhereParameters = dbRecord.Identifiers.Select(t => new OdbcParameter(t.Key, t.Value)).ToArray();
+
+            using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
+            {
+                odbcWrapper.ExecuteNonQuery(updateQuery, odbcColumnParameters.Concat(odbcWhereParameters).ToArray());
+            }
         }
 
-        private string BuildRecordIdentifierClause(KeyValuePair<string, object>[] recordIdentifiers)
+        private string BuildUpdateString(DbRecord dbRecord)
+        {
+            string columnsToUpdate = string.Join(",", dbRecord.Values.Select(t => t.Key + "=?"));
+            string whereClause = BuildRecordIdentifierClause(dbRecord.Identifiers);
+            return
+                "UPDATE "
+                + dbRecord.TableName +
+                " SET " + columnsToUpdate
+                + whereClause;
+        }
+
+        private string BuildRecordIdentifierClause(List<KeyValuePair<string, object>> recordIdentifiers)
         {
             var query = new StringBuilder(" WHERE 1=1");
             foreach (var recordIdentifier in recordIdentifiers)

@@ -25,17 +25,18 @@ namespace IntegrationTool.Module.WriteToMySql
             for (int i = 0; i < dataObject.Count; i++)
             {
                 object[] rowData = dataObject[i];
-                var recordIdentifiers = BuildRecordIdentifiers(rowData, dataObject.Metadata);
-                var existingRecords = mySqlTarget.ResolveRecordInDatabase(Configuration.TargetTable, recordIdentifiers);
-
                 var dbRecord = dataStoreConverter.ConvertToDbRecord(rowData);
+                dbRecord.Identifiers= BuildRecordIdentifiers(rowData, dataObject.Metadata);
+
+                var existingRecords = mySqlTarget.ResolveRecordInDatabase(dbRecord);
+
                 UpsertRecordInDatabase(mySqlTarget, dbRecord, existingRecords);
             }
         }
 
         public void UpsertRecordInDatabase(IDatabaseTargetProvider databaseTargetProvider, DbRecord dbRecord, List<Object []> existingRecords)
         {
-            if(existingRecords.Count == 0)
+            if(!existingRecords.Any())
             {
                 if(this.Configuration.ImportMode == MySqlImportMode.Create || this.Configuration.ImportMode == MySqlImportMode.All)
                 {
@@ -44,11 +45,14 @@ namespace IntegrationTool.Module.WriteToMySql
             }
             else
             {
-
+                if(this.Configuration.ImportMode == MySqlImportMode.Update || this.Configuration.ImportMode == MySqlImportMode.All)
+                {
+                    databaseTargetProvider.UpdateRecordInDatabase(dbRecord);
+                }
             }
         }
 
-        public KeyValuePair<string, object> [] BuildRecordIdentifiers(object[] rowData, DataMetadata dataMetadata)
+        public List<KeyValuePair<string, object>> BuildRecordIdentifiers(object[] rowData, DataMetadata dataMetadata)
         {
             List<KeyValuePair<string, object>> recordIdentifiers = new List<KeyValuePair<string, object>>();
 
@@ -64,7 +68,7 @@ namespace IntegrationTool.Module.WriteToMySql
                 recordIdentifiers.Add(recordIdentifier);
             }
 
-            return recordIdentifiers.ToArray();
+            return recordIdentifiers;
         }
     }
 }

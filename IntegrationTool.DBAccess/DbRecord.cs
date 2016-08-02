@@ -10,11 +10,13 @@ namespace IntegrationTool.DBAccess
     {
         public string TableName { get; set; }
         public List<KeyValuePair<string, object>> Values { get; set; }
+        public List<KeyValuePair<string, object>> Identifiers { get; set; }
 
         public DbRecord(string tableName)
         {
             this.TableName = tableName;
             Values = new List<KeyValuePair<string, object>>();
+            Identifiers = new List<KeyValuePair<string, object>>();
         }
     }
 }
