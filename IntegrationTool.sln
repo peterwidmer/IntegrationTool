@@ -143,6 +143,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.Load
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.ConnectToUrl", "IntegrationTool.Module.ConnectToUrl\IntegrationTool.Module.ConnectToUrl.csproj", "{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.JoinRecords", "IntegrationTool.Module.JoinRecords\IntegrationTool.Module.JoinRecords.csproj", "{3B784F61-12D1-457F-BF04-9E0135F19762}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -633,6 +635,16 @@ Global
 		{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -681,5 +693,6 @@ Global
 		{6B4E8F13-9067-46A2-8619-70275F6D20D6} = {E33D817F-B24A-448D-9181-5EC51753A901}
 		{6008825D-1AC4-4654-A1B6-9A7E3BE02751} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 		{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B} = {8F8A2EAC-1DA3-49AF-B7AD-A409F99CACEC}
+		{3B784F61-12D1-457F-BF04-9E0135F19762} = {D2621EB1-4E86-45FA-9900-A5F69FA4E36B}
 	EndGlobalSection
 EndGlobal

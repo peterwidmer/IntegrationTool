@@ -1,0 +1,37 @@
+﻿<Image xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Image.Source>
+    <DrawingImage>
+      <DrawingImage.Drawing>
+        <DrawingGroup>
+          <DrawingGroup.Children>
+            <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 228.497,183.917L 275.247,183.917L 275.247,226.374L 316.846,226.374L 316.846,275.907L 274.851,275.907L 274.851,322.11L 227.705,322.11L 227.705,276.74L 184.917,275.907L 184.917,226.374L 228.497,226.374L 228.497,183.917 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 52.1174,84.6104L 51.8465,151.61L 159.909,152.11L 159.909,85.1104L 52.1174,84.6104 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 51.8465,191.277L 159.909,191.277L 160.18,417.61L 51.8465,417.148L 51.8465,191.277 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 342.617,84.9437L 342.347,151.944L 450.409,152.444L 450.409,85.4437L 342.617,84.9437 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+            <GeometryDrawing Brush="#FFE69F3A" Geometry="F1 M 342.347,191.61L 450.409,191.61L 450.68,417.944L 342.347,417.482L 342.347,191.61 Z ">
+              <GeometryDrawing.Pen>
+                <Pen Thickness="10" LineJoin="Round" Brush="#FF000000"/>
+              </GeometryDrawing.Pen>
+            </GeometryDrawing>
+          </DrawingGroup.Children>
+        </DrawingGroup>
+      </DrawingImage.Drawing>
+    </DrawingImage>
+  </Image.Source>
+</Image>
