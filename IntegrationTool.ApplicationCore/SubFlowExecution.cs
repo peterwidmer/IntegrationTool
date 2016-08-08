@@ -20,7 +20,6 @@ namespace IntegrationTool.ApplicationCore
 
         public BlockingCollection<DesignerItemBase> designerItems;
         public BlockingCollection<ConnectionBase> designerConnections;
-        private Dictionary<string, object> connectionInstances;
         private DesignerItemBase parentDesignerItem;
         private ItemLog parentItemLog;
 
@@ -30,8 +29,7 @@ namespace IntegrationTool.ApplicationCore
             this.parentItemLog = parentItemLog;
             this.objectResolver = objectResolver; 
             this.designerItems = designerItems;
-            this.designerConnections = designerConnections;
-            this.connectionInstances = new Dictionary<string, object>();            
+            this.designerConnections = designerConnections;     
         }
 
         public void Execute(RunLog runLog)
