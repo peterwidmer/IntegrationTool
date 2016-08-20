@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationInitializer.cs" />
+    <Compile Include="DataStream.cs" />
     <Compile Include="FlowGraph.cs" />
     <Compile Include="FlowHelper.cs" />
     <Compile Include="FlowManager.cs" />

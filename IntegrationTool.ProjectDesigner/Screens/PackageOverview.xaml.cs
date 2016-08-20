@@ -227,9 +227,9 @@ namespace IntegrationTool.ProjectDesigner.Screens
             {
                 DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
-                IDatastore dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
-
-                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStore);
+                var dataStreams = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
+                var dataStream = dataStreams.First();
+                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStream.DataStore);
                 dataPreviewWindow.Show();
             }
             catch (Exception ex)
@@ -264,7 +264,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
 
                 Guid loadUntilDesignerItemId = designerItem.ID;
-                ConnectionBase incomingConnection = subFlowExecution.designerConnections.Where(t => t.SinkID == designerItem.ID).FirstOrDefault();
+                ConnectionBase incomingConnection = subFlowExecution.FlowGraph.DesignerConnections.FirstOrDefault(t => t.SinkID == designerItem.ID);
                 if (incomingConnection != null)
                 {
                     loadUntilDesignerItemId = incomingConnection.SourceID;
@@ -272,7 +272,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
                 IDatastore dataStore = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
                     new DummyDataStore() :
-                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
+                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null).First().DataStore;
 
                 ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
 
@@ -316,10 +316,11 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         public SubFlowExecution GetSubflowExecution()
         {
-            ObjectResolver objectResolver = new ObjectResolver(Package.Configurations.OfType<StepConfigurationBase>().ToList(), Connections);
-            SerializedDiagram subDiagram = this.Package.SubDiagrams.Where(t => t.ParentItemId == doubleClickedMainflowDesignerItem.ID).FirstOrDefault();
-            IntegrationTool.SDK.Diagram.DiagramDeserializer deserializer = new SDK.Diagram.DiagramDeserializer(moduleLoader.Modules, subDiagram.Diagram);
-            SubFlowExecution subFlowExecution = new SubFlowExecution(null, null, objectResolver, deserializer.DesignerItems, deserializer.Connections);
+            var objectResolver = new ObjectResolver(Package.Configurations.OfType<StepConfigurationBase>().ToList(), Connections);
+            var subDiagram = this.Package.SubDiagrams.Where(t => t.ParentItemId == doubleClickedMainflowDesignerItem.ID).FirstOrDefault();
+            var diagramDeserializer = new SDK.Diagram.DiagramDeserializer(moduleLoader.Modules, subDiagram.Diagram);
+            var flowGraph = new FlowGraph(diagramDeserializer.DesignerItems, diagramDeserializer.Connections);
+            var subFlowExecution = new SubFlowExecution(null, null, objectResolver, flowGraph);
 
             return subFlowExecution;
         }

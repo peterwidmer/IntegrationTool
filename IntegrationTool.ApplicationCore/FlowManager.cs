@@ -68,7 +68,8 @@ namespace IntegrationTool.Flowmanagement
                     if (subDiagram != null)
                     {
                         IntegrationTool.SDK.Diagram.DiagramDeserializer deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, subDiagram.Diagram);
-                        SubFlowExecution subFlowExecution = new SubFlowExecution(designerItem, itemLog, objectResolver, deserializer.DesignerItems, deserializer.Connections);
+                        var flowGrap = new FlowGraph(deserializer.DesignerItems, deserializer.Connections);
+                        SubFlowExecution subFlowExecution = new SubFlowExecution(designerItem, itemLog, objectResolver, flowGrap);
                         subFlowExecution.Execute(this.runLog);                        
                     }
                 }

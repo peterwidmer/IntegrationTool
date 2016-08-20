@@ -1,5 +1,6 @@
 ﻿using IntegrationTool.DBAccess;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Data.DataConditionClasses;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.Diagram;
@@ -17,45 +18,34 @@ namespace IntegrationTool.ApplicationCore
     public class SubFlowExecution
     {
         private ObjectResolver objectResolver;
-
-        public BlockingCollection<DesignerItemBase> designerItems;
-        public BlockingCollection<ConnectionBase> designerConnections;
         private DesignerItemBase parentDesignerItem;
         private ItemLog parentItemLog;
+        public FlowGraph FlowGraph { get; set; }
 
-        public SubFlowExecution(DesignerItemBase parentDesignerItem, ItemLog parentItemLog, ObjectResolver objectResolver, BlockingCollection<DesignerItemBase> designerItems, BlockingCollection<ConnectionBase> designerConnections)
+        public SubFlowExecution(DesignerItemBase parentDesignerItem, ItemLog parentItemLog, ObjectResolver objectResolver, FlowGraph flowGraph)
         {
             this.parentDesignerItem = parentDesignerItem;
             this.parentItemLog = parentItemLog;
-            this.objectResolver = objectResolver; 
-            this.designerItems = designerItems;
-            this.designerConnections = designerConnections;     
+            this.objectResolver = objectResolver;
+            this.FlowGraph = flowGraph;
         }
 
         public void Execute(RunLog runLog)
         {
-            IDatastore dataObject = GetDataObjectForDesignerItem(Guid.Empty, runLog);
-            WriteDataToTarget(dataObject, runLog);
+            var dataStreams = GetDataObjectForDesignerItem(Guid.Empty, runLog);
+            var dataStream = dataStreams.First();
+            WriteDataToTarget(dataStream, runLog);
         }
 
-        private void WriteDataToTarget(IDatastore dataObject, RunLog runLog)
+        private void WriteDataToTarget(DataStream dataStream, RunLog runLog)
         {
-            DesignerItemBase targetItem = this.designerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).FirstOrDefault();
+            DesignerItemBase targetItem = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).FirstOrDefault();
             if (targetItem == null)
             {
                 throw new Exception("Could not find any targets to write data to!");
             }
 
-            IModule targetModule = objectResolver.GetModule(targetItem.ID, targetItem.ModuleDescription.ModuleType);
-            IConnection connectionObject = objectResolver.GetConnection(targetItem.ID);
-            IDatabaseInterface databaseInterface = SqliteWrapper.GetSqliteWrapper(runLog.RunLogPath, targetItem.ID, targetItem.ItemLabel);
-
-            ItemLog itemLog = GetItemLog(targetItem.ID, targetItem.ItemLabel, targetItem.ModuleDescription.ModuleType.Name, runLog.RunLogPath + "\\" + databaseInterface.GetDatabaseName());
-
-            ((IDataTarget)targetModule).WriteData(connectionObject, databaseInterface, dataObject, ReportProgressMethod);
-            
-            itemLog.EndTime = DateTime.Now;
-            parentItemLog.SubFlowLogs.Add(itemLog);
+            dataStream.WriteToTarget(targetItem, ReportProgressMethod);            
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)
@@ -66,65 +56,41 @@ namespace IntegrationTool.ApplicationCore
             }
         }
 
-        public IDatastore GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
+        public List<DataStream> GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
         {
             // Get source
-            DesignerItemBase sourceItem = this.designerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Source);
-            if (sourceItem == null)
+            var sources = this.FlowGraph.GetStartNodesByNodeId(loadUntildesignerItemId);
+            if (sources.Count == 0)
             {
                 throw new Exception("Could not find any sources to load data!");
             }
 
-            IModule sourceObject = objectResolver.GetModule(sourceItem.ID, sourceItem.ModuleDescription.ModuleType);
-            IConnection connectionObject = objectResolver.GetConnection(sourceItem.ID);
-            if(connectionObject == null)
-            {
-                if(runLog != null)
-                {
-                    string label = String.IsNullOrEmpty(sourceItem.ItemLabel) ? "-- No Label --" : sourceItem.ItemLabel;
-                    throw new Exception("No connection was selected for the source '" + label + "'.");
-                }
-                return null;  // TODO Decide if dummy datastore should be returned!
-            }
-            IDatabaseInterface databaseInterface = null;            
+            List<DataStream> dataStreams = CreateDataStreams(sources, runLog);
 
-            ItemLog itemLog = GetItemLog(sourceItem.ID, sourceItem.ItemLabel, sourceItem.ModuleDescription.ModuleType.Name, null);
+            var dataStream = dataStreams.First();
+            var sourceItem = sources[0];
 
-            if (runLog != null)
-            {
-                databaseInterface = SqliteWrapper.GetSqliteWrapper(runLog.RunLogPath, sourceItem.ID, sourceItem.ItemLabel);
-                itemLog.DatabasePath = runLog.RunLogPath + "\\" + databaseInterface.GetDatabaseName();
-                parentItemLog.SubFlowLogs.Add(itemLog);
-            }
-
-            IDatastore dataObject = new DataObject();
-
-            List<AttributeImplementation> dataConditionAttributes = AssemblyHelper.LoadAllClassesImplementingSpecificAttribute<DataConditionAttribute>(System.Reflection.Assembly.GetAssembly(typeof(DataConditionAttribute)));
-            dataObject.InitializeDatastore(dataConditionAttributes);
-
-            ((IDataSource)sourceObject).LoadData(connectionObject, dataObject, ReportProgressMethod);
-
-            itemLog.EndTime = DateTime.Now;
+            dataStream.LoadDataFromSource(sourceItem, ReportProgressMethod);
 
             if(sourceItem.ID == loadUntildesignerItemId)
             {
-                return dataObject;
+                return dataStreams;
             }
 
             //Transform data
             Guid lastDesignerItemId = sourceItem.ID;
             while(true)
             {
-                if(lastDesignerItemId == Guid.Empty || 
-                    designerConnections.Where(t=> t.SourceID == lastDesignerItemId).Count() == 0 ||
+                if(lastDesignerItemId == Guid.Empty ||
+                    this.FlowGraph.DesignerConnections.Where(t => t.SourceID == lastDesignerItemId).Count() == 0 ||
                     lastDesignerItemId == loadUntildesignerItemId)
                 {
                     break;
                 }
 
-                Guid sinkDesignerItemId = designerConnections.Where(t => t.SourceID == lastDesignerItemId).First().SinkID;
+                Guid sinkDesignerItemId = this.FlowGraph.DesignerConnections.First(t => t.SourceID == lastDesignerItemId).SinkID;
 
-                DesignerItemBase transformationDesignerItem = this.designerItems.Where(t => t.ID == sinkDesignerItemId).FirstOrDefault();
+                DesignerItemBase transformationDesignerItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ID == sinkDesignerItemId);
                 if (transformationDesignerItem == null)
                 {
                     throw new Exception("Could not find designerIten to transform data!");
@@ -134,24 +100,26 @@ namespace IntegrationTool.ApplicationCore
                     break; // Obviously the targetitem, so we need to break here
                 }
 
-                var transformationItemConfiguration = objectResolver.LoadItemConfiguration(transformationDesignerItem.ID) as TransformationConfiguration;
+                dataStream.TransformData(transformationDesignerItem, ReportProgressMethod);
 
-                IConnection transformationConnectionObject = null;
-                if (transformationItemConfiguration.SelectedConnectionConfigurationId.Equals(Guid.Empty) == false)
-                {
-                    transformationConnectionObject = objectResolver.GetConnection(transformationItemConfiguration.SelectedConnectionConfigurationId);
-                }
-                dataObject.ApplyFilter(transformationItemConfiguration.DataFilter);
-
-                IModule transformationObject = objectResolver.GetModule(transformationDesignerItem.ID, transformationDesignerItem.ModuleDescription.ModuleType);
-                ((IDataTransformation)transformationObject).TransformData(transformationConnectionObject, null, dataObject, ReportProgressMethod);
-                dataObject.ClearFilter();
+                dataStream.DataStore.ClearFilter();
 
                 lastDesignerItemId = transformationDesignerItem.ID;
             }
 
-            return dataObject;
-        }        
+            return dataStreams;
+        }
+
+        public List<DataStream> CreateDataStreams(List<DesignerItemBase> sourceNodes, RunLog runLog)
+        {
+            var dataStreams = new List<DataStream>();
+            foreach (var source in sourceNodes)
+            {
+                dataStreams.Add(new DataStream(new DataObject(), objectResolver, runLog, parentItemLog));
+            }
+
+            return dataStreams;
+        }
 
         private ItemLog GetItemLog(Guid id, string itemLabel, string moduleDescriptionName, string databasePath)
         {
@@ -165,12 +133,6 @@ namespace IntegrationTool.ApplicationCore
             };
 
             return itemLog;
-        }
-
-        
-
-
-
-       
+        }       
     }
 }

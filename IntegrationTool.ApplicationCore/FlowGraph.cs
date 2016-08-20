@@ -16,13 +16,13 @@ namespace IntegrationTool.ApplicationCore
         public FlowGraph(BlockingCollection<DesignerItemBase> designerItems, BlockingCollection<ConnectionBase> designerConnections)
         {
             this.DesignerItems = designerItems;
-            this.DesignerConnections = DesignerConnections;
+            this.DesignerConnections = designerConnections;
         }
 
         public List<DesignerItemBase> GetStartNodesByNodeId(Guid designerItemId)
         {
             var startNodes = new List<DesignerItemBase>();
-            GetStartNodes(new List<ConnectionBase>() { new ConnectionBase(Guid.Empty, designerItemId) }, startNodes);
+            GetStartNodes(new List<ConnectionBase>() { new ConnectionBase(designerItemId, Guid.Empty) }, startNodes);
             return startNodes;
         }
 
@@ -35,6 +35,10 @@ namespace IntegrationTool.ApplicationCore
                 var incomingConnections = DesignerConnections.Where(t => t.SinkID == currentDesignerItem.ID);
                 if (!incomingConnections.Any())
                 {
+                    if(currentDesignerItem.ModuleDescription.Attributes.ModuleType != SDK.ModuleType.Source)
+                    {
+                        throw new Exception("The module " + currentDesignerItem.ItemLabel + " is not a valid source!");
+                    }
                     startNodes.Add(currentDesignerItem);
                 }
                 else

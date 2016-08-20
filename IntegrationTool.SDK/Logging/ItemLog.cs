@@ -48,5 +48,19 @@ namespace IntegrationTool.SDK
 
             return itemLog;
         }
+
+        public static ItemLog CreateNew(Guid designerItemId, string designerItemDisplayName, string moduleDescriptionName, string databasePath)
+        {
+            ItemLog itemLog = new ItemLog()
+            {
+                DesignerItemId = designerItemId,
+                DesignerItemDisplayName = designerItemDisplayName,
+                ModuleDescriptionName = moduleDescriptionName,
+                StartTime = DateTime.Now,
+                DatabasePath = databasePath
+            };
+
+            return itemLog;
+        } 
     }
 }
