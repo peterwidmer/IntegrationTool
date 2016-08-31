@@ -10,13 +10,12 @@ namespace IntegrationTool.SDK
     public class ItemWorker
     {
         public DesignerItemBase DesignerItem { get; set; }
-        public StepConfigurationBase Configuration { get; set; }
-        public ItemState State { get; set; }
+        public StepConfigurationBase Configuration { get; set; }        
+        public System.ComponentModel.BackgroundWorker BackgroundWorker { get; set; }
 
-        public ItemWorker(DesignerItemBase designerItem, ItemState state, StepConfigurationBase configuration)
+        public ItemWorker(DesignerItemBase designerItem, StepConfigurationBase configuration)
         {
             this.DesignerItem = designerItem;
-            this.State = state;
             this.Configuration = configuration;
         }
     }

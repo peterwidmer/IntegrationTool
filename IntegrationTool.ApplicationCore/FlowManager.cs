@@ -45,7 +45,7 @@ namespace IntegrationTool.Flowmanagement
             this.connectionList = deserializer.Connections;
             foreach (DesignerItemBase item in deserializer.DesignerItems)
             {
-                StepConfiguration configuration = package.Configurations.Where(t => t.ConfigurationId == item.ID).FirstOrDefault() as StepConfiguration;
+                StepConfiguration configuration = package.Configurations.FirstOrDefault(t => t.ConfigurationId == item.ID) as StepConfiguration;
                 ItemWorker itemWorker = InitializeItemWorker(item, configuration);
                 itemWorkers.Add(itemWorker);
             }
@@ -53,8 +53,8 @@ namespace IntegrationTool.Flowmanagement
 
         void bgw_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            DesignerItemBase designerItem = (DesignerItemBase)((object[])e.Argument)[0];
-            StepConfiguration configuration = (StepConfiguration)((object[])e.Argument)[1]; 
+            var itemWorker = e.Argument as ItemWorker;
+            var designerItem = itemWorker.DesignerItem;
 
             ItemLog itemLog = ItemLog.CreateNew(designerItem.ID, designerItem.ItemLabel, designerItem.ModuleDescription.ModuleType.Name, DateTime.Now);
 
@@ -64,18 +64,18 @@ namespace IntegrationTool.Flowmanagement
             {
                 if (designerItem.ModuleDescription.Attributes.ContainsSubConfiguration)
                 {
-                    SerializedDiagram subDiagram = this.package.SubDiagrams.Where(t => t.ParentItemId == designerItem.ID).FirstOrDefault();
+                    SerializedDiagram subDiagram = this.package.SubDiagrams.FirstOrDefault(t => t.ParentItemId == designerItem.ID);
                     if (subDiagram != null)
                     {
                         IntegrationTool.SDK.Diagram.DiagramDeserializer deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, subDiagram.Diagram);
-                        var flowGrap = new FlowGraph(deserializer.DesignerItems, deserializer.Connections);
-                        SubFlowExecution subFlowExecution = new SubFlowExecution(designerItem, itemLog, objectResolver, flowGrap);
+                        var flowGraph = new FlowGraph(deserializer.DesignerItems, deserializer.Connections);
+                        SubFlowExecution subFlowExecution = new SubFlowExecution(itemWorker, itemLog, objectResolver, flowGraph);
                         subFlowExecution.Execute(this.runLog);                        
                     }
                 }
                 else
                 {                    
-                    ItemExecution itemExecution = new ItemExecution(designerItem, objectResolver, this.runLog);
+                    ItemExecution itemExecution = new ItemExecution(itemWorker, objectResolver, this.runLog);
                     itemExecution.Execute();
                 }
             }
@@ -97,12 +97,14 @@ namespace IntegrationTool.Flowmanagement
 
         private ItemWorker InitializeItemWorker(DesignerItemBase designerItem, StepConfigurationBase stepConfiguration)
         {
-            ItemWorker itemWorker = new ItemWorker(designerItem, ItemState.Initialized, stepConfiguration);
-            itemWorker.DesignerItem.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
-            itemWorker.DesignerItem.BackgroundWorker.WorkerReportsProgress = true;
-            itemWorker.DesignerItem.BackgroundWorker.DoWork += bgw_DoWork;
-            itemWorker.DesignerItem.BackgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
-            itemWorker.DesignerItem.BackgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+            designerItem.State = ItemState.Initialized;
+
+            ItemWorker itemWorker = new ItemWorker(designerItem, stepConfiguration);
+            itemWorker.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            itemWorker.BackgroundWorker.WorkerReportsProgress = true;
+            itemWorker.BackgroundWorker.DoWork += bgw_DoWork;
+            itemWorker.BackgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
+            itemWorker.BackgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
 
             return itemWorker;
         }
@@ -174,7 +176,7 @@ namespace IntegrationTool.Flowmanagement
                 while (true)
                 {
                     // Continously check if all items finished already
-                    List<ItemWorker> unfinishedItemWorkers = itemWorkers.Where(t => t.State != ItemState.Stopped && t.State != ItemState.Error && t.State != ItemState.NotExecuted).ToList();
+                    List<ItemWorker> unfinishedItemWorkers = itemWorkers.Where(t => t.DesignerItem.State != ItemState.Stopped && t.DesignerItem.State != ItemState.Error && t.DesignerItem.State != ItemState.NotExecuted).ToList();
                     if (unfinishedItemWorkers.Count == 0)
                     {
                         if (RunCompleted != null)
@@ -185,8 +187,8 @@ namespace IntegrationTool.Flowmanagement
                     }
 
                     // Check if a new item can be started
-                    List<ItemWorker> finishedItems = itemWorkers.Where(t => t.State == ItemState.Stopped || t.State == ItemState.Error || t.State == ItemState.NotExecuted).ToList();
-                    foreach (ItemWorker itemWorker in unfinishedItemWorkers.Where(t => t.State == ItemState.Initialized))
+                    List<ItemWorker> finishedItems = itemWorkers.Where(t => t.DesignerItem.State == ItemState.Stopped || t.DesignerItem.State == ItemState.Error || t.DesignerItem.State == ItemState.NotExecuted).ToList();
+                    foreach (ItemWorker itemWorker in unfinishedItemWorkers.Where(t => t.DesignerItem.State == ItemState.Initialized))
                     {
                         // Initialize
                         bool newItemCanBeStarted = true;
@@ -231,15 +233,13 @@ namespace IntegrationTool.Flowmanagement
         {
             progress.Report(new ProgressReport() { State = ItemEvent.Started, DesignerItem = itemWorker.DesignerItem, Message = "Started" });
 
-            itemWorker.State = ItemState.Running;
-            itemWorker.DesignerItem.BackgroundWorker.RunWorkerAsync(
-                new object [] { itemWorker.DesignerItem, itemWorker.Configuration });
-
+            itemWorker.DesignerItem.State = ItemState.Running;
+            itemWorker.BackgroundWorker.RunWorkerAsync(itemWorker);
         }
 
         private void DoNotExecuteDesignerItem(ItemWorker itemWorker)
         {
-            itemWorker.State = ItemState.NotExecuted;
+            itemWorker.DesignerItem.State = ItemState.NotExecuted;
             progress.Report(new ProgressReport() { State = ItemEvent.StoppedNotExecuted, DesignerItem = itemWorker.DesignerItem, Message = "Not Executed" });            
         }
 
@@ -247,8 +247,8 @@ namespace IntegrationTool.Flowmanagement
         {
             ItemLog resultItemLog = e.Result as ItemLog;
 
-            ItemWorker itemWorker = itemWorkers.Where(t => t.DesignerItem.BackgroundWorker == (BackgroundWorker)sender).FirstOrDefault();
-            itemWorker.State = resultItemLog.ExecutionSuccessful ? ItemState.Stopped : ItemState.Error;
+            ItemWorker itemWorker = itemWorkers.FirstOrDefault(t => t.BackgroundWorker == (BackgroundWorker)sender);
+            itemWorker.DesignerItem.State = resultItemLog.ExecutionSuccessful ? ItemState.Stopped : ItemState.Error;
 
             ProgressReport progressReport = new SDK.ProgressReport()
             {
@@ -264,7 +264,7 @@ namespace IntegrationTool.Flowmanagement
 
         void BackgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            ItemWorker backgroundWorker = itemWorkers.Where(t => t.DesignerItem.BackgroundWorker == (BackgroundWorker)sender).FirstOrDefault();
+            ItemWorker backgroundWorker = itemWorkers.FirstOrDefault(t => t.BackgroundWorker == (BackgroundWorker)sender);
 
             ProgressReport currentProgress = e.UserState as ProgressReport;
             currentProgress.DesignerItem = backgroundWorker.DesignerItem;

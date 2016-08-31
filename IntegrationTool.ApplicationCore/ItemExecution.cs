@@ -13,35 +13,37 @@ namespace IntegrationTool.ApplicationCore
 {
     public class ItemExecution
     {
-        private DesignerItemBase stepItem;
+        private ItemWorker itemWorker;
         private ObjectResolver objectResolver;
         private RunLog runLog;
 
-        public ItemExecution(DesignerItemBase stepItem, ObjectResolver objectResolver, RunLog runLog)
+        public ItemExecution(ItemWorker itemWorker, ObjectResolver objectResolver, RunLog runLog)
         {
-            this.stepItem = stepItem;
+            this.itemWorker = itemWorker;
             this.objectResolver = objectResolver;
             this.runLog = runLog;
         }
 
         public void Execute()
         {
-            IModule stepModule = objectResolver.GetModule(this.stepItem.ID, this.stepItem.ModuleDescription.ModuleType);
+            var designerItem = itemWorker.DesignerItem;
+
+            IModule stepModule = objectResolver.GetModule(designerItem.ID, designerItem.ModuleDescription.ModuleType);
             IConnection connectionObject = null;
-            if (this.stepItem.ModuleDescription.Attributes.RequiresConnection)
+            if (designerItem.ModuleDescription.Attributes.RequiresConnection)
             {
-                connectionObject = objectResolver.GetConnection(this.stepItem.ID);
+                connectionObject = objectResolver.GetConnection(designerItem.ID);
             }
-            IDatabaseInterface databaseInterface = SqliteWrapper.GetSqliteWrapper(runLog.RunLogPath, this.stepItem.ID, this.stepItem.ItemLabel);
+            IDatabaseInterface databaseInterface = SqliteWrapper.GetSqliteWrapper(runLog.RunLogPath, designerItem.ID, designerItem.ItemLabel);
 
             ((IStep)stepModule).Execute(connectionObject, databaseInterface, ReportProgressMethod);
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)
         {
-            if (this.stepItem != null)
+            if (this.itemWorker != null)
             {
-                this.stepItem.BackgroundWorker.ReportProgress(100, new ProgressReport() { DesignerItem = this.stepItem, State = ItemEvent.ProgressReport, Message = progress.Message });
+                this.itemWorker.BackgroundWorker.ReportProgress(100, new ProgressReport() { DesignerItem = itemWorker.DesignerItem, State = ItemEvent.ProgressReport, Message = progress.Message });
             }
         }
     }

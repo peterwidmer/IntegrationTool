@@ -18,15 +18,23 @@ namespace IntegrationTool.SDK.Diagram
             DesignerItems = new BlockingCollection<DesignerItemBase>();
             Connections = new BlockingCollection<ConnectionBase>();
 
-            // Deserialize DesignerItem
+            DeserializeDesignerItems(moduleDescriptions, root);
+            DeserializeConnections(root);
+        }
+
+        private void DeserializeDesignerItems(List<ModuleDescription> moduleDescriptions, XElement root)
+        {
             IEnumerable<XElement> itemsXML = root.Elements("DesignerItems").Elements("DesignerItem");
             foreach (XElement itemXML in itemsXML)
             {
                 DesignerItemBase item = DeserializeDesignerItem(moduleDescriptions, itemXML);
+                item.State = ItemState.NotExecuted;
                 DesignerItems.Add(item);
             }
+        }
 
-            // Deserialize Connections
+        private void DeserializeConnections(XElement root)
+        {
             IEnumerable<XElement> connectionsXML = root.Elements("Connections").Elements("Connection");
             foreach (XElement connectionXML in connectionsXML)
             {

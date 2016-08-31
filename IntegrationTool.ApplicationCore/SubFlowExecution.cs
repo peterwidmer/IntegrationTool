@@ -18,13 +18,13 @@ namespace IntegrationTool.ApplicationCore
     public class SubFlowExecution
     {
         private ObjectResolver objectResolver;
-        private DesignerItemBase parentDesignerItem;
+        private ItemWorker parentItemWorker;
         private ItemLog parentItemLog;
         public FlowGraph FlowGraph { get; set; }
 
-        public SubFlowExecution(DesignerItemBase parentDesignerItem, ItemLog parentItemLog, ObjectResolver objectResolver, FlowGraph flowGraph)
+        public SubFlowExecution(ItemWorker parentItemWorker, ItemLog parentItemLog, ObjectResolver objectResolver, FlowGraph flowGraph)
         {
-            this.parentDesignerItem = parentDesignerItem;
+            this.parentItemWorker = parentItemWorker;
             this.parentItemLog = parentItemLog;
             this.objectResolver = objectResolver;
             this.FlowGraph = flowGraph;
@@ -32,27 +32,23 @@ namespace IntegrationTool.ApplicationCore
 
         public void Execute(RunLog runLog)
         {
-            var dataStreams = GetDataObjectForDesignerItem(Guid.Empty, runLog);
-            var dataStream = dataStreams.First();
-            WriteDataToTarget(dataStream, runLog);
-        }
-
-        private void WriteDataToTarget(DataStream dataStream, RunLog runLog)
-        {
-            DesignerItemBase targetItem = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).FirstOrDefault();
+            DesignerItemBase targetItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target);
             if (targetItem == null)
             {
                 throw new Exception("Could not find any targets to write data to!");
             }
 
-            dataStream.WriteToTarget(targetItem, ReportProgressMethod);            
+            var dataStreams = GetDataObjectForDesignerItem(targetItem.ID, runLog);
+            var dataStream = dataStreams.First();
+
+            dataStream.WriteToTarget(targetItem, ReportProgressMethod);     
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)
         {
-            if (this.parentDesignerItem != null)
+            if (this.parentItemWorker != null)
             {
-                this.parentDesignerItem.BackgroundWorker.ReportProgress(100, new ProgressReport() { DesignerItem = this.parentDesignerItem, State = ItemEvent.ProgressReport, Message = progress.Message });
+                this.parentItemWorker.BackgroundWorker.ReportProgress(100, new ProgressReport() { DesignerItem = this.parentItemWorker.DesignerItem, State = ItemEvent.ProgressReport, Message = progress.Message });
             }
         }
 
@@ -70,8 +66,6 @@ namespace IntegrationTool.ApplicationCore
             var dataStream = dataStreams.First();
             var sourceItem = sources[0];
 
-            dataStream.LoadDataFromSource(sourceItem, ReportProgressMethod);
-
             if(sourceItem.ID == loadUntildesignerItemId)
             {
                 return dataStreams;
@@ -82,7 +76,7 @@ namespace IntegrationTool.ApplicationCore
             while(true)
             {
                 if(lastDesignerItemId == Guid.Empty ||
-                    this.FlowGraph.DesignerConnections.Where(t => t.SourceID == lastDesignerItemId).Count() == 0 ||
+                    this.FlowGraph.DesignerConnections.Count(t => t.SourceID == lastDesignerItemId) == 0 ||
                     lastDesignerItemId == loadUntildesignerItemId)
                 {
                     break;
@@ -115,7 +109,9 @@ namespace IntegrationTool.ApplicationCore
             var dataStreams = new List<DataStream>();
             foreach (var source in sourceNodes)
             {
-                dataStreams.Add(new DataStream(new DataObject(), objectResolver, runLog, parentItemLog));
+                var dataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
+                dataStream.LoadDataFromSource(source, ReportProgressMethod);
+                dataStreams.Add(dataStream);                
             }
 
             return dataStreams;

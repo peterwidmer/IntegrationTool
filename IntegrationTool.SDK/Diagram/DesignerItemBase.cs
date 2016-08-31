@@ -11,6 +11,6 @@ namespace IntegrationTool.SDK.Diagram
         public Guid ID { get; set; }
         public string ItemLabel { get; set; }
         public ModuleDescription ModuleDescription { get; set; }
-        public System.ComponentModel.BackgroundWorker BackgroundWorker { get; set; }
+        public ItemState State { get; set; }
     }
 }

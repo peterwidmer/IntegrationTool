@@ -16,7 +16,7 @@ namespace IntegrationTool.ApplicationCore
             IEnumerable<ConnectionBase> incomingConnections = GetIncomingConnections(itemWorker.DesignerItem.ID, connectionList);
             foreach(ConnectionBase connection in incomingConnections.Where(t=> t.ConnectionType == ConnectorType.Default))
             {
-                ItemWorker sourceItemWorker = itemWorkers.Where(t=> t.DesignerItem.ID == connection.SourceID).FirstOrDefault();
+                ItemWorker sourceItemWorker = itemWorkers.FirstOrDefault(t=> t.DesignerItem.ID == connection.SourceID);
 
                 bool allowExecution = AllowExecution_OnPreviousErrorTest_Recursive(sourceItemWorker, itemWorkers, connectionList);
                 if (allowExecution == false)
@@ -29,7 +29,7 @@ namespace IntegrationTool.ApplicationCore
 
         private static bool AllowExecution_OnPreviousErrorTest_Recursive(ItemWorker itemWorker, BlockingCollection<ItemWorker> itemWorkers, BlockingCollection<ConnectionBase> connectionList)
         {
-            if (itemWorker.State == ItemState.Error && itemWorker.Configuration.OnError == StepExecutionErrorHandling.StopFollwingSteps)
+            if (itemWorker.DesignerItem.State == ItemState.Error && itemWorker.Configuration.OnError == StepExecutionErrorHandling.StopFollwingSteps)
             {
                 return false;
             }
@@ -56,7 +56,7 @@ namespace IntegrationTool.ApplicationCore
             foreach (ConnectionBase connection in incomingConnections.Where(t=> t.ConnectionType == ConnectorType.Default))
             {
                 ItemWorker sourceItemWorker = itemWorkers.Where(t => t.DesignerItem.ID == connection.SourceID).FirstOrDefault();
-                if(sourceItemWorker.State == ItemState.Stopped)
+                if (sourceItemWorker.DesignerItem.State == ItemState.Stopped)
                 {
                     return true;
                 }
@@ -66,8 +66,8 @@ namespace IntegrationTool.ApplicationCore
             foreach (ConnectionBase connection in incomingConnections)
             {
                 ItemWorker sourceItemWorker = itemWorkers.Where(t => t.DesignerItem.ID == connection.SourceID).FirstOrDefault();
-                
-                if(connection.ConnectionType == ConnectorType.Error && sourceItemWorker.State == ItemState.Stopped)
+
+                if (connection.ConnectionType == ConnectorType.Error && sourceItemWorker.DesignerItem.State == ItemState.Stopped)
                 {
                     return false;
                 }
