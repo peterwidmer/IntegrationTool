@@ -50,6 +50,7 @@
     <Compile Include="ModuleLoader.cs" />
     <Compile Include="ProjectLoader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SequentialExecutionPlanner.cs" />
     <Compile Include="SubFlowExecution.cs" />
   </ItemGroup>
   <ItemGroup>

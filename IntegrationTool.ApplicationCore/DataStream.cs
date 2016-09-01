@@ -15,6 +15,8 @@ namespace IntegrationTool.ApplicationCore
     {
         public IDatastore DataStore { get; set; }
 
+        public DesignerItemBase CurrentItem { get; set; }
+
         private ObjectResolver objectResolver;
         private RunLog runLog;
         private ItemLog parentItemLog;
@@ -31,6 +33,25 @@ namespace IntegrationTool.ApplicationCore
         {
             List<AttributeImplementation> dataConditionAttributes = AssemblyHelper.LoadAllClassesImplementingSpecificAttribute<DataConditionAttribute>(System.Reflection.Assembly.GetAssembly(typeof(DataConditionAttribute)));
             DataStore.InitializeDatastore(dataConditionAttributes);
+        }
+
+        public void ExecuteDesignerItem(DesignerItemBase designerItem, ReportProgressMethod reportProgressMethod)
+        {
+            this.CurrentItem = designerItem;
+            switch(designerItem.ModuleDescription.Attributes.ModuleType)
+            {
+                case ModuleType.Source:
+                    LoadDataFromSource(designerItem, reportProgressMethod);
+                    break;
+
+                case ModuleType.Transformation:
+                    TransformData(designerItem, reportProgressMethod);
+                    break;
+
+                case ModuleType.Target:
+                    WriteToTarget(designerItem, reportProgressMethod);
+                    break;
+            }
         }
 
         public void LoadDataFromSource(DesignerItemBase sourceItem, ReportProgressMethod reportProgressMethod)

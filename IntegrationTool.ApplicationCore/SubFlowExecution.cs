@@ -32,16 +32,35 @@ namespace IntegrationTool.ApplicationCore
 
         public void Execute(RunLog runLog)
         {
+            List<DataStream> dataStreams = new List<DataStream>();
+            var executionPlan = CreateExecutionPlan();
+            foreach(var item in executionPlan)
+            {
+                if(item.ModuleDescription.Attributes.ModuleType == ModuleType.Source)
+                {
+                    var dataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
+                    dataStreams.Add(dataStream);
+                }
+            }
+
             DesignerItemBase targetItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target);
             if (targetItem == null)
             {
                 throw new Exception("Could not find any targets to write data to!");
             }
 
-            var dataStreams = GetDataObjectForDesignerItem(targetItem.ID, runLog);
-            var dataStream = dataStreams.First();
+            dataStreams = GetDataObjectForDesignerItem(targetItem.ID, runLog);
+            var dataStream2 = dataStreams.First();
 
-            dataStream.WriteToTarget(targetItem, ReportProgressMethod);     
+            dataStream2.WriteToTarget(targetItem, ReportProgressMethod);     
+        }
+
+        private List<DesignerItemBase> CreateExecutionPlan()
+        {
+            var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).ToList();
+            var sequentialExecutionPlanner = new SequentialExecutionPlanner(this.FlowGraph);
+            sequentialExecutionPlanner.CreateExecutionPlan(targetItems);
+            return sequentialExecutionPlanner.ExecutionPlan;
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)
@@ -110,7 +129,7 @@ namespace IntegrationTool.ApplicationCore
             foreach (var source in sourceNodes)
             {
                 var dataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
-                dataStream.LoadDataFromSource(source, ReportProgressMethod);
+                dataStream.ExecuteDesignerItem(source, ReportProgressMethod);
                 dataStreams.Add(dataStream);                
             }
 

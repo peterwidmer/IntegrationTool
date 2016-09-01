@@ -26,6 +26,13 @@ namespace IntegrationTool.ApplicationCore
             return startNodes;
         }
 
+        public List<DesignerItemBase> GetPredecessorNodes(DesignerItemBase designerItem)
+        {
+            var incomingConnectionSourceIds = DesignerConnections.Where(t => t.SinkID == designerItem.ID).Select(t=> t.SourceID);
+            var predecessorNodes = DesignerItems.Where(t => incomingConnectionSourceIds.Contains(t.ID));
+            return predecessorNodes.ToList();
+        }
+
         private void GetStartNodes(IEnumerable<ConnectionBase> connections, List<DesignerItemBase> startNodes)
         {
             foreach(var connection in connections)
