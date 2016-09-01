@@ -28,9 +28,21 @@ namespace IntegrationTool.ApplicationCore
 
         public List<DesignerItemBase> GetPredecessorNodes(DesignerItemBase designerItem)
         {
-            var incomingConnectionSourceIds = DesignerConnections.Where(t => t.SinkID == designerItem.ID).Select(t=> t.SourceID);
+            var incomingConnectionSourceIds = GetIncomingConnections(designerItem).Select(t=> t.SourceID);
             var predecessorNodes = DesignerItems.Where(t => incomingConnectionSourceIds.Contains(t.ID));
             return predecessorNodes.ToList();
+        }
+
+        public List<ConnectionBase> GetIncomingConnections(DesignerItemBase designerItem)
+        {
+            var incomingConnections = DesignerConnections.Where(t => t.SinkID == designerItem.ID);
+            return incomingConnections.ToList();
+        }
+
+        public List<ConnectionBase> GetOutgoingConnections(DesignerItemBase designerItem)
+        {
+            var outgoingConnections = DesignerConnections.Where(t => t.SourceID == designerItem.ID);
+            return outgoingConnections.ToList();
         }
 
         private void GetStartNodes(IEnumerable<ConnectionBase> connections, List<DesignerItemBase> startNodes)

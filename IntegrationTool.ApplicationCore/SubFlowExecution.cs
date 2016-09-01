@@ -21,6 +21,7 @@ namespace IntegrationTool.ApplicationCore
         private ItemWorker parentItemWorker;
         private ItemLog parentItemLog;
         public FlowGraph FlowGraph { get; set; }
+        public Dictionary<ConnectionBase, DataStream> DataStreams;
 
         public SubFlowExecution(ItemWorker parentItemWorker, ItemLog parentItemLog, ObjectResolver objectResolver, FlowGraph flowGraph)
         {
@@ -28,6 +29,7 @@ namespace IntegrationTool.ApplicationCore
             this.parentItemLog = parentItemLog;
             this.objectResolver = objectResolver;
             this.FlowGraph = flowGraph;
+            this.DataStreams = new Dictionary<ConnectionBase, DataStream>();
         }
 
         public void Execute(RunLog runLog)
@@ -36,11 +38,7 @@ namespace IntegrationTool.ApplicationCore
             var executionPlan = CreateExecutionPlan();
             foreach(var item in executionPlan)
             {
-                if(item.ModuleDescription.Attributes.ModuleType == ModuleType.Source)
-                {
-                    var dataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
-                    dataStreams.Add(dataStream);
-                }
+                ExecuteItem(item, runLog);                
             }
 
             DesignerItemBase targetItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target);
@@ -53,6 +51,40 @@ namespace IntegrationTool.ApplicationCore
             var dataStream2 = dataStreams.First();
 
             dataStream2.WriteToTarget(targetItem, ReportProgressMethod);     
+        }
+
+        public void ExecuteItem(DesignerItemBase item, RunLog runLog)
+        {
+            var incomingConnections = FlowGraph.GetIncomingConnections(item);
+            var outgoingConnections = FlowGraph.GetOutgoingConnections(item);
+
+            PrepareDataStreams(runLog, incomingConnections, outgoingConnections);
+
+            for(int i = 0; i < outgoingConnections.Count; i++)
+            {
+                var dataStream = DataStreams[outgoingConnections[i]];
+                dataStream.ExecuteDesignerItem(item, ReportProgressMethod);
+            }
+
+            // Next todo, test if this works
+        }
+
+        private void PrepareDataStreams(RunLog runLog, List<ConnectionBase> incomingConnections, List<ConnectionBase> outgoingConnections)
+        {
+            for (int i = 0; i < outgoingConnections.Count; i++)
+            {
+                if (i > incomingConnections.Count)
+                {
+                    var newDataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
+                    DataStreams.Add(outgoingConnections[i], newDataStream);
+                }
+                else
+                {
+                    var existingDataStream = DataStreams[incomingConnections[i]];
+                    DataStreams.Remove(incomingConnections[i]);
+                    DataStreams.Add(outgoingConnections[i], existingDataStream);
+                }
+            }
         }
 
         private List<DesignerItemBase> CreateExecutionPlan()
