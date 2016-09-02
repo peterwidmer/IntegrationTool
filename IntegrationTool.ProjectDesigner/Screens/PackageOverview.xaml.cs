@@ -227,9 +227,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
             {
                 DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
-                var dataStreams = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
-                var dataStream = dataStreams.First();
-                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStream.DataStore);
+                var dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
+                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStore);
                 dataPreviewWindow.Show();
             }
             catch (Exception ex)
@@ -272,7 +271,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
                 IDatastore dataStore = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
                     new DummyDataStore() :
-                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null).First().DataStore;
+                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
 
                 ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
 

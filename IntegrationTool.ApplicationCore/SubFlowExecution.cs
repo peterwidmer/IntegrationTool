@@ -21,7 +21,8 @@ namespace IntegrationTool.ApplicationCore
         private ItemWorker parentItemWorker;
         private ItemLog parentItemLog;
         public FlowGraph FlowGraph { get; set; }
-        public Dictionary<ConnectionBase, DataStream> DataStreams;
+        public Dictionary<ConnectionBase, IDatastore> DataStreams;
+        private ModuleExecution moduleExecution;
 
         public SubFlowExecution(ItemWorker parentItemWorker, ItemLog parentItemLog, ObjectResolver objectResolver, FlowGraph flowGraph)
         {
@@ -29,28 +30,25 @@ namespace IntegrationTool.ApplicationCore
             this.parentItemLog = parentItemLog;
             this.objectResolver = objectResolver;
             this.FlowGraph = flowGraph;
-            this.DataStreams = new Dictionary<ConnectionBase, DataStream>();
+            this.DataStreams = new Dictionary<ConnectionBase, IDatastore>();
+            
         }
 
         public void Execute(RunLog runLog)
         {
-            List<DataStream> dataStreams = new List<DataStream>();
-            var executionPlan = CreateExecutionPlan();
-            foreach(var item in executionPlan)
+            moduleExecution = new ModuleExecution(objectResolver, runLog, parentItemLog);
+
+            var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).ToList();
+            var executionPlan = CreateExecutionPlan(targetItems);
+            ExecuteExecutionPlan(executionPlan, runLog);
+        }
+
+        public void ExecuteExecutionPlan(List<DesignerItemBase> executionPlan, RunLog runLog)
+        {
+            foreach (var item in executionPlan)
             {
-                ExecuteItem(item, runLog);                
-            }
-
-            DesignerItemBase targetItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target);
-            if (targetItem == null)
-            {
-                throw new Exception("Could not find any targets to write data to!");
-            }
-
-            dataStreams = GetDataObjectForDesignerItem(targetItem.ID, runLog);
-            var dataStream2 = dataStreams.First();
-
-            dataStream2.WriteToTarget(targetItem, ReportProgressMethod);     
+                ExecuteItem(item, runLog);
+            }  
         }
 
         public void ExecuteItem(DesignerItemBase item, RunLog runLog)
@@ -58,38 +56,40 @@ namespace IntegrationTool.ApplicationCore
             var incomingConnections = FlowGraph.GetIncomingConnections(item);
             var outgoingConnections = FlowGraph.GetOutgoingConnections(item);
 
-            PrepareDataStreams(runLog, incomingConnections, outgoingConnections);
+            List<IDatastore> dataStores = new List<IDatastore>();
+            if (item.ModuleDescription.Attributes.ModuleType == ModuleType.Source)
+            {
+                var dataStore = InitializeDatastore();
+                dataStores.Add(dataStore);
+            }
+            else
+            {
+                foreach(var incomingConnection in incomingConnections)
+                {
+                    dataStores.Add(DataStreams[incomingConnection]);
+                    DataStreams.Remove(incomingConnection);
+                }
+            }
 
+            var returnedDataStore = moduleExecution.ExecuteDesignerItem(item, dataStores, ReportProgressMethod);
+            
             for(int i = 0; i < outgoingConnections.Count; i++)
             {
-                var dataStream = DataStreams[outgoingConnections[i]];
-                dataStream.ExecuteDesignerItem(item, ReportProgressMethod);
-            }
-
-            // Next todo, test if this works
-        }
-
-        private void PrepareDataStreams(RunLog runLog, List<ConnectionBase> incomingConnections, List<ConnectionBase> outgoingConnections)
-        {
-            for (int i = 0; i < outgoingConnections.Count; i++)
-            {
-                if (i > incomingConnections.Count)
-                {
-                    var newDataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
-                    DataStreams.Add(outgoingConnections[i], newDataStream);
-                }
-                else
-                {
-                    var existingDataStream = DataStreams[incomingConnections[i]];
-                    DataStreams.Remove(incomingConnections[i]);
-                    DataStreams.Add(outgoingConnections[i], existingDataStream);
-                }
+                // Todo, add a copy of the IDataStore insted of the reference!
+                DataStreams.Add(outgoingConnections[i], returnedDataStore);
             }
         }
 
-        private List<DesignerItemBase> CreateExecutionPlan()
+        private IDatastore InitializeDatastore()
         {
-            var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).ToList();
+            IDatastore dataStore = new DataObject();
+            List<AttributeImplementation> dataConditionAttributes = AssemblyHelper.LoadAllClassesImplementingSpecificAttribute<DataConditionAttribute>(System.Reflection.Assembly.GetAssembly(typeof(DataConditionAttribute)));
+            dataStore.InitializeDatastore(dataConditionAttributes);
+            return dataStore;
+        }
+
+        private List<DesignerItemBase> CreateExecutionPlan(List<DesignerItemBase> targetItems)
+        {
             var sequentialExecutionPlanner = new SequentialExecutionPlanner(this.FlowGraph);
             sequentialExecutionPlanner.CreateExecutionPlan(targetItems);
             return sequentialExecutionPlanner.ExecutionPlan;
@@ -103,69 +103,15 @@ namespace IntegrationTool.ApplicationCore
             }
         }
 
-        public List<DataStream> GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
+        public IDatastore GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
         {
-            // Get source
-            var sources = this.FlowGraph.GetStartNodesByNodeId(loadUntildesignerItemId);
-            if (sources.Count == 0)
-            {
-                throw new Exception("Could not find any sources to load data!");
-            }
+            moduleExecution = new ModuleExecution(objectResolver, runLog, parentItemLog);
 
-            List<DataStream> dataStreams = CreateDataStreams(sources, runLog);
+            var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ID == loadUntildesignerItemId).ToList();
+            var executionPlan = CreateExecutionPlan(targetItems);
+            ExecuteExecutionPlan(executionPlan, runLog);
 
-            var dataStream = dataStreams.First();
-            var sourceItem = sources[0];
-
-            if(sourceItem.ID == loadUntildesignerItemId)
-            {
-                return dataStreams;
-            }
-
-            //Transform data
-            Guid lastDesignerItemId = sourceItem.ID;
-            while(true)
-            {
-                if(lastDesignerItemId == Guid.Empty ||
-                    this.FlowGraph.DesignerConnections.Count(t => t.SourceID == lastDesignerItemId) == 0 ||
-                    lastDesignerItemId == loadUntildesignerItemId)
-                {
-                    break;
-                }
-
-                Guid sinkDesignerItemId = this.FlowGraph.DesignerConnections.First(t => t.SourceID == lastDesignerItemId).SinkID;
-
-                DesignerItemBase transformationDesignerItem = this.FlowGraph.DesignerItems.FirstOrDefault(t => t.ID == sinkDesignerItemId);
-                if (transformationDesignerItem == null)
-                {
-                    throw new Exception("Could not find designerIten to transform data!");
-                }
-                if(transformationDesignerItem.ModuleDescription.Attributes.ModuleType != ModuleType.Transformation)
-                {
-                    break; // Obviously the targetitem, so we need to break here
-                }
-
-                dataStream.TransformData(transformationDesignerItem, ReportProgressMethod);
-
-                dataStream.DataStore.ClearFilter();
-
-                lastDesignerItemId = transformationDesignerItem.ID;
-            }
-
-            return dataStreams;
-        }
-
-        public List<DataStream> CreateDataStreams(List<DesignerItemBase> sourceNodes, RunLog runLog)
-        {
-            var dataStreams = new List<DataStream>();
-            foreach (var source in sourceNodes)
-            {
-                var dataStream = new DataStream(new DataObject(), objectResolver, runLog, parentItemLog);
-                dataStream.ExecuteDesignerItem(source, ReportProgressMethod);
-                dataStreams.Add(dataStream);                
-            }
-
-            return dataStreams;
+            return DataStreams.First().Value;
         }
 
         private ItemLog GetItemLog(Guid id, string itemLabel, string moduleDescriptionName, string databasePath)
