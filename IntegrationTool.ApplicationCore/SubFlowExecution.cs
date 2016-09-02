@@ -30,8 +30,7 @@ namespace IntegrationTool.ApplicationCore
             this.parentItemLog = parentItemLog;
             this.objectResolver = objectResolver;
             this.FlowGraph = flowGraph;
-            this.DataStreams = new Dictionary<ConnectionBase, IDatastore>();
-            
+            this.DataStreams = new Dictionary<ConnectionBase, IDatastore>();            
         }
 
         public void Execute(RunLog runLog)
@@ -75,8 +74,16 @@ namespace IntegrationTool.ApplicationCore
             
             for(int i = 0; i < outgoingConnections.Count; i++)
             {
-                // Todo, add a copy of the IDataStore insted of the reference!
-                DataStreams.Add(outgoingConnections[i], returnedDataStore);
+                if (i == 0)
+                {
+                    DataStreams.Add(outgoingConnections[i], returnedDataStore);
+                }
+                else
+                {
+                    var targetDatastore = InitializeDatastore();
+                    DatastoreHelper.CopyDatastore(returnedDataStore, targetDatastore);
+                    DataStreams.Add(outgoingConnections[i], targetDatastore);
+                }
             }
         }
 
@@ -111,21 +118,8 @@ namespace IntegrationTool.ApplicationCore
             var executionPlan = CreateExecutionPlan(targetItems);
             ExecuteExecutionPlan(executionPlan, runLog);
 
-            return DataStreams.First().Value;
-        }
-
-        private ItemLog GetItemLog(Guid id, string itemLabel, string moduleDescriptionName, string databasePath)
-        {
-            ItemLog itemLog = new ItemLog()
-            {
-                DesignerItemId = id,
-                DesignerItemDisplayName = itemLabel,
-                ModuleDescriptionName = moduleDescriptionName,
-                StartTime = DateTime.Now,
-                DatabasePath = databasePath
-            };
-
-            return itemLog;
-        }       
+            var outgoingConnections = FlowGraph.GetOutgoingConnections(targetItems.First());
+            return DataStreams[outgoingConnections.First()];
+        } 
     }
 }

@@ -57,5 +57,37 @@ namespace IntegrationTool.SDK.Data
             }
             return dt;
         }
+
+        public static void CopyDatastore(IDatastore source, IDatastore target)
+        {
+            CopyDatastoreMetadata(source, target);
+            CopyDatastoreRows(source, target);
+        }
+
+        private static void CopyDatastoreMetadata(IDatastore source, IDatastore target)
+        {
+            foreach (var sourceColumn in source.Metadata.Columns)
+            {
+                target.Metadata.Columns.Add(sourceColumn.Key, new ColumnMetadata()
+                {
+                    ColumnIndex = sourceColumn.Value.ColumnIndex,
+                    ColumnName = sourceColumn.Value.ColumnName
+                });
+            }
+        }
+
+        private static void CopyDatastoreRows(IDatastore source, IDatastore target)
+        {
+            object[] rowCopy;
+            for (int i = 0; i < source.Count; i++)
+            {
+                rowCopy = new object[source.Metadata.Columns.Count];
+                for (int column = 0; column < source.Metadata.Columns.Count; column++)
+                {
+                    rowCopy[column] = source[i][column];
+                }
+                target.AddData(rowCopy);
+            }
+        }
     }
 }
