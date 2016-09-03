@@ -10,7 +10,7 @@ namespace IntegrationTool.Module.JoinRecords
 {
     public partial class JoinRecords
     {
-        public void TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
+        public void TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore datastore1, IDatastore datastore2, ReportProgressMethod reportProgress)
         {
         }
     }

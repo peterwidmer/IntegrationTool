@@ -150,6 +150,7 @@
     <Compile Include="Step\IStep.cs" />
     <Compile Include="Target\CommonDbTargetConfiguration.cs" />
     <Compile Include="Target\IDataTarget.cs" />
+    <Compile Include="Transformation\IDataMerge.cs" />
     <Compile Include="Transformation\IDataTransformation.cs" />
     <Compile Include="WPFHelper.cs" />
   </ItemGroup>

@@ -52,6 +52,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
+      <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
+      <Name>IntegrationTool.DataMappingControl</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>

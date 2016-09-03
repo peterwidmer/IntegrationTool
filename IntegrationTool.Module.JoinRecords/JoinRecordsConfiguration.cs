@@ -7,7 +7,13 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.JoinRecords
 {
+    public enum JoinRecordsJoinType
+    {
+        InnerJoin
+    }
+
     public class JoinRecordsConfiguration : TransformationConfiguration
     {
+        public JoinRecordsJoinType JoinType { get; set; }
     }
 }

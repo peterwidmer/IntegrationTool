@@ -15,7 +15,7 @@ namespace IntegrationTool.Module.JoinRecords
         GroupName = ModuleGroup.Transformation,
         ConfigurationType = typeof(JoinRecordsConfiguration),
         RequiresConnection = false)]
-    public partial class JoinRecords : IModule, IDataTransformation
+    public partial class JoinRecords : IModule, IDataMerge
     {
         public JoinRecordsConfiguration Configuration { get; set; }
 

@@ -4,8 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl" 
+             d:DesignHeight="288.851" d:DesignWidth="464.189">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="147*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="26"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="127*"/>
+        </Grid.RowDefinitions>
+        <DataMappingControl:MappingControl x:Name="joinMapping" Grid.ColumnSpan="3" Grid.Row="3" />
+        <Label Content="Join-Type:" Grid.Row="1"/>
+        <ComboBox x:Name="ddJoinType" Grid.Column="2" SelectedValue="{Binding Path=JoinType}" SelectedValuePath="Tag" IsEnabled="False">
+            <ComboBoxItem Content="Inner Join" Tag="InnerJoin" />
+        </ComboBox>
     </Grid>
 </UserControl>
