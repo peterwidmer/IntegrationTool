@@ -157,8 +157,8 @@ namespace IntegrationTool.DiagramDesigner
                     }
 
                     Canvas.SetZIndex(newItem, this.Children.Count);
-                    this.Children.Add(newItem);                    
-                    SetConnectorDecoratorTemplate(newItem);
+                    this.Children.Add(newItem);
+                    SetDesignerItemConnectorDecoratorTemplate(newItem); //SetConnectorDecoratorTemplate(newItem);
 
                     //update selection
                     this.SelectionService.SelectItem(newItem);
@@ -198,12 +198,23 @@ namespace IntegrationTool.DiagramDesigner
 
         private void SetConnectorDecoratorTemplate(DesignerItem item)
         {
-            if (item.ApplyTemplate() && item.Content is UIElement)
+            if (item.Content is UIElement)
             {
                 ControlTemplate template = DesignerItem.GetConnectorDecoratorTemplate(item.Content as UIElement);
+                SetConnectorDecoratorTemplate(item, template);
+            }
+        }
+
+        private void SetConnectorDecoratorTemplate(DesignerItem item, ControlTemplate template)
+        {
+            if (item.ApplyTemplate())
+            {
                 Control decorator = item.Template.FindName("PART_ConnectorDecorator", item) as Control;
                 if (decorator != null && template != null)
+                {
                     decorator.Template = template;
+                    decorator.ApplyTemplate();
+                }
             }
         }
     }

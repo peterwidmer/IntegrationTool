@@ -65,6 +65,22 @@ namespace IntegrationTool.DiagramDesigner
             SelectAll.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Control));
 
             this.AllowDrop = true;
+
+            LoadRequiredResources();
+        }
+
+        private Dictionary<string, ControlTemplate> DesignerItemControlTemplates = new Dictionary<string, ControlTemplate>();
+
+        private void LoadRequiredResources()
+        {
+            LoadDesignerItemControlTemplate("DefaultDecoratorTemplate");
+            LoadDesignerItemControlTemplate("DefaultDecoratorWithErrorTemplate");
+        }
+
+        private void LoadDesignerItemControlTemplate(string controlTemplateName)
+        {
+            var controlTemplate = (ControlTemplate)FindResource(controlTemplateName);
+            DesignerItemControlTemplates.Add(controlTemplateName, controlTemplate);
         }
 
         #region New Command
@@ -206,7 +222,7 @@ namespace IntegrationTool.DiagramDesigner
                 DesignerItem item = DeserializeDesignerItem(this.ModuleDescriptions, itemXML, newID, offsetX, offsetY);
                 item.Content = GetContentItem(itemStyle, itemControlTemplateStyle, item.ModuleDescription);
                 this.Children.Add(item);
-                SetConnectorDecoratorTemplate(item);
+                SetDesignerItemConnectorDecoratorTemplate(item);
                 newItems.Add(item);
             }
 

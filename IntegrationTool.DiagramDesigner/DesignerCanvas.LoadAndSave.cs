@@ -93,7 +93,7 @@ namespace IntegrationTool.DiagramDesigner
             {
                 designerItem.Content = GetContentItem(itemStyle, itemControlTemplateStyle, designerItem.ModuleDescription);
                 this.Children.Add(designerItem);
-                SetConnectorDecoratorTemplate(designerItem);
+                SetDesignerItemConnectorDecoratorTemplate(designerItem);        
             }
 
             this.InvalidateVisual();
@@ -121,6 +121,20 @@ namespace IntegrationTool.DiagramDesigner
                 }
                 Canvas.SetZIndex(connection, Int32.Parse(connectionXML.Element("zIndex").Value));
                 this.Children.Add(connection);
+            }
+        }
+
+        private void SetDesignerItemConnectorDecoratorTemplate(DesignerItem designerItem)
+        {
+            switch (designerItem.ModuleDescription.Attributes.ModuleType)
+            {
+                case ModuleType.Step:
+                    SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["DefaultDecoratorWithErrorTemplate"]);
+                    break;
+
+                default:
+                    SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["DefaultDecoratorTemplate"]);
+                    break;
             }
         }
 
