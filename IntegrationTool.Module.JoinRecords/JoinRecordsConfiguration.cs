@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace IntegrationTool.Module.JoinRecords
     public class JoinRecordsConfiguration : TransformationConfiguration
     {
         public JoinRecordsJoinType JoinType { get; set; }
+
+        public List<DataMapping> JoinMapping { get; set; }
     }
 }

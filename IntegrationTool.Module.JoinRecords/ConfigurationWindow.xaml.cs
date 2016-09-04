@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.GenericClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,13 +23,36 @@ namespace IntegrationTool.Module.JoinRecords
     public partial class ConfigurationWindow : UserControl
     {
         private JoinRecordsConfiguration configuration;
-        private IDatastore dataObject;
+        private IDatastore sourceDatastore;
+        private IDatastore targetDatastore;
 
-        public ConfigurationWindow(JoinRecordsConfiguration configuration, IDatastore dataObject)
+        public ConfigurationWindow(JoinRecordsConfiguration configuration, IDatastore sourceDatastore, IDatastore targetDatastore)
         {
             InitializeComponent();
             this.DataContext = this.configuration = configuration;
-            this.dataObject = dataObject;
+            this.sourceDatastore = sourceDatastore;
+            this.targetDatastore = targetDatastore;
+
+            InitializeMappingControl(configuration.JoinMapping);
+        }
+
+        private void InitializeMappingControl(List<DataMappingControl.DataMapping> mapping)
+        {
+            List<NameDisplayName> sourceList = this.sourceDatastore.Metadata.GetColumnsAsNameDisplayNameList();
+            foreach (NameDisplayName item in sourceList)
+            {
+                joinMapping.SourceList.Add(new ListViewItem() { Content = item.Name, ToolTip = item.DisplayName });
+            }
+
+            List<NameDisplayName> targetList = this.targetDatastore.Metadata.GetColumnsAsNameDisplayNameList();
+            foreach (NameDisplayName item in targetList)
+            {
+                joinMapping.TargetList.Add(new ListViewItem() { Content = item.Name, ToolTip = item.DisplayName });
+            }
+
+            joinMapping.Mapping = mapping;
+
+            joinMapping.RedrawLines();
         }
     }
 }
