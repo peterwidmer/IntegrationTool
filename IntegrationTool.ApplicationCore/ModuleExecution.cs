@@ -29,23 +29,20 @@ namespace IntegrationTool.ApplicationCore
             switch(designerItem.ModuleDescription.Attributes.ModuleType)
             {
                 case ModuleType.Source:
-                    LoadDataFromSource(designerItem, dataStores.First(), reportProgressMethod);
-                    return dataStores.First();
+                    return LoadDataFromSource(designerItem, dataStores.First(), reportProgressMethod);
 
                 case ModuleType.Transformation:
-                    TransformData(designerItem, dataStores.First(), reportProgressMethod);
-                    return dataStores.First();
+                    return TransformData(designerItem, dataStores, reportProgressMethod);
 
                 case ModuleType.Target:
-                    WriteToTarget(designerItem, dataStores.First(), reportProgressMethod);
-                    return dataStores.First();
+                    return WriteToTarget(designerItem, dataStores.First(), reportProgressMethod);
 
                 default:
                     throw new Exception("ModuleType " + designerItem.ModuleDescription.Attributes.ModuleType + " has no execution implemented");
             }
         }
 
-        public void LoadDataFromSource(DesignerItemBase sourceItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
+        public IDatastore LoadDataFromSource(DesignerItemBase sourceItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
         {
             IModule sourceObject = objectResolver.GetModule(sourceItem.ID, sourceItem.ModuleDescription.ModuleType);
             IConnection connectionObject = objectResolver.GetConnection(sourceItem.ID);
@@ -71,9 +68,11 @@ namespace IntegrationTool.ApplicationCore
             ((IDataSource)sourceObject).LoadData(connectionObject, dataStore, reportProgressMethod);
 
             itemLog.EndTime = DateTime.Now;
+
+            return dataStore;
         }
 
-        public void TransformData(DesignerItemBase transformationItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
+        public IDatastore TransformData(DesignerItemBase transformationItem, List<IDatastore> dataStores, ReportProgressMethod reportProgressMethod)
         {
             var transformationItemConfiguration = objectResolver.LoadItemConfiguration(transformationItem.ID) as TransformationConfiguration;
 
@@ -82,13 +81,29 @@ namespace IntegrationTool.ApplicationCore
             {
                 transformationConnectionObject = objectResolver.GetConnection(transformationItemConfiguration.SelectedConnectionConfigurationId);
             }
-            dataStore.ApplyFilter(transformationItemConfiguration.DataFilter);
+            foreach (var dataStore in dataStores)
+            {
+                dataStore.ApplyFilter(transformationItemConfiguration.DataFilter);
+            }
 
             IModule transformationObject = objectResolver.GetModule(transformationItem.ID, transformationItem.ModuleDescription.ModuleType);
-            ((IDataTransformation)transformationObject).TransformData(transformationConnectionObject, null, dataStore, reportProgressMethod);
+            if (transformationObject is IDataTransformation)
+            {
+                ((IDataTransformation)transformationObject).TransformData(transformationConnectionObject, null, dataStores.First(), reportProgressMethod);
+                return dataStores.First();
+            }
+            else if(transformationObject is IDataMerge)
+            {
+                var mergedStore = ((IDataMerge)transformationObject).TransformData(transformationConnectionObject, null, dataStores[0], dataStores[1], reportProgressMethod);
+                return mergedStore;
+            }
+            else
+            {
+                throw new Exception("Tranformation does not implement a valid Tranformation-Interface!");
+            }
         }
 
-        public void WriteToTarget(DesignerItemBase targetItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
+        public IDatastore WriteToTarget(DesignerItemBase targetItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
         {
             IModule targetModule = objectResolver.GetModule(targetItem.ID, targetItem.ModuleDescription.ModuleType);
             IConnection connectionObject = objectResolver.GetConnection(targetItem.ID);
@@ -100,6 +115,8 @@ namespace IntegrationTool.ApplicationCore
 
             itemLog.EndTime = DateTime.Now;
             parentItemLog.SubFlowLogs.Add(itemLog);
+
+            return dataStore;
         }
     }
 }

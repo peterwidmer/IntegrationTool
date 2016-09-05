@@ -10,7 +10,7 @@ namespace IntegrationTool.SDK
 {
     public interface IDataMerge
     {
-        void TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore datastore1, IDatastore datastore2, ReportProgressMethod reportProgress);
+        IDatastore TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore datastore1, IDatastore datastore2, ReportProgressMethod reportProgress);
         UserControl RenderConfigurationWindow(ConfigurationBase configurationBase, IDatastore datastoreOne, IDatastore datastoreTwo);
     }
 }

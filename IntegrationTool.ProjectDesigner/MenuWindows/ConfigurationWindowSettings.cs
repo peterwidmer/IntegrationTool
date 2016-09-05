@@ -25,25 +25,31 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
         public StepConfigurationBase configuration {get; set; }
         public IDatastore datastore { get; set; }
 
-        public static ConfigurationWindowSettings Get(DesignerItem designerItem, StepConfigurationBase configuration, ModuleLoader moduleLoader, IDatastore dataStore, IEnumerable<ConnectionConfigurationBase> connections)
+        public static ConfigurationWindowSettings Get(DesignerItem designerItem, StepConfigurationBase configuration, ModuleLoader moduleLoader, List<IDatastore> dataStores, IEnumerable<ConnectionConfigurationBase> connections)
         {
-            IModule module = Activator.CreateInstance(designerItem.ModuleDescription.ModuleType) as IModule;
+            var module = Activator.CreateInstance(designerItem.ModuleDescription.ModuleType) as IModule;
 
             ConfigurationWindowSettings configurationWindowSettings = new ConfigurationWindowSettings()
             {
                 title = designerItem.ItemLabel,
                 titleImage = IntegrationTool.SDK.Diagram.IconLoader.GetFromAssembly(designerItem.ModuleDescription.ModuleType.Assembly, "Icon.xml"),
                 connections = connections.Where(t => t.ModuleDescription.Attributes.ConnectionType == designerItem.ModuleDescription.Attributes.ConnectionType),
-                configurationControl = module.RenderConfigurationWindow(configuration, dataStore),
                 moduleDescription = designerItem.ModuleDescription,
                 configuration = configuration,
                 originalConfiguration = ConfigurationSerializer.SerializeObject(configuration, moduleLoader.GetModuleTypeList()),
-                datastore = dataStore
             };
 
-            return configurationWindowSettings;
+            if(module is IDataMerge)
+            {
+                configurationWindowSettings.configurationControl = ((IDataMerge)module).RenderConfigurationWindow(configuration, dataStores[0], dataStores[1]);
+            }
+            else
+            {
+                configurationWindowSettings.configurationControl = ((IModule)module).RenderConfigurationWindow(configuration, dataStores.First());
+                configurationWindowSettings.datastore = dataStores.First();
+            }
 
-            // TODO use this method!
+            return configurationWindowSettings;
         }
     }
 }

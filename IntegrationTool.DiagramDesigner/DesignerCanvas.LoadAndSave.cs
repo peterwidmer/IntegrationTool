@@ -132,6 +132,17 @@ namespace IntegrationTool.DiagramDesigner
                     SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["DefaultDecoratorWithErrorTemplate"]);
                     break;
 
+                case ModuleType.Transformation:
+                    if(designerItem.ModuleDescription.ModuleType.Name == "JoinRecords")
+                    {
+                        SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["MergeDecoratorTemplate"]);
+                    }
+                    else
+                    {
+                        SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["DefaultDecoratorTemplate"]);
+                    }
+                    break;
+
                 default:
                     SetConnectorDecoratorTemplate(designerItem, DesignerItemControlTemplates["DefaultDecoratorTemplate"]);
                     break;

@@ -75,6 +75,7 @@ namespace IntegrationTool.DiagramDesigner
         {
             LoadDesignerItemControlTemplate("DefaultDecoratorTemplate");
             LoadDesignerItemControlTemplate("DefaultDecoratorWithErrorTemplate");
+            LoadDesignerItemControlTemplate("MergeDecoratorTemplate");            
         }
 
         private void LoadDesignerItemControlTemplate(string controlTemplateName)

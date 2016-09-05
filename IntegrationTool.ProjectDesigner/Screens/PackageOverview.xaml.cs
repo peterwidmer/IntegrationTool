@@ -227,8 +227,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
             {
                 DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
-                var dataStore = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, null);
-                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStore);
+                var dataStores = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, true, null);
+                DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStores.First());
                 dataPreviewWindow.Show();
             }
             catch (Exception ex)
@@ -262,18 +262,11 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
 
-                Guid loadUntilDesignerItemId = designerItem.ID;
-                ConnectionBase incomingConnection = subFlowExecution.FlowGraph.DesignerConnections.FirstOrDefault(t => t.SinkID == designerItem.ID);
-                if (incomingConnection != null)
-                {
-                    loadUntilDesignerItemId = incomingConnection.SourceID;
-                }
+                var dataStores = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
+                    new List<IDatastore>() { new DummyDataStore() } :
+                    subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, false, null);
 
-                IDatastore dataStore = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
-                    new DummyDataStore() :
-                    subFlowExecution.GetDataObjectForDesignerItem(loadUntilDesignerItemId, null);
-
-                ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStore, Connections);
+                ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStores, Connections);
 
                 ShowConfiguationWindow(configurationWindowSettings);
             }

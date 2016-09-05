@@ -158,7 +158,7 @@ namespace IntegrationTool.DiagramDesigner
 
                     Canvas.SetZIndex(newItem, this.Children.Count);
                     this.Children.Add(newItem);
-                    SetDesignerItemConnectorDecoratorTemplate(newItem); //SetConnectorDecoratorTemplate(newItem);
+                    SetDesignerItemConnectorDecoratorTemplate(newItem);
 
                     //update selection
                     this.SelectionService.SelectItem(newItem);

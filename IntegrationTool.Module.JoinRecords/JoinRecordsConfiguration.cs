@@ -18,5 +18,10 @@ namespace IntegrationTool.Module.JoinRecords
         public JoinRecordsJoinType JoinType { get; set; }
 
         public List<DataMapping> JoinMapping { get; set; }
+
+        public JoinRecordsConfiguration()
+        {
+            JoinMapping = new List<DataMapping>();
+        }
     }
 }

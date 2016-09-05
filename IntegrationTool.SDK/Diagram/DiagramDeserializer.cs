@@ -56,7 +56,10 @@ namespace IntegrationTool.SDK.Diagram
         {
             ConnectionBase connectionBase = new ConnectionBase();
             connectionBase.SourceID = new Guid(connectionXML.Element("SourceID").Value);
+            connectionBase.SourceConnectorName = connectionXML.Element("SourceConnectorName").Value;
             connectionBase.SinkID = new Guid(connectionXML.Element("SinkID").Value);
+            connectionBase.SinkConnectorName = connectionXML.Element("SinkConnectorName").Value;
+
             if (connectionXML.Element("ConnectionType") != null)
             {
                 connectionBase.ConnectionType = (ConnectorType)Enum.Parse(typeof(ConnectorType), connectionXML.Element("ConnectionType").Value);

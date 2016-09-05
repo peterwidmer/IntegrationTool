@@ -63,7 +63,7 @@ namespace IntegrationTool.ApplicationCore
             }
             else
             {
-                foreach(var incomingConnection in incomingConnections)
+                foreach(var incomingConnection in incomingConnections.OrderBy(t=> t.SinkConnectorName))
                 {
                     dataStores.Add(DataStreams[incomingConnection]);
                     DataStreams.Remove(incomingConnection);
@@ -110,16 +110,28 @@ namespace IntegrationTool.ApplicationCore
             }
         }
 
-        public IDatastore GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, RunLog runLog)
+        public List<IDatastore> GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, bool isDataPreview, RunLog runLog)
         {
             moduleExecution = new ModuleExecution(objectResolver, runLog, parentItemLog);
 
             var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ID == loadUntildesignerItemId).ToList();
             var executionPlan = CreateExecutionPlan(targetItems);
+            if(!isDataPreview)
+            {
+                executionPlan.Remove(targetItems.First());
+            }
             ExecuteExecutionPlan(executionPlan, runLog);
 
-            var outgoingConnections = FlowGraph.GetOutgoingConnections(targetItems.First());
-            return DataStreams[outgoingConnections.First()];
+            if (!isDataPreview)
+            {
+                var incomingConnections = FlowGraph.GetIncomingConnections(targetItems.First());
+                return DataStreams.Where(t => incomingConnections.Contains(t.Key)).Select(t => t.Value).ToList();
+            }
+            else
+            {
+                var outgoingConnections = FlowGraph.GetOutgoingConnections(targetItems.First());
+                return DataStreams.Where(t => outgoingConnections.Contains(t.Key)).Select(t => t.Value).ToList();
+            }
         } 
     }
 }

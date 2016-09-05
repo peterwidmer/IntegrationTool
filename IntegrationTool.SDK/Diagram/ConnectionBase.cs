@@ -9,8 +9,10 @@ namespace IntegrationTool.SDK.Diagram
     public class ConnectionBase
     {
         public Guid SourceID { get; set; }
+        public string SourceConnectorName { get; set; }
         public ConnectorType ConnectionType { get; set; }
         public Guid SinkID { get; set; }
+        public string SinkConnectorName { get; set; }
 
         public ConnectionBase() { }
 
