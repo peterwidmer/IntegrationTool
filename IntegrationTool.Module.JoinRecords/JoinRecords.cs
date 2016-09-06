@@ -35,30 +35,5 @@ namespace IntegrationTool.Module.JoinRecords
             var joinRecordsConfiguration = configurationBase as JoinRecordsConfiguration;
             return new ConfigurationWindow(joinRecordsConfiguration, datastoreOne, datastoreTwo);            
         }
-
-        public bool HasDatastoreOneToBeSetAsTheSourceTable(JoinRecordsConfiguration joinRecordsConfiguration, IDatastore datastoreOne, IDatastore datastoreTwo)
-        {
-            if(joinRecordsConfiguration.JoinMapping.Count == 0)
-            {
-                return datastoreOne.Count > datastoreTwo.Count;
-            }
-            else
-            {
-                return IsDatastoreOneConfiguredInTheSourceMapping(joinRecordsConfiguration, datastoreOne, datastoreTwo);
-            }
-        }
-
-        public bool IsDatastoreOneConfiguredInTheSourceMapping(JoinRecordsConfiguration joinRecordsConfiguration, IDatastore datastoreOne, IDatastore datastoreTwo)
-        {
-            foreach(var mapping in joinRecordsConfiguration.JoinMapping)
-            {
-                if(!datastoreOne.Metadata.ContainsColumn(mapping.Source) || !datastoreTwo.Metadata.ContainsColumn(mapping.Target))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
     }
 }

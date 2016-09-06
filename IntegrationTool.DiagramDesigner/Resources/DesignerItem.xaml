@@ -121,8 +121,8 @@
 
     <ControlTemplate x:Key="MergeDecoratorTemplate" TargetType="{x:Type Control}">
         <Grid Margin="-5">
-            <s:Connector x:Name="TopLeft" Type="Default" Style="{DynamicResource DefaultConnectorStyle}"  Margin="0 0 50 0" Orientation="Top" VerticalAlignment="Top" HorizontalAlignment="Center"/>
-            <s:Connector x:Name="TopRight" Type="Default" Style="{DynamicResource DefaultConnectorStyle}"  Margin="0 0 -50 0" Orientation="Top" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <s:Connector ToolTip="Left Input" x:Name="TopLeft" Type="Default" Style="{DynamicResource DefaultConnectorStyle}"  Margin="0 0 50 0" Orientation="Top" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+            <s:Connector ToolTip="Right Input" x:Name="TopRight" Type="Default" Style="{DynamicResource DefaultConnectorStyle}"  Margin="0 0 -50 0" Orientation="Top" VerticalAlignment="Top" HorizontalAlignment="Center"/>
             <s:Connector x:Name="Bottom" Type="Default" Style="{DynamicResource DefaultConnectorStyle}" Orientation="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
         </Grid>
     </ControlTemplate>

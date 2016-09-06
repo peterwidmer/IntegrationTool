@@ -122,16 +122,27 @@ namespace IntegrationTool.ApplicationCore
             }
             ExecuteExecutionPlan(executionPlan, runLog);
 
+            
             if (!isDataPreview)
             {
-                var incomingConnections = FlowGraph.GetIncomingConnections(targetItems.First());
-                return DataStreams.Where(t => incomingConnections.Contains(t.Key)).Select(t => t.Value).ToList();
+                var incomingConnections = FlowGraph.GetIncomingConnections(targetItems.First()).OrderBy(t => t.SinkConnectorName);
+                return BuildResultStores(incomingConnections);
             }
             else
             {
-                var outgoingConnections = FlowGraph.GetOutgoingConnections(targetItems.First());
-                return DataStreams.Where(t => outgoingConnections.Contains(t.Key)).Select(t => t.Value).ToList();
+                var outgoingConnections = FlowGraph.GetOutgoingConnections(targetItems.First()).OrderBy(t => t.SourceConnectorName);
+                return BuildResultStores(outgoingConnections);
             }
-        } 
+        }
+
+        private List<IDatastore> BuildResultStores(IEnumerable<ConnectionBase> connections)
+        {
+            List<IDatastore> resultStores = new List<IDatastore>();
+            foreach (var connection in connections)
+            {
+                resultStores.Add(DataStreams[connection]);
+            }
+            return resultStores;
+        }
     }
 }

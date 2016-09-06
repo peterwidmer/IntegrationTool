@@ -40,8 +40,8 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
             this.ConfigurationContent.Content = configurationWindowSettings.configurationControl;
             if (configurationWindowSettings.moduleDescription.Attributes.RequiresConnection)
             {
-                ddSelectConnection.DataContext = configurationWindowSettings.connections; 
-                ddSelectConnection.SelectedItem = configurationWindowSettings.connections.Where(t => t.ConfigurationId == configurationWindowSettings.configuration.SelectedConnectionConfigurationId).FirstOrDefault();
+                ddSelectConnection.DataContext = configurationWindowSettings.connections;
+                ddSelectConnection.SelectedItem = configurationWindowSettings.connections.FirstOrDefault(t => t.ConfigurationId == configurationWindowSettings.configuration.SelectedConnectionConfigurationId);
             }
             else
             {
@@ -49,7 +49,7 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
                 ConnectionRow.Height = new GridLength(0);
             }
 
-            if (configurationWindowSettings.moduleDescription.Attributes.ModuleType == ModuleType.Transformation)
+            if (configurationWindowSettings.moduleDescription.Attributes.ModuleType == ModuleType.Transformation && configurationWindowSettings.datastore != null)
             {
                 TransformationConfiguration transformationConfiguration = configurationWindowSettings.configuration as TransformationConfiguration;
                 TabDataFilter.Visibility = System.Windows.Visibility.Visible;
