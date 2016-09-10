@@ -3,6 +3,7 @@ using IntegrationTool.DBAccess;
 using IntegrationTool.Module.ConnectToDynamicsCrm;
 using IntegrationTool.Module.DeleteInDynamicsCrm;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.UnitTests.Targets.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -45,7 +46,7 @@ namespace IntegrationTool.UnitTests.Targets
             deleteInCrmConfig.MultipleFoundMode = DeleteInCrmMultipleFoundMode.DeleteAll;
             deleteInCrmConfig.DeleteMapping.Add(new DataMapping() { Source = "CompanyName", Target = "name" });
 
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("CompanyName"));
 
             dataObject.AddData(new object[] { accountName1 });

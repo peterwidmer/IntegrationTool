@@ -1,6 +1,7 @@
 ﻿using IntegrationTool.Module.ConnectToUrl;
 using IntegrationTool.Module.LoadFromWebRequest;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -28,8 +29,8 @@ namespace IntegrationTool.UnitTests.Sources
             loadFromWebRequestConfiguration.Method = "GET";
 
             IDataSource loadFromWebRequest = new LoadFromWebRequest() { Configuration = loadFromWebRequestConfiguration };
-            
-            IDatastore dataObject = new DataObject();
+
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             loadFromWebRequest.LoadData(connectToUrlConnection, dataObject, Test_Helpers.ReportProgressMethod);
         }
         

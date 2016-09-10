@@ -1,6 +1,7 @@
 ﻿using IntegrationTool.ApplicationCore;
 using IntegrationTool.ProjectDesigner.MenuWindows;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using System;
 using System.Collections.Generic;
@@ -112,7 +113,7 @@ namespace UserControlTest
 
         private IDatastore GetContactsDatastore()
         {
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("FirstName"));
             dataObject.AddColumn(new ColumnMetadata("LastName"));
             dataObject.AddColumn(new ColumnMetadata("City"));

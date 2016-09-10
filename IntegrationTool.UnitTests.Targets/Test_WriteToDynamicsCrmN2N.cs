@@ -2,6 +2,7 @@
 using IntegrationTool.DBAccess;
 using IntegrationTool.Module.WriteToDynamicsCrmN2N;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Client;
@@ -47,7 +48,7 @@ namespace IntegrationTool.UnitTests.Targets
             writeToDynamicsCrmN2NConfig.ConfigurationId = Guid.NewGuid();
             writeToDynamicsCrmN2NConfig.SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID;
 
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("FirstName"));
             dataObject.AddColumn(new ColumnMetadata("InvoiceNo"));
 
@@ -92,7 +93,7 @@ namespace IntegrationTool.UnitTests.Targets
             writeToDynamicsCrmN2NConfig.ConfigurationId = Guid.NewGuid();
             writeToDynamicsCrmN2NConfig.SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID;
 
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("CampaigName"));
             dataObject.AddColumn(new ColumnMetadata("ProductNumber"));
 

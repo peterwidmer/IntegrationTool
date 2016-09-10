@@ -104,7 +104,9 @@
     <Compile Include="Data\DataFilter.ConditionChecks.cs" />
     <Compile Include="Data\DataFilter.cs" />
     <Compile Include="Data\DataFilterHelper.cs" />
+    <Compile Include="Data\DataStoreFactory.cs" />
     <Compile Include="Data\DatastoreHelper.cs" />
+    <Compile Include="Data\DatastoreColumnHashBuilder.cs" />
     <Compile Include="Data\DummyDataStore.cs" />
     <Compile Include="Data\IDatabaseInterface.cs" />
     <Compile Include="Data\IDatastore.cs" />

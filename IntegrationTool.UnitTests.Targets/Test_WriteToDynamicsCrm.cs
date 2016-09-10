@@ -2,6 +2,7 @@
 using IntegrationTool.Module.ConnectToDynamicsCrm;
 using IntegrationTool.Module.WriteToDynamicsCrm;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.UnitTests.Targets.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -76,7 +77,7 @@ namespace IntegrationTool.UnitTests.Targets
                     }
                 }
             });
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("FirstName"));
             dataObject.AddColumn(new ColumnMetadata("LastName"));
             dataObject.AddColumn(new ColumnMetadata("City"));
@@ -130,8 +131,8 @@ namespace IntegrationTool.UnitTests.Targets
             });
             writeToCrmConfig.ConfigurationId = Guid.NewGuid();
             writeToCrmConfig.SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID;
-            
-            IDatastore dataObject = new IntegrationTool.SDK.DataObject();
+
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("CaseID"));
             dataObject.AddColumn(new ColumnMetadata("CaseTitle"));
             dataObject.AddColumn(new ColumnMetadata("CompanyName"));

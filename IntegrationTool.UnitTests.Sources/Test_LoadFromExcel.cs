@@ -6,6 +6,7 @@ using IntegrationTool.SDK;
 using System.Collections.Generic;
 using IntegrationTool.Module.ConnectToExcel;
 using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.Data;
 
 namespace IntegrationTool.UnitTests.Sources
 {
@@ -23,7 +24,7 @@ namespace IntegrationTool.UnitTests.Sources
             
             IDataSource loadFromExcel = new LoadFromExcel();
 
-            IDatastore dataObject = new DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             loadFromExcel.LoadData(excelConnection, dataObject, ReportProgressMethod);
         }
 

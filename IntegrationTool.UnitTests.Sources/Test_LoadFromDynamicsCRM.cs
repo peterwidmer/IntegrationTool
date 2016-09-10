@@ -8,6 +8,7 @@ using IntegrationTool.UnitTests.Sources.Properties;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Client.Services;
+using IntegrationTool.SDK.Data;
 
 namespace IntegrationTool.UnitTests.Sources
 {
@@ -43,7 +44,7 @@ namespace IntegrationTool.UnitTests.Sources
 
             IDataSource loadFromDynamicsCrm = new LoadFromDynamicsCrm() { Configuration = configuration };
 
-            IDatastore dataObject = new DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod);
 
             var firstObject = dataObject[0];

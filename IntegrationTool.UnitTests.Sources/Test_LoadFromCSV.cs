@@ -4,6 +4,7 @@ using IntegrationTool.Module.ConnectToTextFile;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.Module.LoadFromCSV;
+using IntegrationTool.SDK.Data;
 
 namespace IntegrationTool.UnitTests.Sources
 {
@@ -21,7 +22,7 @@ namespace IntegrationTool.UnitTests.Sources
             LoadFromCSV loadFromCSV = new LoadFromCSV();
             loadFromCSV.SetConfiguration(new LoadFromCSVConfiguration());
 
-            IDatastore dataObject = new DataObject();
+            IDatastore dataObject = DataStoreFactory.GetDatastore();
             loadFromCSV.LoadData(csvConnection, dataObject, ReportProgressMethod);
 
             var firstObject = dataObject[0];

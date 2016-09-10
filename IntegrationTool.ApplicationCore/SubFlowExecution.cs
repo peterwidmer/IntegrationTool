@@ -89,7 +89,7 @@ namespace IntegrationTool.ApplicationCore
 
         private IDatastore InitializeDatastore()
         {
-            IDatastore dataStore = new DataObject();
+            IDatastore dataStore = DataStoreFactory.GetDatastore();
             List<AttributeImplementation> dataConditionAttributes = AssemblyHelper.LoadAllClassesImplementingSpecificAttribute<DataConditionAttribute>(System.Reflection.Assembly.GetAssembly(typeof(DataConditionAttribute)));
             dataStore.InitializeDatastore(dataConditionAttributes);
             return dataStore;
