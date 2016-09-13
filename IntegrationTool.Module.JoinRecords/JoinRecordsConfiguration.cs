@@ -19,9 +19,13 @@ namespace IntegrationTool.Module.JoinRecords
 
         public List<DataMapping> JoinMapping { get; set; }
 
+        public List<OutputColumn> OutputColumns { get; set; }
+
         public JoinRecordsConfiguration()
         {
             JoinMapping = new List<DataMapping>();
+            OutputColumns = new List<OutputColumn>();
+            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("test"), DataStream = DataStreamSource.Left });
         }
     }
 }

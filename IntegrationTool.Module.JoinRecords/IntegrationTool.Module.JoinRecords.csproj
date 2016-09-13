@@ -49,6 +49,7 @@
     <Compile Include="JoinRecords.cs" />
     <Compile Include="JoinRecords.TransformData.cs" />
     <Compile Include="JoinRecordsConfiguration.cs" />
+    <Compile Include="OutputColumn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

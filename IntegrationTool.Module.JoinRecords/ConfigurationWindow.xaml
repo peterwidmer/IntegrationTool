@@ -1,27 +1,53 @@
-﻿<UserControl x:Class="IntegrationTool.Module.JoinRecords.ConfigurationWindow"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:my="clr-namespace:IntegrationTool.Module.JoinRecords"
              xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl" 
+             x:Class="IntegrationTool.Module.JoinRecords.ConfigurationWindow"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
              d:DesignHeight="288.851" d:DesignWidth="464.189">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="dataStreamSourceEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="my:DataStreamSource"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="160"/>
-            <ColumnDefinition Width="10"/>
-            <ColumnDefinition Width="147*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="26"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="127*"/>
-        </Grid.RowDefinitions>
-        <DataMappingControl:MappingControl x:Name="joinMapping" Grid.ColumnSpan="3" Grid.Row="3" />
-        <Label Content="Join-Type:" Grid.Row="1"/>
-        <ComboBox x:Name="ddJoinType" Grid.Row="1" Grid.Column="2" SelectedValue="{Binding Path=JoinType}" SelectedValuePath="Tag" IsEnabled="False">
-            <ComboBoxItem Content="Inner Join" Tag="InnerJoin" />
-        </ComboBox>
+        <TabControl>
+            <TabItem Header="Join-Settings">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="147*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="127*"/>
+                    </Grid.RowDefinitions>
+                    <DataMappingControl:MappingControl x:Name="joinMapping" Grid.ColumnSpan="3" Grid.Row="3" />
+                    <Label Content="Join-Type:" Grid.Row="1"/>
+                    <ComboBox x:Name="ddJoinType" Grid.Row="1" Grid.Column="2" SelectedValue="{Binding Path=JoinType}" SelectedValuePath="Tag" IsEnabled="False">
+                        <ComboBoxItem Content="Inner Join" Tag="InnerJoin" />
+                    </ComboBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Out-Columns">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="147*"/>
+                    </Grid.ColumnDefinitions>
+    
+                </Grid>
+            </TabItem>
+        </TabControl>
+
     </Grid>
 </UserControl>

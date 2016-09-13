@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.SDK.Data
 {
-    public class DatastoreColumnHashBuilder
+    public class DatastoreColumnHashBuilder : IDatastoreColumnHashBuilder
     {
         private IDatastore datastore;
         private List<string> columns;
@@ -28,15 +28,34 @@ namespace IntegrationTool.SDK.Data
 
         public void BuildHashes()
         {
-            object [] indexObjects;
             for (int i = 0; i < datastore.Count; i++)
             {
-                indexObjects = new object[columnIndexes.Length];
-                for(var i2 =0; i2 < columnIndexes.Length; i2++)
-                {
-                    indexObjects[i2] = datastore[i][i2];
-                }
-                rowHahes.Add(indexObjects.GetHashCode(), i);
+                int rowHash = GetRowHash(datastore[i], columnIndexes);
+                rowHahes.Add(rowHash, i);
+            }
+        }
+
+        public int GetRowHash(object [] row, int [] columnIndexes)
+        {
+            object[] indexObjects = new object[columnIndexes.Length];
+            for (var i2 = 0; i2 < columnIndexes.Length; i2++)
+            {
+                indexObjects[i2] = row[i2];
+            }
+
+            return indexObjects.GetHashCode();
+        }
+
+        public object [] GetRowByHash(int hashcode)
+        {
+            int rowIndex;
+            if(rowHahes.TryGetValue(hashcode, out rowIndex))
+            {
+                return datastore[rowIndex];
+            }
+            else
+            {
+                return null;
             }
         }
     }

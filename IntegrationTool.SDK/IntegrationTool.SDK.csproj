@@ -111,6 +111,7 @@
     <Compile Include="Data\IDatabaseInterface.cs" />
     <Compile Include="Data\IDatastore.cs" />
     <Compile Include="Data\DataObject.cs" />
+    <Compile Include="Data\IDatastoreColumnHashBuilder.cs" />
     <Compile Include="Diagram\ConnectionBase.cs" />
     <Compile Include="Diagram\ConnectorType.cs" />
     <Compile Include="Diagram\DesignerItemBase.cs" />
@@ -154,7 +155,7 @@
     <Compile Include="Target\IDataTarget.cs" />
     <Compile Include="Transformation\IDataMerge.cs" />
     <Compile Include="Transformation\IDataTransformation.cs" />
-    <Compile Include="WPFHelper.cs" />
+    <Compile Include="WPF\WPFHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\FilterControl\AddFilterControlBar.xaml">

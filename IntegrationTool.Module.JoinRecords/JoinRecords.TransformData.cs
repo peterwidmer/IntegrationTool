@@ -13,13 +13,28 @@ namespace IntegrationTool.Module.JoinRecords
     {
         private IDatastore largeDatastore;
         private IDatastore smallDatastore;
+        private List<string> smallDatastoreKeys = new List<string>();
+        private List<string> largeDatastoreKeys = new List<string>();
 
         public IDatastore TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore datastore1, IDatastore datastore2, ReportProgressMethod reportProgress)
         {
             IDatastore resultDatastore = DataStoreFactory.GetDatastore();
 
             AnalyzeDatastores(datastore1, datastore2);
+            BuildDatastoreKeys();
 
+            IDatastoreColumnHashBuilder smallDataStoreHashBuilder = new DatastoreColumnHashBuilder(smallDatastore, smallDatastoreKeys);
+
+            int [] largeDatastoreColumnIndexes = GetColumnIndexes();
+            for (int i = 0; i < largeDatastore.Count; i++)
+            {
+                int rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[i], largeDatastoreColumnIndexes);
+                object[] smallDatastoreRow = smallDataStoreHashBuilder.GetRowByHash(rowHash);
+                if(smallDatastoreRow != null)
+                {
+                    // TODO Implement the resultset FoundRow
+                }
+            }
             return resultDatastore;
         }
 
@@ -42,6 +57,26 @@ namespace IntegrationTool.Module.JoinRecords
                     mapping.Target = source;
                 }
             }
+        }
+
+        private void BuildDatastoreKeys()
+        {
+            foreach(var mapping in this.Configuration.JoinMapping)
+            {
+                largeDatastoreKeys.Add(mapping.Source);
+                smallDatastoreKeys.Add(mapping.Target);                
+            }
+        }
+
+        private int [] GetColumnIndexes()
+        {
+            int[] columnIndexes = new int[largeDatastoreKeys.Count];
+            for (int i = 0; i < largeDatastoreKeys.Count; i++)
+            {
+                columnIndexes[i] = largeDatastore.Metadata[largeDatastoreKeys[i]].ColumnIndex;
+            }
+
+            return columnIndexes;
         }
 
     }
