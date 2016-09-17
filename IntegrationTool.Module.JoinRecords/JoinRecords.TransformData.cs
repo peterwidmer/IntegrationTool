@@ -20,22 +20,55 @@ namespace IntegrationTool.Module.JoinRecords
         {
             IDatastore resultDatastore = DataStoreFactory.GetDatastore();
 
+            InitializeResultDatastore(resultDatastore);
             AnalyzeDatastores(datastore1, datastore2);
             BuildDatastoreKeys();
+            JoinDatastoreRecords(resultDatastore);
 
+            return resultDatastore;
+        }
+
+        private void InitializeResultDatastore(IDatastore resultDatastore)
+        {
+            foreach(var outputColumn in this.Configuration.OutputColumns)
+            {
+                string columnName = String.IsNullOrEmpty(outputColumn.ColumnAlias) ? outputColumn.Column.ColumnName : outputColumn.ColumnAlias;
+                resultDatastore.AddColumn(new ColumnMetadata(columnName));
+            }
+        }
+
+        private void JoinDatastoreRecords(IDatastore resultDatastore)
+        {
             IDatastoreColumnHashBuilder smallDataStoreHashBuilder = new DatastoreColumnHashBuilder(smallDatastore, smallDatastoreKeys);
+            smallDataStoreHashBuilder.BuildHashes();
 
-            int [] largeDatastoreColumnIndexes = GetColumnIndexes();
+            int[] largeDatastoreColumnIndexes = GetColumnIndexes();
             for (int i = 0; i < largeDatastore.Count; i++)
             {
                 int rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[i], largeDatastoreColumnIndexes);
-                object[] smallDatastoreRow = smallDataStoreHashBuilder.GetRowByHash(rowHash);
-                if(smallDatastoreRow != null)
+                var smallDatastoreRows = smallDataStoreHashBuilder.GetRowsByHash(rowHash);
+                
+                foreach (var row in smallDatastoreRows)
                 {
-                    // TODO Implement the resultset FoundRow
+                    object[] resultRow = new object[this.Configuration.OutputColumns.Count];
+                    for(int i2=0; i2 < this.Configuration.OutputColumns.Count; i2++)
+                    {
+                        var outputColumn = this.Configuration.OutputColumns[i2];
+                        object value = null;
+                        if(outputColumn.DataStream == DataStreamSource.Left)
+                        {
+                            value = largeDatastore[i][largeDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
+                        }
+                        else
+                        {
+                            value = row[smallDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
+                        }
+
+                        resultRow[i2] = value;
+                    }
+                    resultDatastore.AddData(resultRow);                    
                 }
             }
-            return resultDatastore;
         }
 
         private void AnalyzeDatastores(IDatastore datastore1, IDatastore datastore2)

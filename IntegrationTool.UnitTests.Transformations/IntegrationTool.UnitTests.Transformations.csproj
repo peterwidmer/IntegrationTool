@@ -50,10 +50,23 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_JoinRecords.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
+      <Project>{2199dd43-d8be-4c40-9395-b3bbb3af6ca6}</Project>
+      <Name>IntegrationTool.DataMappingControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DBAccess\IntegrationTool.DBAccess.csproj">
+      <Project>{953f8dc5-dd92-4b2b-be8e-72fbaffa8420}</Project>
+      <Name>IntegrationTool.DBAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.JoinRecords\IntegrationTool.Module.JoinRecords.csproj">
+      <Project>{3b784f61-12d1-457f-bf04-9e0135f19762}</Project>
+      <Name>IntegrationTool.Module.JoinRecords</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>
