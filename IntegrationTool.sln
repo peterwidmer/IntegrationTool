@@ -145,6 +145,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.Conn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.JoinRecords", "IntegrationTool.Module.JoinRecords\IntegrationTool.Module.JoinRecords.csproj", "{3B784F61-12D1-457F-BF04-9E0135F19762}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.Transformations", "IntegrationTool.UnitTests.Transformations\IntegrationTool.UnitTests.Transformations.csproj", "{276A4D20-3867-496E-9607-2D6F277FCF5E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -645,6 +647,16 @@ Global
 		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3B784F61-12D1-457F-BF04-9E0135F19762}.Release|x86.ActiveCfg = Release|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{276A4D20-3867-496E-9607-2D6F277FCF5E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

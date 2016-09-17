@@ -26,9 +26,6 @@ namespace IntegrationTool.Module.JoinRecords
         {
             JoinMapping = new List<DataMapping>();
             OutputColumns = new ObservableCollection<OutputColumn>();
-            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
-            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
-            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
         }
     }
 }
