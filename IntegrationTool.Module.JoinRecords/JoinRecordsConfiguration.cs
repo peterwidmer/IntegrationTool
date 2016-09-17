@@ -2,6 +2,7 @@
 using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,13 +20,15 @@ namespace IntegrationTool.Module.JoinRecords
 
         public List<DataMapping> JoinMapping { get; set; }
 
-        public List<OutputColumn> OutputColumns { get; set; }
+        public ObservableCollection<OutputColumn> OutputColumns { get; set; }
 
         public JoinRecordsConfiguration()
         {
             JoinMapping = new List<DataMapping>();
-            OutputColumns = new List<OutputColumn>();
-            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("test"), DataStream = DataStreamSource.Left });
+            OutputColumns = new ObservableCollection<OutputColumn>();
+            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
+            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
+            OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
         }
     }
 }

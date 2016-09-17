@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK.Database;
+﻿using IntegrationTool.SDK;
+using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericClasses;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,34 @@ namespace IntegrationTool.Module.JoinRecords
             joinMapping.Mapping = mapping;
 
             joinMapping.RedrawLines();
+        }
+
+        private void ddInputSelection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender as ComboBox != null)
+            {
+                var ddColumns = ((Grid)((ComboBox)sender).Parent).Children.OfType<ComboBox>().Where(t => t.Name == "ddColumns").First();
+                var ddDataStream = sender as ComboBox;
+                if(ddDataStream.SelectedItem != null && (string)((ComboBoxItem)ddDataStream.SelectedItem).Tag == "Left")
+                {
+                    ddColumns.ItemsSource = sourceDatastore.Metadata.Columns;
+                }
+                else
+                {
+                    ddColumns.ItemsSource = targetDatastore.Metadata.Columns;
+                }
+                
+            }
+        }
+
+        private void btnDeleteOutput_Click(object sender, RoutedEventArgs e)
+        {
+            this.configuration.OutputColumns.Remove((OutputColumn)((Button)sender).Tag);
+        }
+
+        private void btnAddNewOutputColumn_Click(object sender, RoutedEventArgs e)
+        {
+            this.configuration.OutputColumns.Add(new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream = DataStreamSource.Left });
         }
     }
 }

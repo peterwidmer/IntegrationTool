@@ -40,11 +40,44 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Out-Columns">
-                <Grid>
+                <Grid VerticalAlignment="Top">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="147*"/>
                     </Grid.ColumnDefinitions>
-    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="24" />
+                        <RowDefinition Height="4" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btnAddNewOutputColumn" Grid.Row="1" HorizontalAlignment="Right" Content="Add New Outputcolumn" Margin="0 0 10 0" Click="btnAddNewOutputColumn_Click" />
+                    <ItemsControl x:Name="ColumnsItemControl" Grid.Row="3" ItemsSource="{Binding Path=OutputColumns}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="80" />
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="200" />
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="10" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="2" Content="Column:" />
+                                    <ComboBox Grid.Column="3" x:Name="ddColumns" SelectedValue="{Binding Path=Column.ColumnName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Value.ColumnName" DisplayMemberPath="Value.ColumnName" />
+                                    <Label Grid.Column="0" Content="Data-Input" />
+                                    <ComboBox x:Name="ddInputSelection" Grid.Column="1" SelectedValue="{Binding Path=DataStream, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" SelectionChanged="ddInputSelection_SelectionChanged" >
+                                        <ComboBoxItem Content="Left Input" Tag="Left" />
+                                        <ComboBoxItem Content="Right Input" Tag="Right" />
+                                    </ComboBox>
+                                    <TextBox Grid.Column="5" Text="{Binding Path=ColumnAlias}" />
+                                    <Button Grid.Column="6" x:Name="btnDeleteOutput" Click="btnDeleteOutput_Click" Tag="{Binding}" Content="X" />
+                                </Grid>                                
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </Grid>
             </TabItem>
         </TabControl>

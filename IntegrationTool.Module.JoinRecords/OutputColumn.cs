@@ -21,5 +21,6 @@ namespace IntegrationTool.Module.JoinRecords
     {
         public DataStreamSource DataStream { get; set; }
         public ColumnMetadata Column { get; set; }
+        public string ColumnAlias { get; set; }
     }
 }
