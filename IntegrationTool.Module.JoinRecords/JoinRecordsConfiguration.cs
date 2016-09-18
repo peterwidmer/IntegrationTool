@@ -11,7 +11,7 @@ namespace IntegrationTool.Module.JoinRecords
 {
     public enum JoinRecordsJoinType
     {
-        InnerJoin
+        LeftJoin, InnerJoin
     }
 
     public class JoinRecordsConfiguration : TransformationConfiguration

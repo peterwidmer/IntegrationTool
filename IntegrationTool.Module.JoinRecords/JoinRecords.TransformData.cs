@@ -43,33 +43,69 @@ namespace IntegrationTool.Module.JoinRecords
             smallDataStoreHashBuilder.BuildHashes();
 
             int[] largeDatastoreColumnIndexes = GetColumnIndexes();
-            for (int i = 0; i < largeDatastore.Count; i++)
+            for (int rowIndex = 0; rowIndex < largeDatastore.Count; rowIndex++)
             {
-                int rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[i], largeDatastoreColumnIndexes);
+                int rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[rowIndex], largeDatastoreColumnIndexes);
                 var smallDatastoreRows = smallDataStoreHashBuilder.GetRowsByHash(rowHash);
-                
-                foreach (var row in smallDatastoreRows)
-                {
-                    object[] resultRow = new object[this.Configuration.OutputColumns.Count];
-                    for(int i2=0; i2 < this.Configuration.OutputColumns.Count; i2++)
-                    {
-                        var outputColumn = this.Configuration.OutputColumns[i2];
-                        object value = null;
-                        if(outputColumn.DataStream == DataStreamSource.Left)
-                        {
-                            value = largeDatastore[i][largeDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
-                        }
-                        else
-                        {
-                            value = row[smallDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
-                        }
 
-                        resultRow[i2] = value;
-                    }
-                    resultDatastore.AddData(resultRow);                    
+                List<object[]> joinedRows = null;
+                switch (this.Configuration.JoinType)
+                {
+                    case JoinRecordsJoinType.LeftJoin:
+                        joinedRows = ExecuteLeftJoin(rowIndex, smallDatastoreRows);
+                        break;
+
+                    case JoinRecordsJoinType.InnerJoin:
+                        joinedRows = ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+                        break;
                 }
+                
+                AddJoinedRowsToDatastore(resultDatastore, joinedRows);
             }
         }
+
+        private void AddJoinedRowsToDatastore(IDatastore resultDatastore, List<object[]> joinedRows)
+        {
+            foreach(var joinedRow in joinedRows)
+            {
+                resultDatastore.AddData(joinedRow);
+            }
+        }
+
+        private List<object[]> ExecuteLeftJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
+        {
+            // TODO Do the left of the join
+            return ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+        }
+
+        private List<object[]> ExecuteInnerJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
+        {
+            List<object[]> joinedRows = new List<object[]>();
+            foreach (var row in smallDatastoreRows)
+            {
+                object[] resultRow = new object[this.Configuration.OutputColumns.Count];
+                for (int i2 = 0; i2 < this.Configuration.OutputColumns.Count; i2++)
+                {
+                    var outputColumn = this.Configuration.OutputColumns[i2];
+                    object value = null;
+                    if (outputColumn.DataStream == DataStreamSource.Left)
+                    {
+                        value = largeDatastore[rowIndex][largeDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
+                    }
+                    else
+                    {
+                        value = row[smallDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
+                    }
+
+                    resultRow[i2] = value;
+                }
+                joinedRows.Add(resultRow);
+            }
+
+            return joinedRows;
+        }
+
+
 
         private void AnalyzeDatastores(IDatastore datastore1, IDatastore datastore2)
         {

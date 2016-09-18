@@ -35,6 +35,7 @@
                     <DataMappingControl:MappingControl x:Name="joinMapping" Grid.ColumnSpan="3" Grid.Row="3" />
                     <Label Content="Join-Type:" Grid.Row="1"/>
                     <ComboBox x:Name="ddJoinType" Grid.Row="1" Grid.Column="2" SelectedValue="{Binding Path=JoinType}" SelectedValuePath="Tag" IsEnabled="False">
+                        <ComboBoxItem Content="Left Join" Tag="LeftJoin" />
                         <ComboBoxItem Content="Inner Join" Tag="InnerJoin" />
                     </ComboBox>
                 </Grid>
