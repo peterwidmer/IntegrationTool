@@ -17,10 +17,30 @@ namespace IntegrationTool.UnitTests.Transformations
         [TestMethod]
         public void SimpleInnerJoin()
         {
-            var leftDatastore = GetCompanyDatastore();
-            var rightDatastore = GetPersonDatastore();
+            var companyDatastore = GetCompanyDatastore();
+            var personDatastore = GetPersonDatastore();
 
-            var joinRecordsConfiguration = new JoinRecordsConfiguration()
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration() };
+            var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
+            Assert.IsTrue(resultDatastore.Count == 2);
+        }
+
+        [TestMethod]
+        public void SimpleInnerJoinSwitchedLargeSmallDatastore()
+        {
+            var companyDatastore = GetCompanyDatastore();
+            var personDatastore = GetPersonDatastore();
+            
+            IncreaseCompanyStoreToBeLargerThanPersonStore(companyDatastore);
+
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration() };
+            var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
+            Assert.IsTrue(resultDatastore.Count == 2);
+        }
+
+        private JoinRecordsConfiguration GetJoinRecordsConfiguration()
+        {
+            return new JoinRecordsConfiguration()
             {
                 JoinType = JoinRecordsJoinType.InnerJoin,
                 JoinMapping = new List<DataMapping>()
@@ -32,13 +52,18 @@ namespace IntegrationTool.UnitTests.Transformations
                     new OutputColumn() { Column = new ColumnMetadata("CompanyId"), DataStream= DataStreamSource.Left },
                     new OutputColumn() { Column = new ColumnMetadata("CompanyName"), DataStream= DataStreamSource.Left},
                     new OutputColumn() { Column = new ColumnMetadata("PersonId"), DataStream= DataStreamSource.Right},
-                    new OutputColumn() { Column = new ColumnMetadata("FirstName"), DataStream= DataStreamSource.Right},
-                    new OutputColumn() { Column = new ColumnMetadata("LastName"), DataStream= DataStreamSource.Right}
+                    new OutputColumn() { Column = new ColumnMetadata("Firstname"), DataStream= DataStreamSource.Right},
+                    new OutputColumn() { Column = new ColumnMetadata("Lastname"), DataStream= DataStreamSource.Right}
                 }
             };
+        }
 
-            var joinRecords = new JoinRecords() { Configuration = joinRecordsConfiguration };
-            joinRecords.TransformData(null, new DummyDatabaseInterface(), leftDatastore, rightDatastore, Test_Helpers.ReportProgressMethod);
+        private void IncreaseCompanyStoreToBeLargerThanPersonStore(IDatastore store)
+        {
+            store.AddData(new object[] { 3, "comp 3", 8 });
+            store.AddData(new object[] { 4, "comp 4", 9 });
+            store.AddData(new object[] { 5, "comp 5", 10 });
+            store.AddData(new object[] { 6, "comp 6", 11 });
         }
 
         private IDatastore GetCompanyDatastore()

@@ -89,6 +89,10 @@ namespace IntegrationTool.Module.JoinRecords
                     mapping.Source = target;
                     mapping.Target = source;
                 }
+                foreach(var outputColumn in this.Configuration.OutputColumns)
+                {
+                    outputColumn.DataStream = outputColumn.DataStream == DataStreamSource.Left ? DataStreamSource.Right : DataStreamSource.Left;
+                }
             }
         }
 

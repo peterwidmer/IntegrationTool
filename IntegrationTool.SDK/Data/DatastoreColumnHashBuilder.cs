@@ -1,5 +1,6 @@
 ﻿using IntegrationTool.SDK.Database;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -44,14 +45,12 @@ namespace IntegrationTool.SDK.Data
 
         public int GetRowHash(object [] row, int [] columnIndexes)
         {
-            // TODO Write correct hashbuilder
             object[] indexObjects = new object[columnIndexes.Length];
             for (var i = 0; i < columnIndexes.Length; i++)
             {
                 indexObjects[i] = row[columnIndexes[i]];
             }
-
-            return indexObjects.GetHashCode();
+            return ((IStructuralEquatable)indexObjects).GetHashCode(EqualityComparer<object>.Default); 
         }
 
         public IEnumerable<object []> GetRowsByHash(int hashcode)
