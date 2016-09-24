@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Classes\JoinRecordsRow.cs" />
     <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_JoinRecords.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using IntegrationTool.DataMappingControl;
 using IntegrationTool.DBAccess;
+using IntegrationTool.UnitTests.Transformations.Classes;
 
 namespace IntegrationTool.UnitTests.Transformations
 {
@@ -35,6 +36,7 @@ namespace IntegrationTool.UnitTests.Transformations
 
             var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.InnerJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
+            var joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
             Assert.IsTrue(resultDatastore.Count == 2);
         }
 
@@ -92,6 +94,23 @@ namespace IntegrationTool.UnitTests.Transformations
             store.AddData(new object[] { 4, "Gregory", "Thomson" });
 
             return store;
+        }
+
+        public List<JoinRecordsRow> ConvertToJoinRecordsRows(IDatastore datastore)
+        {
+            List<JoinRecordsRow> joinRecordsRows = new List<JoinRecordsRow>();
+            for(int i=0; i < datastore.Count; i++)
+            {
+                JoinRecordsRow row = new JoinRecordsRow();
+                row.CompanyId = (int ?)datastore[i][datastore.Metadata["CompanyId"].ColumnIndex];
+                row.CompanyName = (string)datastore[i][datastore.Metadata["CompanyName"].ColumnIndex];
+                row.PersonId = (int?)datastore[i][datastore.Metadata["PersonId"].ColumnIndex];
+                row.Firstname = (string)datastore[i][datastore.Metadata["Firstname"].ColumnIndex];
+                row.Lastname = (string)datastore[i][datastore.Metadata["Lastname"].ColumnIndex];
+
+                joinRecordsRows.Add(row);
+            }
+            return joinRecordsRows;
         }
     }
 }
