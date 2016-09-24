@@ -20,7 +20,7 @@ namespace IntegrationTool.UnitTests.Transformations
             var companyDatastore = GetCompanyDatastore();
             var personDatastore = GetPersonDatastore();
 
-            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration() };
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.InnerJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
             Assert.IsTrue(resultDatastore.Count == 2);
         }
@@ -33,16 +33,16 @@ namespace IntegrationTool.UnitTests.Transformations
             
             IncreaseCompanyStoreToBeLargerThanPersonStore(companyDatastore);
 
-            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration() };
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.InnerJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
             Assert.IsTrue(resultDatastore.Count == 2);
         }
 
-        private JoinRecordsConfiguration GetJoinRecordsConfiguration()
+        private JoinRecordsConfiguration GetJoinRecordsConfiguration(JoinRecordsJoinType joinType)
         {
             return new JoinRecordsConfiguration()
             {
-                JoinType = JoinRecordsJoinType.InnerJoin,
+                JoinType = joinType,
                 JoinMapping = new List<DataMapping>()
                 {
                     new DataMapping("ContactPerson", "PersonId")

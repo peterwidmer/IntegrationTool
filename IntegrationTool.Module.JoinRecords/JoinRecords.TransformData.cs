@@ -20,12 +20,21 @@ namespace IntegrationTool.Module.JoinRecords
         {
             IDatastore resultDatastore = DataStoreFactory.GetDatastore();
 
+            InitializeOutputColumnsConfiguration();
             InitializeResultDatastore(resultDatastore);
             AnalyzeDatastores(datastore1, datastore2);
             BuildDatastoreKeys();
             JoinDatastoreRecords(resultDatastore);
 
             return resultDatastore;
+        }
+
+        public void InitializeOutputColumnsConfiguration()
+        {
+            for(int i=0; i < this.Configuration.OutputColumns.Count; i++)
+            {
+                this.Configuration.OutputColumns[i].Column.ColumnIndex = i;
+            }
         }
 
         private void InitializeResultDatastore(IDatastore resultDatastore)
@@ -74,8 +83,19 @@ namespace IntegrationTool.Module.JoinRecords
 
         private List<object[]> ExecuteLeftJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
         {
-            // TODO Do the left of the join
-            return ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+            var innerJoinResult = ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+            if(innerJoinResult.Count ==0)
+            {
+                object []leftJoinRow = new object[this.Configuration.OutputColumns.Count];
+                foreach (var outputColumn in this.Configuration.OutputColumns.Where(t => t.DataStream == DataStreamSource.Left))
+                {
+                    object value = largeDatastore[rowIndex][largeDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
+                    leftJoinRow[outputColumn.Column.ColumnIndex] = value;
+                }
+                innerJoinResult.Add(leftJoinRow);
+            }
+
+            return innerJoinResult;
         }
 
         private List<object[]> ExecuteInnerJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
@@ -84,9 +104,8 @@ namespace IntegrationTool.Module.JoinRecords
             foreach (var row in smallDatastoreRows)
             {
                 object[] resultRow = new object[this.Configuration.OutputColumns.Count];
-                for (int i2 = 0; i2 < this.Configuration.OutputColumns.Count; i2++)
+                foreach (var outputColumn in this.Configuration.OutputColumns)
                 {
-                    var outputColumn = this.Configuration.OutputColumns[i2];
                     object value = null;
                     if (outputColumn.DataStream == DataStreamSource.Left)
                     {
@@ -97,15 +116,13 @@ namespace IntegrationTool.Module.JoinRecords
                         value = row[smallDatastore.Metadata[outputColumn.Column.ColumnName].ColumnIndex];
                     }
 
-                    resultRow[i2] = value;
+                    resultRow[outputColumn.Column.ColumnIndex] = value;
                 }
                 joinedRows.Add(resultRow);
             }
 
             return joinedRows;
         }
-
-
 
         private void AnalyzeDatastores(IDatastore datastore1, IDatastore datastore2)
         {
