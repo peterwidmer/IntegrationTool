@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.Data;
@@ -13,7 +14,7 @@ using IntegrationTool.UnitTests.Transformations.Classes;
 namespace IntegrationTool.UnitTests.Transformations
 {
     [TestClass]
-    public class Test_JoinRecords
+    public class Test_JoinRecords_SimpleTests
     {
         [TestMethod]
         public void SimpleInnerJoin()
@@ -23,22 +24,50 @@ namespace IntegrationTool.UnitTests.Transformations
 
             var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.InnerJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
-            Assert.IsTrue(resultDatastore.Count == 2);
+
+            AssertSimpleInnerJoin(resultDatastore);
         }
 
         [TestMethod]
         public void SimpleInnerJoinSwitchedLargeSmallDatastore()
         {
-            var companyDatastore = GetCompanyDatastore();
+            var companyDatastore = GetLargerCompanyStore();
             var personDatastore = GetPersonDatastore();
-            
-            IncreaseCompanyStoreToBeLargerThanPersonStore(companyDatastore);
 
             var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.InnerJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
-            var joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
-            Assert.IsTrue(resultDatastore.Count == 2);
+
+            AssertSimpleInnerJoin(resultDatastore);            
         }
+
+        public void AssertSimpleInnerJoin(IDatastore resultDatastore)
+        {
+            List<JoinRecordsRow> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
+
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 1 && row.PersonId == 2) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 2 && row.PersonId == 3) == 1);
+        }
+
+        [TestMethod]
+        public void SimpleLeftJoin()
+        {
+            var companyDatastore = GetLargerCompanyStore();
+            var personDatastore = GetPersonDatastore();
+
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.LeftJoin) };
+            var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
+
+            List<JoinRecordsRow> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
+
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 1 && row.PersonId == 2) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 2 && row.PersonId == 3) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 3 && row.PersonId == null) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 4 && row.PersonId == null) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 5 && row.PersonId == null) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 6 && row.PersonId == null) == 1);
+        }
+
+        
 
         private JoinRecordsConfiguration GetJoinRecordsConfiguration(JoinRecordsJoinType joinType)
         {
@@ -60,12 +89,16 @@ namespace IntegrationTool.UnitTests.Transformations
             };
         }
 
-        private void IncreaseCompanyStoreToBeLargerThanPersonStore(IDatastore store)
+        private IDatastore GetLargerCompanyStore()
         {
+            IDatastore store = GetCompanyDatastore();
+
             store.AddData(new object[] { 3, "comp 3", 8 });
             store.AddData(new object[] { 4, "comp 4", 9 });
             store.AddData(new object[] { 5, "comp 5", 10 });
             store.AddData(new object[] { 6, "comp 6", 11 });
+
+            return store;
         }
 
         private IDatastore GetCompanyDatastore()
