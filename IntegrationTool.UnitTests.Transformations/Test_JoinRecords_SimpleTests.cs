@@ -42,7 +42,7 @@ namespace IntegrationTool.UnitTests.Transformations
 
         public void AssertSimpleInnerJoin(IDatastore resultDatastore)
         {
-            List<JoinRecordsRow> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
+            List<JoinRecordsRowSimpleTest> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
 
             Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 1 && row.PersonId == 2) == 1);
             Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 2 && row.PersonId == 3) == 1);
@@ -57,7 +57,7 @@ namespace IntegrationTool.UnitTests.Transformations
             var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.LeftJoin) };
             var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), companyDatastore, personDatastore, Test_Helpers.ReportProgressMethod);
 
-            List<JoinRecordsRow> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
+            List<JoinRecordsRowSimpleTest> joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
 
             Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 1 && row.PersonId == 2) == 1);
             Assert.IsTrue(joinRecordsRows.Count(row => row.CompanyId == 2 && row.PersonId == 3) == 1);
@@ -129,12 +129,12 @@ namespace IntegrationTool.UnitTests.Transformations
             return store;
         }
 
-        public List<JoinRecordsRow> ConvertToJoinRecordsRows(IDatastore datastore)
+        public List<JoinRecordsRowSimpleTest> ConvertToJoinRecordsRows(IDatastore datastore)
         {
-            List<JoinRecordsRow> joinRecordsRows = new List<JoinRecordsRow>();
+            List<JoinRecordsRowSimpleTest> joinRecordsRows = new List<JoinRecordsRowSimpleTest>();
             for(int i=0; i < datastore.Count; i++)
             {
-                JoinRecordsRow row = new JoinRecordsRow();
+                JoinRecordsRowSimpleTest row = new JoinRecordsRowSimpleTest();
                 row.CompanyId = (int ?)datastore[i][datastore.Metadata["CompanyId"].ColumnIndex];
                 row.CompanyName = (string)datastore[i][datastore.Metadata["CompanyName"].ColumnIndex];
                 row.PersonId = (int?)datastore[i][datastore.Metadata["PersonId"].ColumnIndex];

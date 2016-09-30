@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.UnitTests.Transformations.Classes
 {
-    public class JoinRecordsRow
+    public class JoinRecordsRowSimpleTest
     {
         public int ? CompanyId { get; set; }
         public string CompanyName { get; set; }

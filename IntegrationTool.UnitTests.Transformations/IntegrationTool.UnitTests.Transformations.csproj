@@ -50,7 +50,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Classes\JoinRecordsRow.cs" />
+    <Compile Include="Classes\JoinRecordsRowComplexTest.cs" />
+    <Compile Include="Classes\JoinRecordsRowSimpleTest.cs" />
     <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_JoinRecords_ComplexTests.cs" />
     <Compile Include="Test_JoinRecords_SimpleTests.cs" />
