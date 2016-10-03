@@ -112,6 +112,7 @@
     <Compile Include="Data\IDatastore.cs" />
     <Compile Include="Data\DataObject.cs" />
     <Compile Include="Data\IDatastoreColumnHashBuilder.cs" />
+    <Compile Include="Data\RowHash.cs" />
     <Compile Include="Diagram\ConnectionBase.cs" />
     <Compile Include="Diagram\ConnectorType.cs" />
     <Compile Include="Diagram\DesignerItemBase.cs" />

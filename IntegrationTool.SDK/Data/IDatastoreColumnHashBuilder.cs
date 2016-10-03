@@ -6,6 +6,6 @@ namespace IntegrationTool.SDK.Data
     {
         void BuildHashes();
         IEnumerable<object[]> GetRowsByHash(int hashcode);
-        int GetRowHash(object[] row, int[] columnIndexes);
+        RowHash GetRowHash(object[] row, int[] columnIndexes);
     }
 }

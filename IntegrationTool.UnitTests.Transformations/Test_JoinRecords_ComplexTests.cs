@@ -36,7 +36,32 @@ namespace IntegrationTool.UnitTests.Transformations
 
             Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_B" && row.TableBFull == "A_B") == 1);
             Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_B" && row.TableBFull == "A_B_2") == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_Null" && row.TableBFull == "A_Null") == 0);
         }
+
+        [TestMethod]
+        public void ComplexLeftJoinTest()
+        {
+            var datastoreA = GetDatastoreA();
+            var datastoreB = GetDatastoreB();
+
+            var joinRecords = new JoinRecords() { Configuration = GetJoinRecordsConfiguration(JoinRecordsJoinType.LeftJoin) };
+            var resultDatastore = joinRecords.TransformData(null, new DummyDatabaseInterface(), datastoreA, datastoreB, Test_Helpers.ReportProgressMethod);
+
+            AssertComplexLeftJoin(resultDatastore);
+        }
+
+        private void AssertComplexLeftJoin(IDatastore resultDatastore)
+        {
+            var joinRecordsRows = ConvertToJoinRecordsRows(resultDatastore);
+
+            Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_B" && row.TableBFull == "A_B") == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_B" && row.TableBFull == "A_B_2") == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "A_Null" && row.TableBFull == null) == 1);
+            Assert.IsTrue(joinRecordsRows.Count(row => row.TableAFull == "Null_Null" && row.TableBFull == null) == 1);
+        }
+
+        
 
         public IDatastore GetDatastoreA()
         {
@@ -79,7 +104,7 @@ namespace IntegrationTool.UnitTests.Transformations
                 OutputColumns = new ObservableCollection<OutputColumn>()
                 {
                     new OutputColumn() { Column = new ColumnMetadata("TableAFull"), DataStream= DataStreamSource.Left },
-                    new OutputColumn() { Column = new ColumnMetadata("TableBFull"), DataStream= DataStreamSource.Left }
+                    new OutputColumn() { Column = new ColumnMetadata("TableBFull"), DataStream= DataStreamSource.Right }
                 }
             };
         }

@@ -54,18 +54,18 @@ namespace IntegrationTool.Module.JoinRecords
             int[] largeDatastoreColumnIndexes = GetColumnIndexes();
             for (int rowIndex = 0; rowIndex < largeDatastore.Count; rowIndex++)
             {
-                int rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[rowIndex], largeDatastoreColumnIndexes);
-                var smallDatastoreRows = smallDataStoreHashBuilder.GetRowsByHash(rowHash);
+                RowHash rowHash = smallDataStoreHashBuilder.GetRowHash(largeDatastore[rowIndex], largeDatastoreColumnIndexes);
+                var smallDatastoreRows = smallDataStoreHashBuilder.GetRowsByHash(rowHash.Value);
 
                 List<object[]> joinedRows = null;
                 switch (this.Configuration.JoinType)
                 {
                     case JoinRecordsJoinType.LeftJoin:
-                        joinedRows = ExecuteLeftJoin(rowIndex, smallDatastoreRows);
+                        joinedRows = ExecuteLeftJoin(rowIndex, rowHash, smallDatastoreRows);
                         break;
 
                     case JoinRecordsJoinType.InnerJoin:
-                        joinedRows = ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+                        joinedRows = ExecuteInnerJoin(rowIndex, rowHash, smallDatastoreRows);
                         break;
                 }
                 
@@ -81,9 +81,9 @@ namespace IntegrationTool.Module.JoinRecords
             }
         }
 
-        private List<object[]> ExecuteLeftJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
+        private List<object[]> ExecuteLeftJoin(int rowIndex, RowHash rowHash, IEnumerable<object[]> smallDatastoreRows)
         {
-            var innerJoinResult = ExecuteInnerJoin(rowIndex, smallDatastoreRows);
+            var innerJoinResult = ExecuteInnerJoin(rowIndex, rowHash, smallDatastoreRows);
             if(innerJoinResult.Count ==0)
             {
                 object []leftJoinRow = new object[this.Configuration.OutputColumns.Count];
@@ -98,9 +98,14 @@ namespace IntegrationTool.Module.JoinRecords
             return innerJoinResult;
         }
 
-        private List<object[]> ExecuteInnerJoin(int rowIndex, IEnumerable<object[]> smallDatastoreRows)
+        private List<object[]> ExecuteInnerJoin(int rowIndex, RowHash rowHash, IEnumerable<object[]> smallDatastoreRows)
         {
             List<object[]> joinedRows = new List<object[]>();
+            if(rowHash.ContainsNullColumns)
+            {
+                return joinedRows;
+            }
+
             foreach (var row in smallDatastoreRows)
             {
                 object[] resultRow = new object[this.Configuration.OutputColumns.Count];
@@ -126,7 +131,7 @@ namespace IntegrationTool.Module.JoinRecords
 
         private void AnalyzeDatastores(IDatastore datastore1, IDatastore datastore2)
         {
-            if (datastore1.Count > datastore2.Count)
+            if (this.Configuration.JoinType == JoinRecordsJoinType.LeftJoin || datastore1.Count > datastore2.Count)
             {
                 largeDatastore = datastore1;
                 smallDatastore = datastore2;

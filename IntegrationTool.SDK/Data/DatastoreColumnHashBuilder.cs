@@ -31,26 +31,33 @@ namespace IntegrationTool.SDK.Data
         {
             for (int i = 0; i < datastore.Count; i++)
             {
-                int rowHash = GetRowHash(datastore[i], columnIndexes);
-                if (rowHashes.ContainsKey(rowHash))
+                var rowHash = GetRowHash(datastore[i], columnIndexes);
+                if (rowHashes.ContainsKey(rowHash.Value))
                 {
-                    rowHashes[rowHash].Add(i);
+                    rowHashes[rowHash.Value].Add(i);
                 }
                 else
                 {
-                    rowHashes.Add(rowHash, new List<int>() { i });
+                    rowHashes.Add(rowHash.Value, new List<int>() { i });
                 }
             }
         }
 
-        public int GetRowHash(object [] row, int [] columnIndexes)
+        public RowHash GetRowHash(object [] row, int [] columnIndexes)
         {
+            var rowHash = new RowHash();
             object[] indexObjects = new object[columnIndexes.Length];
             for (var i = 0; i < columnIndexes.Length; i++)
             {
                 indexObjects[i] = row[columnIndexes[i]];
+                if(indexObjects[i] == null)
+                {
+                    rowHash.ContainsNullColumns = true;
+                }
             }
-            return ((IStructuralEquatable)indexObjects).GetHashCode(EqualityComparer<object>.Default); 
+
+            rowHash.Value = ((IStructuralEquatable)indexObjects).GetHashCode(EqualityComparer<object>.Default);
+            return rowHash; 
         }
 
         public IEnumerable<object []> GetRowsByHash(int hashcode)
