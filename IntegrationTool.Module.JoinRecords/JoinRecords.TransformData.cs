@@ -15,6 +15,7 @@ namespace IntegrationTool.Module.JoinRecords
         private IDatastore smallDatastore;
         private List<string> smallDatastoreKeys = new List<string>();
         private List<string> largeDatastoreKeys = new List<string>();
+        private bool mappingHasBeenReversed;
 
         public IDatastore TransformData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore datastore1, IDatastore datastore2, ReportProgressMethod reportProgress)
         {
@@ -25,6 +26,12 @@ namespace IntegrationTool.Module.JoinRecords
             AnalyzeDatastores(datastore1, datastore2);
             BuildDatastoreKeys();
             JoinDatastoreRecords(resultDatastore);
+
+            if (mappingHasBeenReversed)
+            {
+                ReverseMapping(); // Reverse it back
+                mappingHasBeenReversed = false;
+            }
 
             return resultDatastore;
         }
@@ -140,17 +147,23 @@ namespace IntegrationTool.Module.JoinRecords
             {
                 largeDatastore = datastore2;
                 smallDatastore = datastore1;
-                foreach(var mapping in this.Configuration.JoinMapping)
-                {
-                    string target = mapping.Target;
-                    string source = mapping.Source;
-                    mapping.Source = target;
-                    mapping.Target = source;
-                }
-                foreach(var outputColumn in this.Configuration.OutputColumns)
-                {
-                    outputColumn.DataStream = outputColumn.DataStream == DataStreamSource.Left ? DataStreamSource.Right : DataStreamSource.Left;
-                }
+                ReverseMapping();
+            }
+        }
+
+        private void ReverseMapping()
+        {
+            mappingHasBeenReversed = true;
+            foreach (var mapping in this.Configuration.JoinMapping)
+            {
+                string target = mapping.Target;
+                string source = mapping.Source;
+                mapping.Source = target;
+                mapping.Target = source;
+            }
+            foreach (var outputColumn in this.Configuration.OutputColumns)
+            {
+                outputColumn.DataStream = outputColumn.DataStream == DataStreamSource.Left ? DataStreamSource.Right : DataStreamSource.Left;
             }
         }
 
