@@ -212,6 +212,9 @@
       <Component Id="ModuleComponent_XmlTransformation" Win64="yes">
         <File Id="ModuleComponent_XmlTransformation.dll" Source="$(var.IntegrationTool.Module.XmlTransformation.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_JoinRecords" Win64="yes">
+        <File Id="ModuleComponent_JoinRecords.dll" Source="$(var.IntegrationTool.Module.JoinRecords.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
 
     <!-- Target Module-Files -->

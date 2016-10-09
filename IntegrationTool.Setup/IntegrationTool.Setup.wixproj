@@ -168,6 +168,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.JoinRecords\IntegrationTool.Module.JoinRecords.csproj">
+      <Name>IntegrationTool.Module.JoinRecords</Name>
+      <Project>{3b784f61-12d1-457f-bf04-9e0135f19762}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromCSV\IntegrationTool.Module.LoadFromCSV.csproj">
       <Name>IntegrationTool.Module.LoadFromCSV</Name>
       <Project>{cc6225eb-311c-4f61-8a3b-c6501ddb2cce}</Project>
