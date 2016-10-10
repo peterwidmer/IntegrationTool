@@ -1,6 +1,7 @@
 ﻿using IntegrationTool.DBAccess;
 using IntegrationTool.DBAccess.DatabaseTargetProviders;
-using IntegrationTool.Module.WriteToMySQL.SDK.Enums;
+using IntegrationTool.DBAccess.DatabaseTargets;
+using IntegrationTool.Module.DbCommons;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using System;
@@ -26,7 +27,7 @@ namespace IntegrationTool.Module.WriteToMySql
             {
                 object[] rowData = dataObject[i];
                 var dbRecord = dataStoreConverter.ConvertToDbRecord(rowData);
-                dbRecord.Identifiers= BuildRecordIdentifiers(rowData, dataObject.Metadata);
+                dbRecord.Identifiers= DbTargetHelper.BuildRecordIdentifiers((DbTargetCommonConfiguration)Configuration, rowData, dataObject.Metadata);
 
                 var existingRecords = mySqlTarget.ResolveRecordInDatabase(dbRecord);
 
@@ -38,37 +39,20 @@ namespace IntegrationTool.Module.WriteToMySql
         {
             if(!existingRecords.Any())
             {
-                if(this.Configuration.ImportMode == MySqlImportMode.Create || this.Configuration.ImportMode == MySqlImportMode.All)
+                if (this.Configuration.ImportMode == DbTargetImportMode.Create || this.Configuration.ImportMode == DbTargetImportMode.All)
                 {
                     databaseTargetProvider.CreateRecordInDatabase(dbRecord);
                 }
             }
             else
             {
-                if(this.Configuration.ImportMode == MySqlImportMode.Update || this.Configuration.ImportMode == MySqlImportMode.All)
+                if (this.Configuration.ImportMode == DbTargetImportMode.Update || this.Configuration.ImportMode == DbTargetImportMode.All)
                 {
                     databaseTargetProvider.UpdateRecordInDatabase(dbRecord);
                 }
             }
         }
 
-        public List<KeyValuePair<string, object>> BuildRecordIdentifiers(object[] rowData, DataMetadata dataMetadata)
-        {
-            List<KeyValuePair<string, object>> recordIdentifiers = new List<KeyValuePair<string, object>>();
-
-            foreach(var primaryKeyField in Configuration.PrimaryKeyFields)
-            {
-                var primaryKeyMapping = Configuration.Mapping.FirstOrDefault(t => t.Target == primaryKeyField);
-                if(primaryKeyMapping == null)
-                {
-                    throw new Exception("The primarykey " + primaryKeyField + " is not mapped!");
-                }
-
-                var recordIdentifier = new KeyValuePair<string, object>(primaryKeyField, rowData[dataMetadata[primaryKeyMapping.Source].ColumnIndex]);
-                recordIdentifiers.Add(recordIdentifier);
-            }
-
-            return recordIdentifiers;
-        }
+        
     }
 }

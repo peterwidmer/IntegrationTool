@@ -47,8 +47,12 @@
   <ItemGroup>
     <Compile Include="DatabaseHelper.cs" />
     <Compile Include="DatabaseMetadataProviders\MySqlMetadataProvider.cs" />
-    <Compile Include="DatabaseTargetProviders\IDatabaseTargetProviders.cs" />
-    <Compile Include="DatabaseTargetProviders\MySqlTargetProvider.cs" />
+    <Compile Include="DatabaseTargets\DbTargetCommonConfiguration.cs" />
+    <Compile Include="DatabaseTargets\DbTargetHelper.cs" />
+    <Compile Include="DatabaseTargets\DbTargetImportMode.cs" />
+    <Compile Include="DatabaseTargets\DbTargetMultipleFoundMode.cs" />
+    <Compile Include="DatabaseTargets\Providers\IDatabaseTargetProviders.cs" />
+    <Compile Include="DatabaseTargets\Providers\MySqlTargetProvider.cs" />
     <Compile Include="DataStoreConverter.cs" />
     <Compile Include="DbMetadataColumn.cs" />
     <Compile Include="DbMetadataTable.cs" />

@@ -1,5 +1,6 @@
 ﻿using IntegrationTool.DataMappingControl;
-using IntegrationTool.Module.WriteToMySQL.SDK.Enums;
+using IntegrationTool.DBAccess;
+using IntegrationTool.DBAccess.DatabaseTargets;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.ConfigurationsBase;
 using System;
@@ -11,11 +12,8 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.WriteToMySql
 {
-    public class WriteToMySQLConfiguration : CommonDbTargetConfiguration
+    public class WriteToMySQLConfiguration : DbTargetCommonConfiguration
     {
-        public MySqlImportMode ImportMode { get; set; }
-        public MySqlMultipleFoundMode MultipleFoundMode { get; set; }
-
         public WriteToMySQLConfiguration()
         {
             

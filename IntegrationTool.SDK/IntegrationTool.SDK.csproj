@@ -118,6 +118,7 @@
     <Compile Include="Diagram\DesignerItemBase.cs" />
     <Compile Include="Diagram\DiagramDeserializer.cs" />
     <Compile Include="Diagram\IconLoader.cs" />
+    <Compile Include="Exceptions\InfoException.cs" />
     <Compile Include="FileHandling\ConfigurationFileHandler.cs" />
     <Compile Include="FileHandling\ConfigurationSerializer.cs" />
     <Compile Include="FlowManagement\ItemEvent.cs" />
@@ -152,7 +153,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusHelper.cs" />
     <Compile Include="Step\IStep.cs" />
-    <Compile Include="Target\CommonDbTargetConfiguration.cs" />
     <Compile Include="Target\IDataTarget.cs" />
     <Compile Include="Transformation\IDataMerge.cs" />
     <Compile Include="Transformation\IDataTransformation.cs" />

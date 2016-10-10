@@ -50,8 +50,6 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SDK\Enums\ImportMode.cs" />
-    <Compile Include="SDK\Enums\MultipleFoundMode.cs" />
     <Compile Include="UserControls\ImportSettings.xaml.cs">
       <DependentUpon>ImportSettings.xaml</DependentUpon>
     </Compile>

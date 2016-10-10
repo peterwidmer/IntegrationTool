@@ -1,5 +1,5 @@
-﻿using IntegrationTool.Module.WriteToMySql;
-using IntegrationTool.Module.WriteToMySQL.SDK.Enums;
+﻿using IntegrationTool.DBAccess.DatabaseTargets;
+using IntegrationTool.Module.WriteToMySql;
 using IntegrationTool.SDK.GenericClasses;
 using System;
 using System.Collections.Generic;
@@ -49,9 +49,9 @@ namespace IntegrationTool.Module.WriteToMySQL.UserControls
         {
             switch (this.Configuration.ImportMode)
             {
-                case MySqlImportMode.None:
-                case MySqlImportMode.Create:
-                    this.Configuration.MultipleFoundMode = MySqlMultipleFoundMode.None;
+                case DbTargetImportMode.None:
+                case DbTargetImportMode.Create:
+                    this.Configuration.MultipleFoundMode = DbTargetMultipleFoundMode.None;
                     ddMultipleFoundMode.IsEnabled = false;
                     break;
 

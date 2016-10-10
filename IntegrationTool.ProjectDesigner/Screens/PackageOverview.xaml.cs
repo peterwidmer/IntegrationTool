@@ -28,6 +28,7 @@ using IntegrationTool.ProjectDesigner.FlowDesign;
 using System.Xml.Linq;
 using System.Globalization;
 using IntegrationTool.SDK.Data;
+using IntegrationTool.SDK.Exceptions;
 
 namespace IntegrationTool.ProjectDesigner.Screens
 {
@@ -267,7 +268,6 @@ namespace IntegrationTool.ProjectDesigner.Screens
                     subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, false, null);
 
                 ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStores, Connections);
-
                 ShowConfiguationWindow(configurationWindowSettings);
             }
             catch(Exception ex)
@@ -278,7 +278,8 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         public void HandleWindowOpenExceptions(Exception ex)
         {
-            MessageBox.Show(ex.ToString());
+            string errorMessage = ex is InfoException ? ex.Message : ex.ToString();
+            MessageBox.Show(errorMessage);
         }
 
         void ShowConfiguationWindow(ConfigurationWindowSettings configurationWindowSettings)

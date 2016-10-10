@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.Module.WriteToMySQL.SDK.Enums
+namespace IntegrationTool.DBAccess.DatabaseTargets
 {
-    public enum MySqlMultipleFoundMode
+    public enum DbTargetMultipleFoundMode
     {
         None, // No records will be updated 
         All // All records will be updated

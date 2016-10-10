@@ -11,6 +11,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows;
+using IntegrationTool.SDK.Exceptions;
 
 namespace IntegrationTool.ProjectDesigner.MenuWindows
 {
@@ -38,6 +40,11 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
                 configuration = configuration,
                 originalConfiguration = ConfigurationSerializer.SerializeObject(configuration, moduleLoader.GetModuleTypeList()),
             };
+
+            if(!dataStores.Any())
+            {
+                throw new InfoException("No incoming data available. Please connect a datasource first!");
+            }
 
             if(module is IDataMerge)
             {

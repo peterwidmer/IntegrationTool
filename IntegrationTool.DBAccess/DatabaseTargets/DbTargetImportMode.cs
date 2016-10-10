@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.Module.WriteToMySQL.SDK.Enums
+namespace IntegrationTool.DBAccess.DatabaseTargets
 {
-    public enum MySqlImportMode
+    public enum DbTargetImportMode
     {
         All = 3,
         None = 0,

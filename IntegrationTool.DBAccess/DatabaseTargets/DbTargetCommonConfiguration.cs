@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.DBAccess.DatabaseTargets;
 using IntegrationTool.SDK.ConfigurationsBase;
 using System;
 using System.Collections.Generic;
@@ -7,15 +8,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.SDK
+namespace IntegrationTool.DBAccess
 {
-    public class CommonDbTargetConfiguration : TargetConfiguration
+    public class DbTargetCommonConfiguration : TargetConfiguration
     {
         public string TargetTable { get; set; }
         public ObservableCollection<string> PrimaryKeyFields { get; set; }
         public List<DataMapping> Mapping { get; set; }
 
-        public CommonDbTargetConfiguration()
+        public DbTargetImportMode ImportMode { get; set; }
+        public DbTargetMultipleFoundMode MultipleFoundMode { get; set; }
+
+        public DbTargetCommonConfiguration()
         {
             Mapping = new List<DataMapping>();
             PrimaryKeyFields = new ObservableCollection<string>();
