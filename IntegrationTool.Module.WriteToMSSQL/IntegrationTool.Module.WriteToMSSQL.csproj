@@ -34,6 +34,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -43,8 +44,20 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationContent.xaml.cs">
+      <DependentUpon>ConfigurationContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AttributeMapping.xaml.cs">
+      <DependentUpon>AttributeMapping.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ImportSettings.xaml.cs">
+      <DependentUpon>ImportSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RelationMapping.xaml.cs">
+      <DependentUpon>RelationMapping.xaml</DependentUpon>
     </Compile>
     <Compile Include="WriteToMSSQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,7 +80,23 @@
     <EmbeddedResource Include="Icon.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ConfigurationContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\AttributeMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ImportSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\RelationMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseHelper.cs" />
+    <Compile Include="DatabaseMetadataProviders\MsSqlMetadataProvider.cs" />
     <Compile Include="DatabaseMetadataProviders\MySqlMetadataProvider.cs" />
     <Compile Include="DatabaseTargets\DbTargetCommonConfiguration.cs" />
     <Compile Include="DatabaseTargets\DbTargetHelper.cs" />

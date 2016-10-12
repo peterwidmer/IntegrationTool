@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="IntegrationTool.Module.WriteToMSSQL.UserControls.AttributeMapping"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:DataMappingControl="clr-namespace:IntegrationTool.DataMappingControl;assembly=IntegrationTool.DataMappingControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="338" d:DesignWidth="575">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"/>
+        </Grid.ColumnDefinitions>
+        <DataMappingControl:MappingControl x:Name="SourceTargetMapping"/>
+        <GridSplitter Focusable="False" Width="2" Background="LightGray"
+                    VerticalAlignment="Stretch" HorizontalAlignment="Right"/>
+        <ContentControl x:Name="attributeDependentSettings" Grid.Column="1"/>
+    </Grid>
+</UserControl>

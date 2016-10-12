@@ -6,6 +6,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="14*"/>
+            <RowDefinition Height="305*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Select Table" Grid.Row="0"/>
+        <ComboBox x:Name="ddTargetTables" Grid.Column="1" Grid.Row="0"  SelectionChanged="ddTargetTables_SelectionChanged"/>
+        <ContentControl x:Name="ConfigurationContent" Grid.Row="2" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

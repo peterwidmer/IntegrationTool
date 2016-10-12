@@ -30,5 +30,10 @@ namespace IntegrationTool.Module.WriteToMSSQL
             this.dataObject = dataObject;
             this.configuration = configuration;
         }
+
+        private void ddTargetTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

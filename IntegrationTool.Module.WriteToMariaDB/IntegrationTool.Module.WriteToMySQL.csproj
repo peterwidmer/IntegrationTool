@@ -53,7 +53,7 @@
     <Compile Include="UserControls\ImportSettings.xaml.cs">
       <DependentUpon>ImportSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Mapping\AttributeMapping.xaml.cs">
+    <Compile Include="UserControls\AttributeMapping.xaml.cs">
       <DependentUpon>AttributeMapping.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\RelationMapping.xaml.cs">
@@ -99,7 +99,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\Mapping\AttributeMapping.xaml">
+    <Page Include="UserControls\AttributeMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -111,9 +111,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Icon.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UserControls\Relation\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

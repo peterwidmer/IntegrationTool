@@ -18,7 +18,6 @@
         <Label Content="Select Table" Grid.Row="0"/>
         <ComboBox x:Name="ddTargetTables" Grid.Column="1" Grid.Row="0" SelectionChanged="ddTargetTables_SelectionChanged" />
         <ContentControl x:Name="ConfigurationContent" Grid.Row="2" Grid.ColumnSpan="2"/>
-        <Label Grid.Row="2" Grid.ColumnSpan="2" Content="DO NOT USE - UNDER DEVELOPMENT" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
    
 </UserControl>
