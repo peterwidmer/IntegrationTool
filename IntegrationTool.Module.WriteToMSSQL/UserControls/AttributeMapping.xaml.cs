@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IntegrationTool.DBAccess;
+using IntegrationTool.SDK.Database;
+using IntegrationTool.SDK.GenericClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +23,32 @@ namespace IntegrationTool.Module.WriteToMSSQL.UserControls
     /// </summary>
     public partial class AttributeMapping : UserControl
     {
-        public AttributeMapping()
+        private IDatastore dataObject;
+        private DbMetadataTable selectedTable;
+
+        public AttributeMapping(WriteToMSSQLConfiguration configuration, IDatastore dataObject, DbMetadataTable selectedTable)
         {
+            this.dataObject = dataObject;
+            this.selectedTable = selectedTable;
+
             InitializeComponent();
+            InitializeMappingControl(configuration.Mapping);
+        }
+
+        private void InitializeMappingControl(List<DataMappingControl.DataMapping> mapping)
+        {
+            List<NameDisplayName> sourceColumns = this.dataObject.Metadata.GetColumnsAsNameDisplayNameList();
+            foreach (var column in sourceColumns)
+            {
+                SourceTargetMapping.SourceList.Add(new ListViewItem() { Content = column.Name, ToolTip = column.DisplayName });
+            }
+
+            foreach (var column in selectedTable.Columns)
+            {
+                SourceTargetMapping.TargetList.Add(new ListViewItem() { Content = column.ColumnName, ToolTip = column.ColumnName });
+            }
+
+            SourceTargetMapping.Mapping = mapping;
         }
     }
 }

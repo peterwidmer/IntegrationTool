@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntegrationTool.Module.WriteToMSSQL.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,12 @@ namespace IntegrationTool.Module.WriteToMSSQL
     /// </summary>
     public partial class ConfigurationContent : UserControl
     {
-        public ConfigurationContent()
+        public ConfigurationContent(AttributeMapping attributeMapping, ImportSettings importSettings, RelationMapping relationMapping)
         {
             InitializeComponent();
+            MappingTab.Content = attributeMapping;
+            ImportSettingsTab.Content = importSettings;
+            RelationmappingTab.Content = relationMapping;
         }
     }
 }

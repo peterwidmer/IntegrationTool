@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK.ConfigurationsBase;
+﻿using IntegrationTool.DBAccess;
+using IntegrationTool.SDK.ConfigurationsBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.WriteToMSSQL
 {
-    public class WriteToMSSQLConfiguration : TargetConfiguration
+    public class WriteToMSSQLConfiguration : DbTargetCommonConfiguration
     {
     }
 }

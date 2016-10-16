@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IntegrationTool.DBAccess.DatabaseMetadataProviders
+namespace IntegrationTool.DBAccess
 {
     public class MsSqlMetadataProvider: IDatabaseMetadataProvider
     {

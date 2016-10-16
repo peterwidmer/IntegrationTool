@@ -70,6 +70,10 @@
       <Name>IntegrationTool.DataMappingControl</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.DBAccess\IntegrationTool.DBAccess.csproj">
+      <Project>{953f8dc5-dd92-4b2b-be8e-72fbaffa8420}</Project>
+      <Name>IntegrationTool.DBAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>
