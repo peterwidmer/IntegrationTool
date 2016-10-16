@@ -17,12 +17,21 @@
                     <RowDefinition Height="26"/>
                     <RowDefinition Height="4"/>
                     <RowDefinition Height="26"/>
-                    <RowDefinition Height="100*"/>
+                    <RowDefinition Height="4"/>
+                    <RowDefinition Height="26"/>
+                    <RowDefinition Height="167*"/>
                 </Grid.RowDefinitions>
                 <Label Content="Step Name" Grid.Row="1" />
                 <TextBox Text="{Binding Path=DesignerItem.ItemLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="1" />
-                <Label Content="On Error" Grid.Row="3" />
-                <ComboBox Grid.Column="1" Grid.Row="3" SelectedValue="{Binding Path=Configuration.OnError}" SelectedValuePath="Tag">
+
+                <Label Content="Status" Grid.Row="3" />
+                <ComboBox Grid.Column="1" Grid.Row="3" SelectedValue="{Binding Path=Configuration.Status}" SelectedValuePath="Tag">
+                    <ComboBoxItem Content="Active" Tag="Active" ToolTip="Steps will execute" />
+                    <ComboBoxItem Content="Inactive" Tag="Inactive" ToolTip="Steps will not execute" />
+                </ComboBox>
+
+                <Label Content="On Error" Grid.Row="5" />
+                <ComboBox Grid.Column="1" Grid.Row="5" SelectedValue="{Binding Path=Configuration.OnError}" SelectedValuePath="Tag">
                     <ComboBoxItem Content="Execute following steps" Tag="ExecuteFollowingSteps" />
                     <ComboBoxItem Content="Do not execute following steps" Tag="StopFollwingSteps" />
                 </ComboBox>

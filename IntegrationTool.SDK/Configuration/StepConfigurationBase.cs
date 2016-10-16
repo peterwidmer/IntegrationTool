@@ -11,9 +11,15 @@ namespace IntegrationTool.SDK
         ExecuteFollowingSteps, StopFollwingSteps
     }
 
+    public enum StepExecutionStatus
+    {
+        Active, Inactive
+    }
+
     public class StepConfigurationBase : ConfigurationBase
     {
         public Guid SelectedConnectionConfigurationId { get; set; }
         public StepExecutionErrorHandling OnError { get; set; }
+        public StepExecutionStatus Status { get; set; }
     }
 }

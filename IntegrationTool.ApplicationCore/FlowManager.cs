@@ -208,7 +208,9 @@ namespace IntegrationTool.Flowmanagement
                             // Check if all incoming connection allow an execution
                             bool allowExecution_PreviousErrorTest = FlowHelper.AllowExecution_OnPreviousErrorTest(itemWorker, this.itemWorkers, this.connectionList);
                             bool allowExecution_PreviousItemNotSuccessfulOnErrorlineTest = FlowHelper.AllowExecution_PreviousStepNotSuccessfulOnErrorlineTest(itemWorker, this.itemWorkers, this.connectionList);
-                            if (allowExecution_PreviousErrorTest == true && allowExecution_PreviousItemNotSuccessfulOnErrorlineTest)
+                            bool allowExecution_activeItem = itemWorker.Configuration.Status == StepExecutionStatus.Active;
+
+                            if (allowExecution_PreviousErrorTest && allowExecution_PreviousItemNotSuccessfulOnErrorlineTest && allowExecution_activeItem)
                             {
                                 ExecuteDesignerItem(itemWorker);
                             }
