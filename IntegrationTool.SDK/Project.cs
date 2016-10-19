@@ -60,7 +60,7 @@ namespace IntegrationTool.SDK
         public void LoadRunLogs()
         {
             this.RunLogs.Clear();
-            string logBasePath = this.ProjectFolder + @"\logs\";
+            string logBasePath = this.ProjectFolder.Trim('\\') + @"\logs\";
             if (Directory.Exists(logBasePath))
             {
                 foreach (string runLogFileDirectory in Directory.GetDirectories(logBasePath))

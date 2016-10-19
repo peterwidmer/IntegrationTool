@@ -117,7 +117,7 @@ namespace IntegrationTool.Flowmanagement
             this.runLog.PackageDisplayName = this.package.DisplayName;
 
             // Create new folder for logs
-            this.logBasePath = this.package.ParentProject.ProjectFolder + @"\logs\";
+            this.logBasePath = this.package.ParentProject.ProjectFolder.Trim('\\') + @"\logs\";
             if (Directory.Exists(this.logBasePath) == false)
             {
                 Directory.CreateDirectory(this.logBasePath);
