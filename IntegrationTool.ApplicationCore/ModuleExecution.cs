@@ -94,6 +94,10 @@ namespace IntegrationTool.ApplicationCore
             }
             else if(transformationObject is IDataMerge)
             {
+                if(dataStores.Count !=2)
+                {
+                    throw new Exception("Make sure to connect exactly two incoming datasources on JoinRecords transformations!");
+                }
                 var mergedStore = ((IDataMerge)transformationObject).TransformData(transformationConnectionObject, null, dataStores[0], dataStores[1], reportProgressMethod);
                 return mergedStore;
             }

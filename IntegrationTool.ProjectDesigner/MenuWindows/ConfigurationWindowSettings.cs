@@ -48,6 +48,10 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
 
             if(module is IDataMerge)
             {
+                if(dataStores.Count != 2)
+                {
+                    throw new InfoException("Make sure to connect exactly two incoming datasources!");
+                }
                 configurationWindowSettings.configurationControl = ((IDataMerge)module).RenderConfigurationWindow(configuration, dataStores[0], dataStores[1]);
             }
             else
