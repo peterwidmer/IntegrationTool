@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.Odbc;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace IntegrationTool.DBAccess
 {
     public class DatabaseHelper
     {
-        public static DataTable ConvertDataReaderToDataTable(OdbcDataReader dataReader)
+        public static DataTable ConvertDataReaderToDataTable(DbDataReader dataReader)
         {
             DataTable datatable = new DataTable();
             DataTable schemaTable = dataReader.GetSchemaTable();

@@ -59,9 +59,10 @@
     <Compile Include="DbMetadataTable.cs" />
     <Compile Include="DbRecord.cs" />
     <Compile Include="DummyDatabaseInterface.cs" />
-    <Compile Include="OdbcWrapper.cs" />
+    <Compile Include="DatabaseWrappers\MssqlWrapper.cs" />
+    <Compile Include="DatabaseWrappers\OdbcWrapper.cs" />
     <Compile Include="DatabaseMetadataProviders\IDatabaseMetadataProvider.cs" />
-    <Compile Include="SqliteWrapper.cs" />
+    <Compile Include="DatabaseWrappers\SqliteWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ namespace IntegrationTool.DBAccess
             List<DbMetadataTable> tables = new List<DbMetadataTable>();
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
-                var dataReader = odbcWrapper.ExecuteQuery("SELECT * FROM INFORMATION_SCHEMA.TABLES where table_schema=?", new OdbcParameter[] { new OdbcParameter("@dbname", odbcWrapper.DatabaseName) });
+                var dataReader = odbcWrapper.ExecuteQuery("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES where table_schema=?", new OdbcParameter[] { new OdbcParameter("@dbname", odbcWrapper.DatabaseName) });
 
                 dt = DatabaseHelper.ConvertDataReaderToDataTable(dataReader);                
             }
@@ -57,7 +57,7 @@ namespace IntegrationTool.DBAccess
             List<DbMetadataColumn> columns = new List<DbMetadataColumn>();
             using (OdbcWrapper odbcWrapper = new OdbcWrapper(connection.GetConnection() as OdbcConnection))
             {
-                var dataReader = odbcWrapper.ExecuteQuery("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?", 
+                var dataReader = odbcWrapper.ExecuteQuery("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?", 
                     new OdbcParameter[] 
                     { 
                         new OdbcParameter("@dbname", odbcWrapper.DatabaseName),
