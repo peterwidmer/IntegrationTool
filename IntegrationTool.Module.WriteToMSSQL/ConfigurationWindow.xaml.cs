@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.DBAccess;
+using IntegrationTool.Module.DbCommons;
 using IntegrationTool.Module.WriteToMSSQL.UserControls;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Controls.Generic;
@@ -31,6 +32,7 @@ namespace IntegrationTool.Module.WriteToMSSQL
         private IDatastore dataObject;
         private WriteToMSSQLConfiguration configuration;
         private IConnection connection;
+        private IDatabaseMetadataProvider metadataProvider;
 
         // UserControls
         private AttributeMapping attributeMapping;
@@ -54,7 +56,7 @@ namespace IntegrationTool.Module.WriteToMSSQL
             DbMetadataTable selectedTable = ((ComboBoxItem)ddTargetTables.SelectedItem).Tag as DbMetadataTable;
             this.configuration.TargetTable = selectedTable.TableName;
 
-            attributeMapping = new AttributeMapping(this.configuration, this.dataObject, selectedTable);
+            attributeMapping = CreateAttributeMappingWindow(selectedTable);
             existingCheck = CreateExistingCheckWindow();
             relationMapping = CreateRelationmappingWindow();
 
@@ -69,9 +71,14 @@ namespace IntegrationTool.Module.WriteToMSSQL
 
             try
             {
-                await Task.Run(() => { LoadMetadata(); });
+                await Task.Run(() => { 
+                    metadataProvider = LoadMetadata();        
+                });
 
+                ConfigurationContent.Content = null;
+                CommonDbInitializationHelper.InitializeTargetTable(metadataProvider, ddTargetTables, configuration.TargetTable);   
                 ddTargetTables.IsEnabled = true;
+                
                 
             }
             catch(Exception ex)
@@ -86,6 +93,28 @@ namespace IntegrationTool.Module.WriteToMSSQL
             databaseMetadataProvider.Initialize();
 
             return databaseMetadataProvider;
+        }
+
+        private AttributeMapping CreateAttributeMappingWindow(DbMetadataTable selectedTable)
+        {
+            AttributeMapping attributeMapping = new AttributeMapping(this.configuration, this.dataObject, selectedTable);
+            attributeMapping.SourceTargetMapping.MappingRowAdded += SourceTargetMapping_MappingRowAdded;
+            attributeMapping.SourceTargetMapping.MappingRowDeleted += SourceTargetMapping_MappingRowDeleted;
+            return attributeMapping;
+        }
+
+        void SourceTargetMapping_MappingRowAdded(DataMappingControl.DataMapping item)
+        {
+            existingCheck.AvailablePrimaryKeyAttributes.Add(new NameDisplayName(item.Target, item.Target));
+        }
+
+        void SourceTargetMapping_MappingRowDeleted(DataMappingControl.DataMapping item)
+        {
+            NameDisplayName nameDisplayName = existingCheck.AvailablePrimaryKeyAttributes.Where(t => t.Name == item.Target).FirstOrDefault();
+            if (nameDisplayName != null)
+            {
+                existingCheck.AvailablePrimaryKeyAttributes.Remove(nameDisplayName);
+            }
         }
 
         private ImportSettings CreateExistingCheckWindow()

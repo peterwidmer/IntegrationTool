@@ -56,7 +56,7 @@ namespace IntegrationTool.DBAccess
             List<DbMetadataColumn> columns = new List<DbMetadataColumn>();
             using (MssqlWrapper sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
             {
-                var dataReader = sqlWrapper.ExecuteQuery("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename",
+                var dataReader = sqlWrapper.ExecuteQuery("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_CATALOG = @dbname AND TABLE_NAME = @tablename",
                     new [] 
                     { 
                         new SqlParameter("@dbname", sqlWrapper.DatabaseName),

@@ -103,11 +103,33 @@ namespace IntegrationTool.Module.WriteToMySql
             DbMetadataTable selectedTable = ((ComboBoxItem)ddTargetTables.SelectedItem).Tag as DbMetadataTable;
             this.configuration.TargetTable = selectedTable.TableName;
 
-            attributeMapping = new AttributeMapping(this.configuration, this.dataObject, selectedTable);
+            attributeMapping = CreateAttributeMappingWindow(selectedTable);
             existingCheck = CreateExistingCheckWindow();
             relationMapping = CreateRelationmappingWindow();
 
             ConfigurationContent.Content = new ConfigurationContent(attributeMapping, existingCheck, relationMapping);   
+        }
+
+        private AttributeMapping CreateAttributeMappingWindow(DbMetadataTable selectedTable)
+        {
+            AttributeMapping attributeMapping = new AttributeMapping(this.configuration, this.dataObject, selectedTable);
+            attributeMapping.SourceTargetMapping.MappingRowAdded += SourceTargetMapping_MappingRowAdded;
+            attributeMapping.SourceTargetMapping.MappingRowDeleted += SourceTargetMapping_MappingRowDeleted;
+            return attributeMapping;
+        }
+
+        void SourceTargetMapping_MappingRowAdded(DataMappingControl.DataMapping item)
+        {
+            existingCheck.AvailablePrimaryKeyAttributes.Add(new NameDisplayName(item.Target, item.Target));
+        }
+
+        void SourceTargetMapping_MappingRowDeleted(DataMappingControl.DataMapping item)
+        {
+            NameDisplayName nameDisplayName = existingCheck.AvailablePrimaryKeyAttributes.Where(t => t.Name == item.Target).FirstOrDefault();
+            if (nameDisplayName != null)
+            {
+                existingCheck.AvailablePrimaryKeyAttributes.Remove(nameDisplayName);
+            }
         }
 
         private ImportSettings CreateExistingCheckWindow()

@@ -78,6 +78,7 @@
     <ProjectReference Include="..\IntegrationTool.Module.Crm2013Wrapper\IntegrationTool.Module.CrmWrapper.csproj">
       <Project>{3c424a58-27cc-4902-99da-8bd06d2f1143}</Project>
       <Name>IntegrationTool.Module.CrmWrapper</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
