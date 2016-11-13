@@ -23,9 +23,9 @@ namespace IntegrationTool.DBAccess.DatabaseTargets.Providers
             List<object[]> result = new List<object[]>();
 
             string query = BuildResolverQuery(dbRecord.TableName, dbRecord.Identifiers);
-            var sqlParameters = dbRecord.Identifiers.Select(t => new SqlParameter(t.Key, t.Value)).ToArray();
+            var sqlParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
 
-            using (MssqlWrapper sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
+            using (var sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
             {
                 var sqlReader = sqlWrapper.ExecuteQuery(query, sqlParameters);
                 while (sqlReader.Read())
@@ -56,12 +56,47 @@ namespace IntegrationTool.DBAccess.DatabaseTargets.Providers
 
         public void CreateRecordInDatabase(DbRecord dbRecord)
         {
-            throw new NotImplementedException();
+            string createQuery = BuildCreateString(dbRecord);
+            var sqlParameters = dbRecord.Values.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
+
+            using (var sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
+            {
+                sqlWrapper.ExecuteNonQuery(createQuery, sqlParameters);
+            }
+        }
+
+        private string BuildCreateString(DbRecord dbRecord)
+        {
+            string columnsToInsert = string.Join(",", dbRecord.Values.Select(t => t.Key));
+            string valuePlaceholders = string.Join(",", dbRecord.Values.Select(t => "@" + t.Key));
+            return
+                "INSERT INTO "
+                + dbRecord.TableName
+                + " (" + columnsToInsert + ") values"
+                + " (" + valuePlaceholders + ")";
         }
 
         public void UpdateRecordInDatabase(DbRecord dbRecord)
         {
-            throw new NotImplementedException();
+            string updateQuery = BuildUpdateString(dbRecord);
+            var sqlColumnParameters = dbRecord.Values.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
+            var sqlWhereParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
+
+            using (var sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
+            {
+                sqlWrapper.ExecuteNonQuery(updateQuery, sqlColumnParameters.Concat(sqlWhereParameters).ToArray());
+            }
+        }
+
+        private string BuildUpdateString(DbRecord dbRecord)
+        {
+            string columnsToUpdate = string.Join(",", dbRecord.Values.Select(t => t.Key + "=@" + t.Key));
+            string whereClause = BuildRecordIdentifierClause(dbRecord.Identifiers);
+            return
+                "UPDATE "
+                + dbRecord.TableName +
+                " SET " + columnsToUpdate
+                + whereClause;
         }
     }
 }

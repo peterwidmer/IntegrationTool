@@ -28,7 +28,7 @@ namespace IntegrationTool.DBAccess
 
         public SqlDataReader ExecuteQuery(string sqlQuery, SqlParameter[] parameters = null)
         {
-            SqlCommand sqlCommand = new SqlCommand(sqlQuery, this.dbConnection);
+            var sqlCommand = new SqlCommand(sqlQuery, this.dbConnection);
             if (parameters != null)
             {
                 sqlCommand.Parameters.AddRange(parameters);
@@ -36,6 +36,17 @@ namespace IntegrationTool.DBAccess
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
 
             return sqlDataReader;
+        }
+
+        public int ExecuteNonQuery(string sqlQuery, SqlParameter[] parameters = null)
+        {
+            var sqlCommand = new SqlCommand(sqlQuery, this.dbConnection);
+            if (parameters != null)
+            {
+                sqlCommand.Parameters.AddRange(parameters);
+            }
+            int result = sqlCommand.ExecuteNonQuery();
+            return result;
         }
 
         public object[] ReadCurrentRow(SqlDataReader reader)
