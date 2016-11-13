@@ -38,6 +38,17 @@ namespace IntegrationTool.DBAccess
             return sqlDataReader;
         }
 
+        public object[] ReadCurrentRow(SqlDataReader reader)
+        {
+            object[] row = new object[reader.FieldCount];
+            for (int dataIndex = 0; dataIndex < reader.FieldCount; dataIndex++)
+            {
+                row[dataIndex] = reader.GetValue(dataIndex);
+            }
+
+            return row;
+        }
+
         public void Dispose()
         {
             this.dbConnection.Dispose();

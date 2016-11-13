@@ -53,6 +53,7 @@
     <Compile Include="DatabaseTargets\DbTargetImportMode.cs" />
     <Compile Include="DatabaseTargets\DbTargetMultipleFoundMode.cs" />
     <Compile Include="DatabaseTargets\Providers\IDatabaseTargetProviders.cs" />
+    <Compile Include="DatabaseTargets\Providers\MsSqlTargetProvider.cs" />
     <Compile Include="DatabaseTargets\Providers\MySqlTargetProvider.cs" />
     <Compile Include="DataStoreConverter.cs" />
     <Compile Include="DbMetadataColumn.cs" />
