@@ -23,7 +23,7 @@ namespace IntegrationTool.DBAccess.DatabaseTargets.Providers
             List<object[]> result = new List<object[]>();
 
             string query = BuildResolverQuery(dbRecord.TableName, dbRecord.Identifiers);
-            var sqlParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
+            var sqlParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@whereparam_" + t.Key, t.Value)).ToArray();
 
             using (var sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
             {
@@ -48,7 +48,7 @@ namespace IntegrationTool.DBAccess.DatabaseTargets.Providers
             var query = new StringBuilder(" WHERE 1=1");
             foreach (var recordIdentifier in recordIdentifiers)
             {
-                query.Append(" AND " + recordIdentifier.Key + "=@" + recordIdentifier.Key);
+                query.Append(" AND " + recordIdentifier.Key + "=@whereparam_" + recordIdentifier.Key);
             }
 
             return query.ToString();
@@ -80,7 +80,7 @@ namespace IntegrationTool.DBAccess.DatabaseTargets.Providers
         {
             string updateQuery = BuildUpdateString(dbRecord);
             var sqlColumnParameters = dbRecord.Values.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
-            var sqlWhereParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@" + t.Key, t.Value)).ToArray();
+            var sqlWhereParameters = dbRecord.Identifiers.Select(t => new SqlParameter("@whereparam_" + t.Key, t.Value)).ToArray();
 
             using (var sqlWrapper = new MssqlWrapper(connection.GetConnection() as SqlConnection))
             {

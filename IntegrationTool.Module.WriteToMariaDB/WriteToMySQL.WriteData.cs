@@ -23,36 +23,9 @@ namespace IntegrationTool.Module.WriteToMySql
             DataStoreConverter dataStoreConverter = new DataStoreConverter(this.Configuration.TargetTable, dataObject.Metadata, this.Configuration.Mapping);
             
             reportProgress(new SimpleProgressReport("Write records to database"));
-            for (int i = 0; i < dataObject.Count; i++)
-            {
-                object[] rowData = dataObject[i];
-                var dbRecord = dataStoreConverter.ConvertToDbRecord(rowData);
-                dbRecord.Identifiers= DbTargetHelper.BuildRecordIdentifiers((DbTargetCommonConfiguration)Configuration, rowData, dataObject.Metadata);
 
-                var existingRecords = mySqlTarget.ResolveRecordInDatabase(dbRecord);
-
-                UpsertRecordInDatabase(mySqlTarget, dbRecord, existingRecords);
-            }
-        }
-
-        public void UpsertRecordInDatabase(IDatabaseTargetProvider databaseTargetProvider, DbRecord dbRecord, List<Object []> existingRecords)
-        {
-            if(!existingRecords.Any())
-            {
-                if (this.Configuration.ImportMode == DbTargetImportMode.Create || this.Configuration.ImportMode == DbTargetImportMode.All)
-                {
-                    databaseTargetProvider.CreateRecordInDatabase(dbRecord);
-                }
-            }
-            else
-            {
-                if (this.Configuration.ImportMode == DbTargetImportMode.Update || this.Configuration.ImportMode == DbTargetImportMode.All)
-                {
-                    databaseTargetProvider.UpdateRecordInDatabase(dbRecord);
-                }
-            }
-        }
-
-        
+            DbTargetWriter dbTargetWriter = new DbTargetWriter(mySqlTarget, dataObject, dataStoreConverter, this.Configuration);
+            dbTargetWriter.WriteDataToTarget();
+        }        
     }
 }
