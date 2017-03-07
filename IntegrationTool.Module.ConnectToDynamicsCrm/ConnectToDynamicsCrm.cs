@@ -1,4 +1,5 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.CrmWrapper;
+using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.Module.ModuleAttributes;
 using Microsoft.Xrm.Client;
@@ -26,13 +27,11 @@ namespace IntegrationTool.Module.ConnectToDynamicsCrm
             switch(Configuration.ConnectionVersion)
             {
                 case "2011":
-                    return Crm2013Wrapper.Crm2013Wrapper.GetConnection(Configuration.ConnectionString);
-
                 case "2013":
-                    return Crm2013Wrapper.Crm2013Wrapper.GetConnection(Configuration.ConnectionString);
+                    return (object)Crm2013Wrapper.Crm2013Wrapper.GetConnection(Configuration.ConnectionString);
 
                 default:
-                    return Crm2013Wrapper.Crm2013Wrapper.GetConnection(Configuration.ConnectionString);
+                    return (object)Dynamics365Wrapper.GetConnection(Configuration.ConnectionString);
             }
         }
 

@@ -30,8 +30,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
     /// </summary>
     public partial class ConfigurationWindow : UserControl, IConnectionChanged
     {
-        private CrmConnection crmConnection;
-        private OrganizationService orgServiceInstance;
+        private Microsoft.Xrm.Sdk.IOrganizationService orgServiceInstance;
         private EntityMetadata entityMetadata;
         private IDatastore dataObject;
         private WriteToDynamicsCrmConfiguration configuration;
@@ -53,8 +52,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             ConfigurationContent.Content = new LoadingControl();
             ddEntities.IsEnabled = false;
 
-            this.crmConnection = connection.GetConnection() as CrmConnection;
-            this.orgServiceInstance = new OrganizationService(crmConnection);
+            this.orgServiceInstance = connection.GetConnection() as Microsoft.Xrm.Sdk.IOrganizationService;
 
             BackgroundWorker bgwConnectionChanged = new BackgroundWorker();
             bgwConnectionChanged.DoWork += bgw_DoWork;

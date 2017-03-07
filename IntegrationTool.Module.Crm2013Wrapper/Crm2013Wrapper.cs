@@ -16,11 +16,10 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 {
     public class Crm2013Wrapper
     {
-        public static object GetConnection(string connectionString)
+        public static IOrganizationService GetConnection(string connectionString)
         {
-            CrmConnection crmConnectionInstance = CrmConnection.Parse(connectionString); // TODO Implement configuration
-
-            return crmConnectionInstance;
+            CrmConnection crmConnectionInstance = CrmConnection.Parse(connectionString);
+            return new Microsoft.Xrm.Client.Services.OrganizationService(crmConnectionInstance) as IOrganizationService;
         }
 
         public static EntityMetadata GetEntityMetadata(IOrganizationService service, string entityName)

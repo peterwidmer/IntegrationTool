@@ -29,9 +29,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
         private IDatastore dataObject;
         private EntityMetadata entity1Metadata;
         private WriteToDynamicsCrmN2NConfiguration configuration;
-        private OrganizationService organizationService;
+        private Microsoft.Xrm.Sdk.IOrganizationService organizationService;
 
-        public ConfigurationContent(WriteToDynamicsCrmN2NConfiguration configuration, OrganizationService organizationService, EntityMetadata entity1Metadata, IDatastore dataObject)
+        public ConfigurationContent(WriteToDynamicsCrmN2NConfiguration configuration, Microsoft.Xrm.Sdk.IOrganizationService organizationService, EntityMetadata entity1Metadata, IDatastore dataObject)
         {
             InitializeComponent();
 

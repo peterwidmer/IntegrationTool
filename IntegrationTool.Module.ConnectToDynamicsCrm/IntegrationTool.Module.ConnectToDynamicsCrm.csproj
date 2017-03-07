@@ -36,6 +36,10 @@
       <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xrm.Sdk">
+      <HintPath>..\References\Microsoft.Xrm.Sdk.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />

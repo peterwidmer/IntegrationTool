@@ -49,8 +49,7 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
             }
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            this.service = new OrganizationService(crmConnection);
+            this.service = connection.GetConnection() as IOrganizationService;
 
             reportProgress(new SimpleProgressReport("Start fetching entities..."));
             Crm2013Wrapper.Crm2013Wrapper.ExecuteFetchXml(service, this.Configuration.FetchXml, FetchXmlEntityCollectionRetrieved);

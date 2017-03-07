@@ -31,8 +31,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             this.reportProgress = reportProgress;
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            this.service = new OrganizationService(crmConnection);
+            this.service = connection.GetConnection() as IOrganizationService;
             this.dataObject = dataObject;
 
             reportProgress(new SimpleProgressReport("Load required metadata from crm"));

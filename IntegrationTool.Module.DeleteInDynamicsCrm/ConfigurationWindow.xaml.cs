@@ -30,8 +30,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
     /// </summary>
     public partial class ConfigurationWindow : UserControl, IConnectionChanged
     {
-        private CrmConnection crmConnection;
-        private OrganizationService orgServiceInstance;
+        private Microsoft.Xrm.Sdk.IOrganizationService orgServiceInstance;
 
         private IDatastore dataObject;
         private DeleteInDynamicsCrmConfiguration configuration;
@@ -49,8 +48,7 @@ namespace IntegrationTool.Module.DeleteInDynamicsCrm
         {
             ConfigurationContent.Content = new LoadingControl();
 
-            this.crmConnection = connection.GetConnection() as CrmConnection;
-            this.orgServiceInstance = new OrganizationService(crmConnection);
+            this.orgServiceInstance = connection.GetConnection() as Microsoft.Xrm.Sdk.IOrganizationService;
 
             BackgroundWorker bgwConnectionChanged = new BackgroundWorker();
             bgwConnectionChanged.DoWork += bgwConnectionChanged_DoWork;

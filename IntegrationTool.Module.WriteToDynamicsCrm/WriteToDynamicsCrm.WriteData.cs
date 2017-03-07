@@ -29,8 +29,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             this.logger.InitializeDatabase();
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            service = new OrganizationService(crmConnection);
+            this.service = connection.GetConnection() as IOrganizationService;
 
             reportProgress(new SimpleProgressReport("Loading Entitymetadata"));
             EntityMetadata entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
