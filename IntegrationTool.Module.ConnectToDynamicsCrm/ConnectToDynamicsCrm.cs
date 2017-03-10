@@ -24,14 +24,24 @@ namespace IntegrationTool.Module.ConnectToDynamicsCrm
 
         public object GetConnection()
         {
+            if(Configuration.ConnectionVersion == null)
+            {
+                Configuration.ConnectionVersion = "CRM 2011";
+            }
+
             switch(Configuration.ConnectionVersion)
             {
-                case "2011":
-                case "2013":
+                case "CRM 2011":
+                case "CRM 2013":
+                case "CRM 2015":
+                case "CRM 2016":
                     return (object)Crm2013Wrapper.Crm2013Wrapper.GetConnection(Configuration.ConnectionString);
 
-                default:
+                case "Dynamics 365":
                     return (object)Dynamics365Wrapper.GetConnection(Configuration.ConnectionString);
+
+                default:
+                    throw new ArgumentOutOfRangeException("CRM Connectionversion did not match!");
             }
         }
 

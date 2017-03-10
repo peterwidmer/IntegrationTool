@@ -13,16 +13,26 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="23"/>
+            <RowDefinition Height="4"/>
+            <RowDefinition Height="23"/>
             <RowDefinition Height="9*"/>
             <RowDefinition Height="27*"/>
             <RowDefinition Height="262*"/>
         </Grid.RowDefinitions>
         <Label Content="Connectionstring" Grid.Row="1" Grid.RowSpan="2"/>
         <TextBox Grid.Column="1" Text="{Binding Path=ConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="23" Grid.Row="1" VerticalAlignment="Top" />
-        <TextBlock Grid.Column="1"  Grid.Row="3">
+        <TextBlock Grid.Column="1"  Grid.Row="5">
             <Hyperlink x:Name="btnCrmConnection" Click="btnCrmConnection_Click" >
                 Crm Connectionstrings
             </Hyperlink>
         </TextBlock>
+        <Label Content="CRM-Version:" Grid.Row="3"/>
+        <ComboBox Grid.Column="1" Grid.Row="3" SelectedValue="{Binding Path=ConnectionVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag">
+            <ComboBoxItem Content="CRM 2011" Tag="CRM 2011" />
+            <ComboBoxItem Content="CRM 2013" Tag="CRM 2013" />
+            <ComboBoxItem Content="CRM 2015" Tag="CRM 2015" />
+            <ComboBoxItem Content="CRM 2016" Tag="CRM 2016" />
+            <ComboBoxItem Content="Dynamics 365" Tag="Dynamics 365" />
+        </ComboBox>
     </Grid>
 </UserControl>

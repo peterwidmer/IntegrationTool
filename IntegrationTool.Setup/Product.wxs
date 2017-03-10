@@ -109,6 +109,9 @@
       <Component Id="MainComponent_CsvHelper" Win64="yes">
         <File Id="MainComponent_CsvHelper.dll" Source="..\References\CsvHelper.dll" KeyPath="yes" />
       </Component>
+      <Component Id="MainComponent_Microsoft_IdentityModel_Clients_ActiveDirectory" Win64="yes">
+        <File Id="MainComponent_Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="..\References\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" KeyPath="yes" />
+      </Component>     
     </ComponentGroup>
 
     <!-- Startmenu entries -->
