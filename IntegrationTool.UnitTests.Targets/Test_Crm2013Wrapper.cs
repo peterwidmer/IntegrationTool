@@ -7,13 +7,14 @@ using Microsoft.Xrm.Client.Services;
 using IntegrationTool.UnitTests.Targets.Properties;
 using IntegrationTool.Module.Crm2013Wrapper;
 using System.Linq;
+using Microsoft.Xrm.Sdk;
 
 namespace IntegrationTool.UnitTests.Targets
 {
     [TestClass]
     public class Test_Crm2013Wrapper
     {
-        private static OrganizationService orgServiceInstance;
+        private static IOrganizationService organizationService;
 
         [ClassInitialize]
         public static void InitializeCrm2013Wrapper(TestContext context)
@@ -22,21 +23,19 @@ namespace IntegrationTool.UnitTests.Targets
             configuration.ConnectionString = Settings.Default.CrmConnectionString;
 
             IConnection connection = new ConnectToDynamicsCrm() { Configuration = configuration };
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-
-            orgServiceInstance = new OrganizationService(crmConnection);
+            organizationService = connection.GetConnection() as IOrganizationService;
         }
 
         [TestMethod]
         public void GetEntityMetadata_ExistingEntity()
         {
-            var accountEntityMetadata = Crm2013Wrapper.GetEntityMetadata(orgServiceInstance, "account");
+            var accountEntityMetadata = Crm2013Wrapper.GetEntityMetadata(organizationService, "account");
         }
 
         [TestMethod]
         public void GetEntityMetadata_GetAllEntities()
         {
-            var entities = Crm2013Wrapper.GetAllEntities(orgServiceInstance);
+            var entities = Crm2013Wrapper.GetAllEntities(organizationService);
             if(entities.Where(t=> t.Name == "account").Count() == 0)
             {
                 Assert.Fail("Could not find account in entitylist");
@@ -46,7 +45,7 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void GetEntityMetadata_GetRelationshipMetata()
         {
-            var relationShipMetadata = Crm2013Wrapper.GetRelationshipMetadata(orgServiceInstance, "contactinvoices_association");
+            var relationShipMetadata = Crm2013Wrapper.GetRelationshipMetadata(organizationService, "contactinvoices_association");
         }
     }
 }

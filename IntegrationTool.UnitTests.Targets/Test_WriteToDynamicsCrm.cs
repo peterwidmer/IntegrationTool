@@ -31,13 +31,12 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void Test_ContactImport()
         {
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            IOrganizationService service = new OrganizationService(crmConnection);
+            var organizationService = connection.GetConnection() as IOrganizationService;
             
             string accountName1 = Guid.NewGuid().ToString();
             Entity account = new Entity("account");
             account.Attributes.Add("name", accountName1);
-            Guid account1 = service.Create(account);
+            Guid account1 = organizationService.Create(account);
 
             IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
             writeToCrmConfig.EntityName = "contact";
@@ -97,19 +96,18 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
-            service.Delete("account", account1);
+            organizationService.Delete("account", account1);
         }
 
         [TestMethod]
         public void Test_CaseImport()
         {
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            IOrganizationService service = new OrganizationService(crmConnection);
+            var organizationService = connection.GetConnection() as IOrganizationService;
 
             string accountName1 = Guid.NewGuid().ToString();
             Entity account = new Entity("account");
             account.Attributes.Add("name", accountName1);
-            Guid account1 = service.Create(account);
+            Guid account1 = organizationService.Create(account);
 
             IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
             writeToCrmConfig.EntityName = "incident";
@@ -147,7 +145,7 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
-            service.Delete("account", account1);
+            organizationService.Delete("account", account1);
         }
     }
 }

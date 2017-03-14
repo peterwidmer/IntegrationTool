@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\Microsoft.Crm.Sdk.Proxy.dll = References\Microsoft.Crm.Sdk.Proxy.dll
 		References\Microsoft.Xrm.Client.dll = References\Microsoft.Xrm.Client.dll
 		References\Microsoft.Xrm.Sdk.dll = References\Microsoft.Xrm.Sdk.dll
+		References\Microsoft.Xrm.Tooling.Connector.dll = References\Microsoft.Xrm.Tooling.Connector.dll
 		References\SQLite.Interop.dll = References\SQLite.Interop.dll
 		References\System.Data.SQLite.dll = References\System.Data.SQLite.dll
 	EndProjectSection

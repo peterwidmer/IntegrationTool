@@ -32,14 +32,13 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void Test_AccountDeletion()
         {
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            IOrganizationService service = new OrganizationService(crmConnection);
+            var organizationService = connection.GetConnection() as IOrganizationService;
 
             // Create dummy account, which shall be deleted
             string accountName1 = Guid.NewGuid().ToString();
             Entity account = new Entity("account");
             account.Attributes.Add("name", accountName1);
-            Guid account1 = service.Create(account);
+            Guid account1 = organizationService.Create(account);
 
             DeleteInDynamicsCrmConfiguration deleteInCrmConfig = new DeleteInDynamicsCrmConfiguration();
             deleteInCrmConfig.EntityName = "account";

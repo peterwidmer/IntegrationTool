@@ -19,25 +19,24 @@ namespace IntegrationTool.UnitTests.Targets
     [TestClass]
     public class Test_WriteToDynamicsCrmN2N
     {
-        private static IOrganizationService service;
+        private static IOrganizationService organizationService;
         private static IConnection connection;
 
         [ClassInitialize]
         public static void InitializeWriteToDynamicsCrmN2N(TestContext context)
         {
             connection = Test_Helpers.GetDynamicsCrmConnection();
-            var crmConnection = (CrmConnection)connection.GetConnection();
-            service = new OrganizationService(crmConnection);
+            organizationService = connection.GetConnection() as IOrganizationService;
         }
 
         [TestMethod]
         public void Test_RelateContactsWithInvoice()
         {
             Entity contact = Test_Helpers.CreateDummyContact();
-            Guid contactId = service.Create(contact);
+            Guid contactId = organizationService.Create(contact);
 
             Entity invoice = Test_Helpers.CreateDummyInvoice();
-            Guid invoiceId = service.Create(invoice);
+            Guid invoiceId = organizationService.Create(invoice);
 
             WriteToDynamicsCrmN2NConfiguration writeToDynamicsCrmN2NConfig = new WriteToDynamicsCrmN2NConfiguration();
             writeToDynamicsCrmN2NConfig.MultipleFoundMode = N2NMultipleFoundMode.None;
@@ -59,18 +58,18 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
-            service.Delete("contact", contactId);
-            service.Delete("invoice", invoiceId);
+            organizationService.Delete("contact", contactId);
+            organizationService.Delete("invoice", invoiceId);
         }
 
         [TestMethod]
         public void Test_RelateProductsWithCampaigns()
         {
-            var defaultUnits = Test_Helpers.GetDefaultUnitGroup(service);
+            var defaultUnits = Test_Helpers.GetDefaultUnitGroup(organizationService);
 
             Entity campaign = new Entity("campaign");
             campaign.Attributes.Add("name", "test prd_cmpgn 1");
-            Guid campaignId = service.Create(campaign);
+            Guid campaignId = organizationService.Create(campaign);
             
             Entity product = new Entity("product");
             product.Attributes.Add("name", "test prd_cmpgn 1");
@@ -78,11 +77,11 @@ namespace IntegrationTool.UnitTests.Targets
             product.Attributes.Add("defaultuomscheduleid", new EntityReference("uomschedule", defaultUnits.DefaultUnitGroupId));
             product.Attributes.Add("defaultuomid", new EntityReference("uom", defaultUnits.PrimaryUnitId));
             product.Attributes.Add("quantitydecimal", 2);
-            Guid productId = service.Create(product);
+            Guid productId = organizationService.Create(product);
 
             Microsoft.Crm.Sdk.Messages.PublishProductHierarchyRequest publishProduct = new Microsoft.Crm.Sdk.Messages.PublishProductHierarchyRequest();
             publishProduct.Target = new EntityReference("product", productId);
-            service.Execute(publishProduct);
+            organizationService.Execute(publishProduct);
 
             WriteToDynamicsCrmN2NConfiguration writeToDynamicsCrmN2NConfig = new WriteToDynamicsCrmN2NConfiguration();
             writeToDynamicsCrmN2NConfig.MultipleFoundMode = N2NMultipleFoundMode.None;
@@ -104,8 +103,8 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
-            service.Delete("campaign", campaignId);
-            service.Delete("product", productId);
+            organizationService.Delete("campaign", campaignId);
+            organizationService.Delete("product", productId);
         }
     }
 }

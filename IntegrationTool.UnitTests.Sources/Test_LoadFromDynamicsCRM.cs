@@ -30,13 +30,12 @@ namespace IntegrationTool.UnitTests.Sources
         [TestMethod]
         public void GeneralLoadTestDynamicsCRM()
         {
-            CrmConnection crmConnection = (CrmConnection)connection.GetConnection();
-            IOrganizationService service = new OrganizationService(crmConnection);
+            var organizationService = connection.GetConnection() as IOrganizationService;
             
-            Guid account1 = CreateAccount1(service);
+            Guid account1 = CreateAccount1(organizationService);
 
             string contactName1 = Guid.NewGuid().ToString();
-            Guid contact1 = CreateContact1(service, contactName1, account1);
+            Guid contact1 = CreateContact1(organizationService, contactName1, account1);
 
             LoadFromDynamicsCrmConfiguration configuration = new LoadFromDynamicsCrmConfiguration();
             configuration.QueryType = DynamicsCrmQueryType.ExecuteFetchXml;
@@ -50,10 +49,10 @@ namespace IntegrationTool.UnitTests.Sources
             var firstObject = dataObject[0];
             Assert.AreEqual<string>(contactName1, firstObject[dataObject.Metadata["firstname"].ColumnIndex].ToString());
 
-            service.Delete("contact", contact1);
-            service.Delete("account", account1);
+            organizationService.Delete("contact", contact1);
+            organizationService.Delete("account", account1);
 
-            ((OrganizationService)service).Dispose();
+            ((OrganizationService)organizationService).Dispose();
         }
 
         private string GetTestFetchXml(string contactName1)
