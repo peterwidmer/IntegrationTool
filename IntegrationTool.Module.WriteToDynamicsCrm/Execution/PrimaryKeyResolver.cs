@@ -1,8 +1,10 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models;
+using IntegrationTool.SDK;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -98,30 +100,49 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             return strKey;
         }
 
-        public Dictionary<string, Guid []> OneByOneResolver(Entity [] sourceEntities)
+        public Dictionary<string, ResolvedEntity []> OneByOneResolver(Entity [] sourceEntities, string [] mappedAttributes)
         {
-            Dictionary<string, Guid[]> keyDictionary = new Dictionary<string, Guid[]>();
+            var columnSet = new ColumnSet(mappedAttributes);
+            if(!columnSet.Columns.Contains(entityMetadata.PrimaryIdAttribute))
+            {
+                columnSet.AddColumn(entityMetadata.PrimaryIdAttribute);
+            }
+
+            var keyDictionary = new Dictionary<string, ResolvedEntity[]>();
             for (int i = 0; i < sourceEntities.Length; i++)
             {
-                List<ConditionExpression> conditions = new List<ConditionExpression>();
-                foreach (var primaryKey in this.primaryKeyAttributeMetadataDictionary)
-                {
-                    conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, sourceEntities[i][primaryKey.Key]));
-                }
+                var conditions = BuildPrimaryKeyConditions(sourceEntities, i);
+                var existingCheckKey = BuildExistingCheckKey(sourceEntities[i], primaryKeyAttributeMetadataDictionary);
 
-                string key = BuildExistingCheckKey(sourceEntities[i], primaryKeyAttributeMetadataDictionary);
-                DataCollection<Entity> entities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, this.entityMetadata.LogicalName, new ColumnSet(new string[] { this.entityMetadata.PrimaryIdAttribute }), conditions);
-                if (keyDictionary.ContainsKey(key) == false)
-                {
-                    keyDictionary.Add(key, new Guid[entities.Count]);
-                    for (int iRetrievedEntity = 0; iRetrievedEntity < entities.Count; iRetrievedEntity++)
-                    {
-                        keyDictionary[key][iRetrievedEntity] = entities[iRetrievedEntity].Id;
-                    }
-                }
+                var entities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, entityMetadata.LogicalName, columnSet, conditions);
+                AddEntitiesToDictionary(keyDictionary, existingCheckKey, entities);
             }
 
             return keyDictionary;
+        }
+
+        private void AddEntitiesToDictionary(Dictionary<string, ResolvedEntity[]> keyDictionary, string existingCheckKey, DataCollection<Entity> entities)
+        {
+            if (!keyDictionary.ContainsKey(existingCheckKey))
+            {
+                keyDictionary.Add(existingCheckKey, new ResolvedEntity[entities.Count]);
+                for (int iRetrievedEntity = 0; iRetrievedEntity < entities.Count; iRetrievedEntity++)
+                {
+                    var serializedEntity = JsonConvert.SerializeObject(entities[iRetrievedEntity]);
+                    var resolvedEntity = new ResolvedEntity(entities[iRetrievedEntity].Id, serializedEntity);
+                    keyDictionary[existingCheckKey][iRetrievedEntity] = resolvedEntity;
+                }
+            }
+        }
+
+        private List<ConditionExpression> BuildPrimaryKeyConditions(Entity[] sourceEntities, int i)
+        {
+            var conditions = new List<ConditionExpression>();
+            foreach (var primaryKey in this.primaryKeyAttributeMetadataDictionary)
+            {
+                conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, sourceEntities[i][primaryKey.Key]));
+            }
+            return conditions;
         }
 
 

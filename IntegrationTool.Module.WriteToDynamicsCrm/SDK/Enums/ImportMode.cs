@@ -9,8 +9,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums
     public enum ImportMode
     {
         All = 3, 
+        AllChangedValuesOnly = 5,
         None = 0, 
         Create = 1, 
-        Update = 2
+        Update = 2,
+        UpdateChangedValuesOnly = 4,
+
     }
 }

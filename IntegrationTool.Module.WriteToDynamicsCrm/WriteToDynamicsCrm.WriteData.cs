@@ -1,19 +1,21 @@
 ﻿using IntegrationTool.Module.CrmWrapper;
 using IntegrationTool.Module.WriteToDynamicsCrm.Execution;
+using IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models;
 using IntegrationTool.Module.WriteToDynamicsCrm.Logging;
-using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm
 {
@@ -31,9 +33,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             reportProgress(new SimpleProgressReport("Connection to crm"));
             this.service = connection.GetConnection() as IOrganizationService;
 
-            reportProgress(new SimpleProgressReport("Loading Entitymetadata"));
-            EntityMetadata entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
-            Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
+            reportProgress(new SimpleProgressReport("Loading Entitymetadata"));            
+            var entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
+            var primaryKeyAttributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
             foreach (string primaryKey in this.Configuration.PrimaryKeyAttributes)
             {
                 AttributeMetadata attributeMetadata = entityMetaData.Attributes.Where(t => t.LogicalName == primaryKey).FirstOrDefault();
@@ -78,20 +80,18 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             }
 
             reportProgress(new SimpleProgressReport("Resolving primarykeys of records"));
-            PrimaryKeyResolver primaryKeyResolver = new PrimaryKeyResolver(service, entityMetaData, primaryKeyAttributeMetadataDictionary);
-            Dictionary<string, Guid[]> resolvedEntities = primaryKeyResolver.OneByOneResolver(entities);
+            var primaryKeyResolver = new PrimaryKeyResolver(service, entityMetaData, primaryKeyAttributeMetadataDictionary);
+            var resolvedEntities = primaryKeyResolver.OneByOneResolver(entities, Configuration.GetAllMappedAttributes());
 
             reportProgress(new SimpleProgressReport("Writing records to crm"));
             WriteEntity(entities, resolvedEntities, primaryKeyAttributeMetadataDictionary, reportProgress);          
         }
 
-        private void WriteEntity(Entity[] entities, Dictionary<string, Guid[]> resolvedEntities, Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary, ReportProgressMethod reportProgress)
+        private void WriteEntity(Entity[] entities, Dictionary<string, ResolvedEntity[]> resolvedEntities, Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary, ReportProgressMethod reportProgress)
         {
-            List<Guid> entityIds = new List<Guid>();
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
-                entityIds.Clear();
 
                 // Owner may not be written, so we need to temporarily store it
                 EntityReference ownerid = null;
@@ -114,17 +114,16 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 }
 
                 string entityKey = PrimaryKeyResolver.BuildExistingCheckKey(entity, primaryKeyAttributeMetadataDictionary);
-                
 
                 if (resolvedEntities[entityKey].Length == 0) // Create
                 {
                     logger.SetBusinessKeyAndImportTypeForRecord(i, entityKey, ImportMode.Create);
-                    CreateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, entityIds, resolvedEntities);   
+                    CreateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);   
                 }
                 else // Update
                 {
                     logger.SetBusinessKeyAndImportTypeForRecord(i, entityKey, ImportMode.Update);
-                    UpdateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, entityIds, resolvedEntities);   
+                    UpdateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);   
                 }
 
                 if(StatusHelper.MustShowProgress(i, entities.Length) == true)
@@ -134,13 +133,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             }
         }
 
-        private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, List<Guid> entityIds, Dictionary<string, Guid[]> resolvedEntities)
+        private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
-            if (this.Configuration.ImportMode == SDK.Enums.ImportMode.Create || this.Configuration.ImportMode == SDK.Enums.ImportMode.All)
+            if (this.Configuration.ImportMode == ImportMode.Create || this.Configuration.ImportMode == ImportMode.All)
             {
                 // Check if owner may be written
-                if (Configuration.SetOwnerMode != SDK.Enums.ImportMode.Create &&
-                    Configuration.SetOwnerMode != SDK.Enums.ImportMode.All &&
+                if (Configuration.SetOwnerMode != ImportMode.Create &&
+                    Configuration.SetOwnerMode != ImportMode.All &&
                     entity.Contains("ownerid"))
                 {
                     entity.Attributes.Remove("ownerid");
@@ -154,35 +153,37 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 {
                     logger.SetWriteFault(recordNumber, ex.Detail.Message);
                 }
-                entityIds = resolvedEntities[entityKey].ToList();
-                entityIds.Add(entity.Id);
-                resolvedEntities[entityKey] = entityIds.ToArray();
+
+                var serializedEntity = JsonConvert.SerializeObject(entity);
+
+                var resolvedEntityArray = new ResolvedEntity[resolvedEntities[entityKey].Length + 1];
+                resolvedEntities[entityKey].CopyTo(resolvedEntityArray, 0);
+                resolvedEntityArray[resolvedEntityArray.Length - 1] = new ResolvedEntity(entity.Id, serializedEntity);  
 
                 if (ownerid != null &&
-                    (this.Configuration.SetOwnerMode == SDK.Enums.ImportMode.Create || this.Configuration.SetOwnerMode == SDK.Enums.ImportMode.All))
+                    (this.Configuration.SetOwnerMode == ImportMode.Create || this.Configuration.SetOwnerMode == ImportMode.All))
                 {
                     Crm2013Wrapper.Crm2013Wrapper.SetOwnerOfEntity(service, entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
                 }
 
                 if (statuscode != null &&
-                    (this.Configuration.SetStateMode == SDK.Enums.ImportMode.Create || this.Configuration.SetStateMode == SDK.Enums.ImportMode.All))
+                    (this.Configuration.SetStateMode == ImportMode.Create || this.Configuration.SetStateMode == ImportMode.All))
                 {
                     Crm2013Wrapper.Crm2013Wrapper.SetStateOfEntity(service, entity.LogicalName, entity.Id, statecode, statuscode);
                 }
             }
         }
 
-        private void UpdateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, List<Guid> entityIds, Dictionary<string, Guid[]> resolvedEntities)
+        private void UpdateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
-            if (this.Configuration.ImportMode == SDK.Enums.ImportMode.Update || this.Configuration.ImportMode == SDK.Enums.ImportMode.All)
+            if (this.Configuration.ImportMode == ImportMode.Update || this.Configuration.ImportMode == ImportMode.All)
             {
                 if (resolvedEntities[entityKey].Length == 1 ||
-                   (resolvedEntities[entityKey].Length > 1 && this.Configuration.MultipleFoundMode == SDK.Enums.MultipleFoundMode.All))
+                   (resolvedEntities[entityKey].Length > 1 && this.Configuration.MultipleFoundMode == MultipleFoundMode.All))
                 {
                     for (int iId = 0; iId < resolvedEntities[entityKey].Length; iId++)
                     {
-                        entity.Id = resolvedEntities[entityKey][iId];
-                        entityIds.Add(entity.Id);
+                        entity.Id = resolvedEntities[entityKey][iId].EntityId;
 
                         try
                         {
@@ -194,13 +195,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         }
 
                         if (ownerid != null &&
-                            (this.Configuration.SetOwnerMode == SDK.Enums.ImportMode.Update || this.Configuration.SetOwnerMode == SDK.Enums.ImportMode.All))
+                            (this.Configuration.SetOwnerMode == ImportMode.Update || this.Configuration.SetOwnerMode == ImportMode.All))
                         {
                             Crm2013Wrapper.Crm2013Wrapper.SetOwnerOfEntity(service, entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
                         }
 
                         if (statuscode != null &&
-                            (this.Configuration.SetStateMode == SDK.Enums.ImportMode.Update || this.Configuration.SetStateMode == SDK.Enums.ImportMode.All))
+                            (this.Configuration.SetStateMode == ImportMode.Update || this.Configuration.SetStateMode == ImportMode.All))
                         {
                             Crm2013Wrapper.Crm2013Wrapper.SetStateOfEntity(service, entity.LogicalName, entity.Id, statecode, statuscode);
                         }

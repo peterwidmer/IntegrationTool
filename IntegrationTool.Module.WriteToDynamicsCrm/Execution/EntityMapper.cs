@@ -33,7 +33,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             attributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
             foreach (var column in mappings)
             {
-                AttributeMetadata attributeMetadata = entityMetadata.Attributes.FirstOrDefault(t => t.LogicalName == column.Target);
+                var attributeMetadata = entityMetadata.Attributes.FirstOrDefault(t => t.LogicalName == column.Target);
                 if(attributeMetadata == null)
                 {
                     throw new Exception("The attribute " + column.Target + " is mapped, but does not exist in the current customizations.");

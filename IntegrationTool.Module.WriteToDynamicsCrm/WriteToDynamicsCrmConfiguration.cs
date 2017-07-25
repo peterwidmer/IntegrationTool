@@ -31,5 +31,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             PrimaryKeyAttributes = new ObservableCollection<string>();
             RelationMapping = new List<RelationMapping>();
         }
+
+        public string [] GetAllMappedAttributes()
+        {
+            List<string> mappedAttributes = new List<string>();
+            mappedAttributes.AddRange(Mapping.Select(t => t.Target));
+            mappedAttributes.AddRange(RelationMapping.Select(t => t.LogicalName));
+
+            return mappedAttributes.ToArray();
+        }
     }
 }

@@ -53,8 +53,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                 {
                     continue;
                 }
-                relationAttributes.Add(relation.ReferencedAttribute);
-                var attributeMetadata = entityMetadata.Attributes.Where(t => t.LogicalName == relation.ReferencingAttribute).First();
+
+                relationAttributes.Add(relation.ReferencingAttribute);
+                var attributeMetadata = entityMetadata.Attributes.First(t => t.LogicalName == relation.ReferencingAttribute);
                 
                 switch(attributeMetadata.AttributeType.Value)
                 {
@@ -66,7 +67,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                             Content = relation.ReferencingAttribute,
                             ToolTip = attributeMetadata.DisplayName.LocalizedLabels.Count == 0 ? "" : attributeMetadata.DisplayName.LocalizedLabels[0].Label
                         };
-                        if (Configuration.RelationMapping.Where(t => t.LogicalName == relation.ReferencingAttribute).Count() > 0)
+                        if (Configuration.RelationMapping.Count(t => t.LogicalName == relation.ReferencingAttribute) > 0)
                         {
                             listBoxItem.Background = new SolidColorBrush(Color.FromRgb(58, 162, 230));
                             listBoxItem.Foreground = Brushes.White; 

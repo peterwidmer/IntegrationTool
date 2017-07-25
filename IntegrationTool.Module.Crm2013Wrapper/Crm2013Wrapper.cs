@@ -100,6 +100,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
         {
             List<NameDisplayName> attributeList = new List<NameDisplayName>();
             foreach (var attribute in entityMetadata.Attributes)
+                //.Where(attribute => (attribute.IsValidForCreate.HasValue && (bool)attribute.IsValidForCreate) || (attribute.IsValidForUpdate.HasValue && (bool)attribute.IsValidForUpdate)))
             {
                 if(attribute.AttributeType.Value == AttributeTypeCode.Virtual || attribute.AttributeType.Value == AttributeTypeCode.State)
                 {
@@ -123,11 +124,17 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
         public static DataCollection<Entity> RetrieveMultiple(IOrganizationService service, string entityName, ColumnSet columnSet, List<ConditionExpression> conditions, LogicalOperator logicalOperator = LogicalOperator.And)
         {
-            FilterExpression filter = new FilterExpression(logicalOperator);
-            filter.Conditions.AddRange(conditions);
+            FilterExpression filterExpression = new FilterExpression(logicalOperator);
+            filterExpression.Conditions.AddRange(conditions);
+
+            return RetrieveMultiple(service, entityName, columnSet, filterExpression);
+        }
+
+        public static DataCollection<Entity> RetrieveMultiple(IOrganizationService service, string entityName, ColumnSet columnSet, FilterExpression filterExpression)
+        {
             QueryExpression query = new QueryExpression(entityName);
             query.ColumnSet = columnSet;
-            query.Criteria.AddFilter(filter);
+            query.Criteria = filterExpression;
 
             EntityCollection result = service.RetrieveMultiple(query);
 
