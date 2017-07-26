@@ -1,5 +1,7 @@
-﻿using IntegrationTool.DBAccess;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.DBAccess;
 using IntegrationTool.Module.ConnectToDynamicsCrm;
+using IntegrationTool.Module.Crm2013Wrapper;
 using IntegrationTool.Module.WriteToDynamicsCrm;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Data;
@@ -9,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,16 +41,16 @@ namespace IntegrationTool.UnitTests.Targets
             account.Attributes.Add("name", accountName1);
             Guid account1 = organizationService.Create(account);
 
-            IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
+            var writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
             writeToCrmConfig.EntityName = "contact";
             writeToCrmConfig.PrimaryKeyAttributes.Add("new_id");
             writeToCrmConfig.ImportMode = Module.WriteToDynamicsCrm.SDK.Enums.ImportMode.All;
             writeToCrmConfig.MultipleFoundMode = Module.WriteToDynamicsCrm.SDK.Enums.MultipleFoundMode.All;
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "ID", Target = "new_id" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "FirstName", Target = "firstname" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "LastName", Target = "lastname" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "Status", Target = "statuscode" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "Birthdate", Target = "birthdate" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "ID", Target = "new_id" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "FirstName", Target = "firstname" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "LastName", Target = "lastname" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "Status", Target = "statuscode" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "Birthdate", Target = "birthdate" });
             writeToCrmConfig.RelationMapping.Add(new Module.WriteToDynamicsCrm.SDK.RelationMapping()
                 {
                     EntityName = "account",
@@ -96,6 +99,9 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
+            var contactsId1001 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet("new_id"), new ConditionExpression("new_id", ConditionOperator.Equal, "1001"));
+            Assert.AreEqual(1, contactsId1001.Count);
+
             organizationService.Delete("account", account1);
         }
 
@@ -109,26 +115,29 @@ namespace IntegrationTool.UnitTests.Targets
             account.Attributes.Add("name", accountName1);
             Guid account1 = organizationService.Create(account);
 
-            IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration writeToCrmConfig = new IntegrationTool.Module.WriteToDynamicsCrm.WriteToDynamicsCrmConfiguration();
-            writeToCrmConfig.EntityName = "incident";
+            var writeToCrmConfig = new WriteToDynamicsCrmConfiguration()
+            {
+                ConfigurationId = Guid.NewGuid(),
+                SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID,
+                EntityName = "incident",                
+                ImportMode = Module.WriteToDynamicsCrm.SDK.Enums.ImportMode.All,
+                MultipleFoundMode = Module.WriteToDynamicsCrm.SDK.Enums.MultipleFoundMode.All,
+            };
+
             writeToCrmConfig.PrimaryKeyAttributes.Add("ticketnumber");
-            writeToCrmConfig.ImportMode = Module.WriteToDynamicsCrm.SDK.Enums.ImportMode.All;
-            writeToCrmConfig.MultipleFoundMode = Module.WriteToDynamicsCrm.SDK.Enums.MultipleFoundMode.All;
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "CaseID", Target = "ticketnumber" });
-            writeToCrmConfig.Mapping.Add(new IntegrationTool.DataMappingControl.DataMapping() { Source = "CaseTitle", Target = "title" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "CaseID", Target = "ticketnumber" });
+            writeToCrmConfig.Mapping.Add(new DataMapping() { Source = "CaseTitle", Target = "title" });
 
             writeToCrmConfig.RelationMapping.Add(new Module.WriteToDynamicsCrm.SDK.RelationMapping()
             {
                 EntityName = "account",
                 LogicalName = "customerid",
-                Mapping = new List<DataMappingControl.DataMapping>() { new DataMappingControl.DataMapping()
+                Mapping = new List<DataMapping>() { new DataMapping()
                     {
                         Source ="CompanyName",
                         Target = "name"
                     } }
             });
-            writeToCrmConfig.ConfigurationId = Guid.NewGuid();
-            writeToCrmConfig.SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID;
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
             dataObject.AddColumn(new ColumnMetadata("CaseID"));
