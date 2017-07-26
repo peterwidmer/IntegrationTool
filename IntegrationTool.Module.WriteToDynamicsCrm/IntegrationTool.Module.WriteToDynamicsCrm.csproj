@@ -40,11 +40,6 @@
       <HintPath>..\References\Microsoft.Xrm.Sdk.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\References\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -67,8 +62,10 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Execution\EntityAttributeComparer.cs" />
     <Compile Include="Execution\EntityMapper.cs" />
     <Compile Include="Execution\EntityMapper.MapAttributes.cs" />
+    <Compile Include="Execution\EntityUpdateHandler.cs" />
     <Compile Include="Execution\Models\ResolvedEntity.cs" />
     <Compile Include="Execution\PrimaryKeyResolver.cs" />
     <Compile Include="Execution\RelationSetter.cs" />

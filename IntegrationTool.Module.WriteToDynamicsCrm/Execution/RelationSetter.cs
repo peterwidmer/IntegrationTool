@@ -24,7 +24,6 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
             foreach (DataMapping relMapping in relationMappings)
             {
-                string str = relMapping.Target;
                 AttributeMetadata attributeMetadata = relatedEntityMetadata.Attributes.Where(t => t.LogicalName == relMapping.Target).First();
                 attributeMetadataDictionary.Add(attributeMetadata.LogicalName, attributeMetadata);
             }
@@ -32,7 +31,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
         public void SetRelation(string relationMappingLogicalName, Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities)
         {
-            EntityMapper entityMapper = new EntityMapper(this.relatedEntityMetadata, dataObject.Metadata, relationMappings, null);
+            EntityMapper entityMapper = new EntityMapper(relatedEntityMetadata.GetAttributeMetadata(), dataObject.Metadata, relationMappings, null);
 
             for (int i = 0; i < sourceEntities.Length; i++)
             {

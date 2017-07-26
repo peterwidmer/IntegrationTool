@@ -14,33 +14,26 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
     public partial class EntityMapper
     {
         // Passed by constructor
-        private EntityMetadata entityMetadata;
+        private Dictionary<string, AttributeMetadata> attributeMetadataDictionary;
         private List<DataMapping> mappings;
         private List<PicklistMapping> picklistMappings;
         private DataMetadata dataMetadata;
 
         // Computed in constructor
-        private Dictionary<string, AttributeMetadata> attributeMetadataDictionary;
         private Dictionary<string, ColumnMetadata> columnMetadataDictionary;
 
-        public EntityMapper(EntityMetadata entityMetadata, DataMetadata dataMetadata, List<DataMapping> mappings, List<PicklistMapping> picklistMappings)
+        public EntityMapper(Dictionary<string, AttributeMetadata> attributeMetadataDictionary, DataMetadata dataMetadata, List<DataMapping> mappings, List<PicklistMapping> picklistMappings)
         {
-            this.entityMetadata = entityMetadata;
             this.dataMetadata = dataMetadata;
             this.mappings = mappings;
             this.picklistMappings = picklistMappings;
 
-            attributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
+            this.attributeMetadataDictionary = attributeMetadataDictionary;
             foreach (var column in mappings)
             {
-                var attributeMetadata = entityMetadata.Attributes.FirstOrDefault(t => t.LogicalName == column.Target);
-                if(attributeMetadata == null)
+                if(!attributeMetadataDictionary.ContainsKey(column.Target))
                 {
                     throw new Exception("The attribute " + column.Target + " is mapped, but does not exist in the current customizations.");
-                }
-                if (attributeMetadataDictionary.ContainsKey(attributeMetadata.LogicalName) == false)
-                {
-                    attributeMetadataDictionary.Add(attributeMetadata.LogicalName, attributeMetadata);
                 }
             }
 

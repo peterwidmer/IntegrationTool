@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xrm.Sdk;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,13 +9,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models
 {
     public struct ResolvedEntity
     {
-        public Guid EntityId;
-        public string SerializedEntity;
+        public Entity Value;
 
-        public ResolvedEntity(Guid entityId, string serializedEntity)
+        public ResolvedEntity(Entity entity)
         {
-            EntityId = entityId;
-            SerializedEntity = serializedEntity;
+            Value = entity;
         }
     }
 }

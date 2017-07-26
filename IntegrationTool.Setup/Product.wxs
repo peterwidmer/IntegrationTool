@@ -120,10 +120,7 @@
       </Component>
       <Component Id="MainComponent_Microsoft_IdentityModel_Clients_ActiveDirectory" Win64="yes">
         <File Id="MainComponent_Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="..\References\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" KeyPath="yes" />
-      </Component>
-      <Component Id="MainComponent_Newtonsoft_Json" Win64="yes">
-        <File Id="MainComponent_Newtonsoft.Json.dll" Source="..\References\Newtonsoft.Json.dll" KeyPath="yes" />
-      </Component>      
+      </Component>     
     </ComponentGroup>
 
     <!-- Startmenu entries -->

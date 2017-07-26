@@ -8,7 +8,6 @@ using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,11 +20,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 {
     public partial class WriteToDynamicsCrm
     {
+        static List<ImportMode> CreateModes = new List<ImportMode>() { ImportMode.Create, ImportMode.All, ImportMode.AllChangedValuesOnly };
+        static List<ImportMode> UpdateModes = new List<ImportMode>() { ImportMode.Update, ImportMode.UpdateChangedValuesOnly, ImportMode.All, ImportMode.AllChangedValuesOnly };
+
         private Logger logger = null;
         private IOrganizationService service = null;
-
-        static List<ImportMode> UpdateModes = new List<ImportMode>() { ImportMode.Update, ImportMode.UpdateChangedValuesOnly, ImportMode.All };
-
+        private EntityUpdateHandler entityUpdateHandler = null;
+        private Dictionary<string, AttributeMetadata> attributeMetadataDictionary = null;
+        
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
             reportProgress(new SimpleProgressReport("Building logging database"));
@@ -44,9 +46,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 primaryKeyAttributeMetadataDictionary.Add(primaryKey, attributeMetadata);
             }
 
-            reportProgress(new SimpleProgressReport("Mapping attributes of records"));
-            EntityMapper entityMapper = new EntityMapper(entityMetaData, dataObject.Metadata, this.Configuration.Mapping, this.Configuration.PicklistMapping);
+            attributeMetadataDictionary = entityMetaData.GetAttributeMetadata();
 
+            reportProgress(new SimpleProgressReport("Initialize service-objects"));
+            var entityMapper = new EntityMapper(attributeMetadataDictionary, dataObject.Metadata, Configuration.Mapping, Configuration.PicklistMapping);
+            var entityAttributeComparer = new EntityAttributeComparer(attributeMetadataDictionary);
+            entityUpdateHandler = new EntityUpdateHandler(entityAttributeComparer);
+
+            reportProgress(new SimpleProgressReport("Mapping attributes of records"));
             Entity[] entities = new Entity[dataObject.Count];
             for (int i = 0; i < dataObject.Count; i++)
             {
@@ -137,43 +144,40 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
         private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
-            if (this.Configuration.ImportMode == ImportMode.Create || this.Configuration.ImportMode == ImportMode.All)
+            if (!CreateModes.Contains(Configuration.ImportMode)) { return; }
+
+            // Check if owner may be written
+            if (Configuration.SetOwnerMode != ImportMode.Create &&
+                Configuration.SetOwnerMode != ImportMode.All &&
+                entity.Contains("ownerid"))
             {
-                // Check if owner may be written
-                if (Configuration.SetOwnerMode != ImportMode.Create &&
-                    Configuration.SetOwnerMode != ImportMode.All &&
-                    entity.Contains("ownerid"))
-                {
-                    entity.Attributes.Remove("ownerid");
-                }
+                entity.Attributes.Remove("ownerid");
+            }
 
-                try
-                {
-                    entity.Id = service.Create(entity);
-                }
-                catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
-                {
-                    logger.SetWriteFault(recordNumber, ex.Detail.Message);
-                }
+            try
+            {
+                entity.Id = service.Create(entity);
+            }
+            catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
+            {
+                logger.SetWriteFault(recordNumber, ex.Detail.Message);
+            }
 
-                var serializedEntity = JsonConvert.SerializeObject(entity);
+            var resolvedEntityArray = new ResolvedEntity[resolvedEntities[entityKey].Length + 1];
+            resolvedEntities[entityKey].CopyTo(resolvedEntityArray, 0);
+            resolvedEntityArray[resolvedEntityArray.Length - 1] = new ResolvedEntity(entity);
+            resolvedEntities[entityKey] = resolvedEntityArray;
 
-                var resolvedEntityArray = new ResolvedEntity[resolvedEntities[entityKey].Length + 1];
-                resolvedEntities[entityKey].CopyTo(resolvedEntityArray, 0);
-                resolvedEntityArray[resolvedEntityArray.Length - 1] = new ResolvedEntity(entity.Id, serializedEntity);
-                resolvedEntities[entityKey] = resolvedEntityArray;
+            if (ownerid != null &&
+                (this.Configuration.SetOwnerMode == ImportMode.Create || this.Configuration.SetOwnerMode == ImportMode.All))
+            {
+                service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
+            }
 
-                if (ownerid != null &&
-                    (this.Configuration.SetOwnerMode == ImportMode.Create || this.Configuration.SetOwnerMode == ImportMode.All))
-                {
-                    Crm2013Wrapper.Crm2013Wrapper.SetOwnerOfEntity(service, entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
-                }
-
-                if (statuscode != null &&
-                    (this.Configuration.SetStateMode == ImportMode.Create || this.Configuration.SetStateMode == ImportMode.All))
-                {
-                    Crm2013Wrapper.Crm2013Wrapper.SetStateOfEntity(service, entity.LogicalName, entity.Id, statecode, statuscode);
-                }
+            if (statuscode != null &&
+                (this.Configuration.SetStateMode == ImportMode.Create || this.Configuration.SetStateMode == ImportMode.All))
+            {
+                service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
             }
         }
 
@@ -181,33 +185,33 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         {
             if (!UpdateModes.Contains(Configuration.ImportMode)) { return; }
 
-            if (resolvedEntities[entityKey].Length == 1 ||
-               (resolvedEntities[entityKey].Length > 1 && Configuration.MultipleFoundMode == MultipleFoundMode.All))
+            bool validForUpdate = resolvedEntities[entityKey].Length == 1 || (resolvedEntities[entityKey].Length > 1 && Configuration.MultipleFoundMode == MultipleFoundMode.All);
+            if (!validForUpdate) { return; }
+
+            for (int iId = 0; iId < resolvedEntities[entityKey].Length; iId++)
             {
-                for (int iId = 0; iId < resolvedEntities[entityKey].Length; iId++)
+                var resolvedEntity = resolvedEntities[entityKey][iId].Value;
+                entityUpdateHandler.BuildEntityForUpdate(entity, resolvedEntity, Configuration.ImportMode);
+
+                try
                 {
-                    entity.Id = resolvedEntities[entityKey][iId].EntityId;
+                    service.Update(entity);
+                }
+                catch (FaultException<OrganizationServiceFault> ex)
+                {
+                    logger.SetWriteFault(recordNumber, ex.Detail.Message);
+                }
 
-                    try
-                    {
-                        service.Update(entity);
-                    }
-                    catch (FaultException<OrganizationServiceFault> ex)
-                    {
-                        logger.SetWriteFault(recordNumber, ex.Detail.Message);
-                    }
+                if (ownerid != null &&
+                    (this.Configuration.SetOwnerMode == ImportMode.Update || this.Configuration.SetOwnerMode == ImportMode.All))
+                {
+                    service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
+                }
 
-                    if (ownerid != null &&
-                        (this.Configuration.SetOwnerMode == ImportMode.Update || this.Configuration.SetOwnerMode == ImportMode.All))
-                    {
-                        Crm2013Wrapper.Crm2013Wrapper.SetOwnerOfEntity(service, entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
-                    }
-
-                    if (statuscode != null &&
-                        (this.Configuration.SetStateMode == ImportMode.Update || this.Configuration.SetStateMode == ImportMode.All))
-                    {
-                        Crm2013Wrapper.Crm2013Wrapper.SetStateOfEntity(service, entity.LogicalName, entity.Id, statecode, statuscode);
-                    }
+                if (statuscode != null &&
+                    (this.Configuration.SetStateMode == ImportMode.Update || this.Configuration.SetStateMode == ImportMode.All))
+                {
+                    service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
                 }
             }
         }

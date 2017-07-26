@@ -4,7 +4,6 @@ using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +33,6 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
         public Dictionary<string, Guid[]> BuildMassResolverIndex()
         {
-
             ColumnSet columnSet = new ColumnSet();
             foreach(var primaryKey in primaryKeyAttributeMetadataDictionary)
             {
@@ -128,8 +126,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                 keyDictionary.Add(existingCheckKey, new ResolvedEntity[entities.Count]);
                 for (int iRetrievedEntity = 0; iRetrievedEntity < entities.Count; iRetrievedEntity++)
                 {
-                    var serializedEntity = JsonConvert.SerializeObject(entities[iRetrievedEntity]);
-                    var resolvedEntity = new ResolvedEntity(entities[iRetrievedEntity].Id, serializedEntity);
+                    var resolvedEntity = new ResolvedEntity(entities[iRetrievedEntity]);
                     keyDictionary[existingCheckKey][iRetrievedEntity] = resolvedEntity;
                 }
             }

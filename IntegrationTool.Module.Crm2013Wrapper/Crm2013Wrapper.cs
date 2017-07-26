@@ -180,24 +180,6 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             }
         }
 
-        public static void SetOwnerOfEntity(IOrganizationService service, string entityName, Guid entityId, string assigneeEntity, Guid assigneeId)
-        {
-            AssignRequest assignRequest = new AssignRequest();
-            assignRequest.Assignee = new EntityReference(assigneeEntity, assigneeId);
-            assignRequest.Target = new EntityReference(entityName, entityId);
-
-            service.Execute(assignRequest);
-        }
-        public static void SetStateOfEntity(IOrganizationService service, string entityName, Guid entityId, OptionSetValue statecode, OptionSetValue statuscode)
-        {
-            SetStateRequest setStateRequest = new SetStateRequest();
-            setStateRequest.EntityMoniker = new EntityReference(entityName, entityId);
-            setStateRequest.State = statecode;
-            setStateRequest.Status = statuscode;
-
-            service.Execute(setStateRequest);
-        }
-
         public static void AssociateEntities(IOrganizationService service, string relationshipName, string entityName1, Guid entity1id, string entityName2, Guid entity2id)
         {
             if (entityName1 == "campaign" || entityName2 == "campaign")
