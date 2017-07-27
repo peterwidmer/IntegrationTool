@@ -89,6 +89,7 @@ namespace IntegrationTool.UnitTests.Targets
                 ImportMode = ImportMode.All,
                 MultipleFoundMode = MultipleFoundMode.All,
                 SetOwnerMode = ImportMode.All,
+                SetStateMode = ImportMode.All,
                 ConfigurationId = Guid.NewGuid(),
                 SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID
             };

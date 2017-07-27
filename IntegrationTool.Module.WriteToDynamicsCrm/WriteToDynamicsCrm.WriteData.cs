@@ -145,7 +145,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             if (!Constants.CreateModes.Contains(Configuration.ImportMode)) { return; }
 
             // Check if owner may be written
-            if (Constants.CreateModes.Contains(Configuration.SetOwnerMode))
+            if (ownerid != null && Constants.CreateModes.Contains(Configuration.SetOwnerMode))
             {
                 entity.Attributes.Add("ownerid", ownerid);
             }

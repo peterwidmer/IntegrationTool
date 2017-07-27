@@ -40,7 +40,7 @@ namespace IntegrationTool.Flowmanagement
             this.loadedModules = loadedModules;
             this.package = package;
             
-            IntegrationTool.SDK.Diagram.DiagramDeserializer deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, this.package.Diagram.Diagram);
+            var deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, this.package.Diagram.Diagram);
 
             this.connectionList = deserializer.Connections;
             foreach (DesignerItemBase item in deserializer.DesignerItems)

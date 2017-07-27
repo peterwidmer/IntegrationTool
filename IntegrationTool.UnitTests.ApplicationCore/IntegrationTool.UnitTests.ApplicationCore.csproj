@@ -104,6 +104,14 @@
       <Project>{70a2aee8-1c30-4898-a8e8-fa377ff05b91}</Project>
       <Name>IntegrationTool.DiagramDesigner</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.TestErrorDelay\IntegrationTool.Module.TestErrorDelay.csproj">
+      <Project>{2b104fc5-6ed6-4823-ad73-3879f7bba0f7}</Project>
+      <Name>IntegrationTool.Module.TestErrorDelay</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.TestSuccessfulDelay\IntegrationTool.Module.TestSuccessfulDelay.csproj">
+      <Project>{f8b3f660-d8d2-4044-8493-501dbb8fc79e}</Project>
+      <Name>IntegrationTool.Module.TestSuccessfulDelay</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>

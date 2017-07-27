@@ -38,9 +38,9 @@
             <ComboBoxItem Content="None" Tag="None" />
             <ComboBoxItem Content="Create" Tag="Create" />
             <ComboBoxItem Content="Update" Tag="Update" />
-            <ComboBoxItem Content="Update Changed Values Only" Tag="UpdateChangedValuesOnly" />
+            <ComboBoxItem Content="Update (changed values only)" Tag="UpdateChangedValuesOnly" />
             <ComboBoxItem Content="Create &amp; Update" Tag="All" />
-            <ComboBoxItem Content="Create &amp; Update Changed Values Only" Tag="AllChangedValuesOnly" />
+            <ComboBoxItem Content="Create &amp; Update (changed values only)" Tag="AllChangedValuesOnly" />
         </ComboBox>
         <Label Content="If multiple exist:" Grid.Column="1" Grid.Row="3"/>
         <ComboBox x:Name="ddMultipleFoundMode" Grid.Column="2" Grid.Row="3" SelectedValue="{Binding Path=MultipleFoundMode, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
@@ -52,18 +52,18 @@
             <ComboBoxItem Content="None" Tag="None" />
             <ComboBoxItem Content="Create" Tag="Create" />
             <ComboBoxItem Content="Update" Tag="Update" />
-            <ComboBoxItem Content="Update Changed Values Only" Tag="UpdateChangedValuesOnly" />
+            <ComboBoxItem Content="Update (changed values only)" Tag="UpdateChangedValuesOnly" />
             <ComboBoxItem Content="Create &amp; Update" Tag="All" />
-            <ComboBoxItem Content="Create &amp; Update Changed Values Only" Tag="AllChangedValuesOnly" />
+            <ComboBoxItem Content="Create &amp; Update (changed values only)" Tag="AllChangedValuesOnly" />
         </ComboBox>
         <Label Content="Set owner on:" Grid.Column="1" Grid.Row="7"/>
         <ComboBox x:Name="ddSetOwnerMode" Grid.Column="2" Grid.Row="7" SelectedValue="{Binding SetOwnerMode}" SelectedValuePath="Tag" >
             <ComboBoxItem Content="None" Tag="None" />
             <ComboBoxItem Content="Create" Tag="Create" />
             <ComboBoxItem Content="Update" Tag="Update" />
-            <ComboBoxItem Content="Update Changed Values Only" Tag="UpdateChangedValuesOnly" />
+            <ComboBoxItem Content="Update (changed values only)" Tag="UpdateChangedValuesOnly" />
             <ComboBoxItem Content="Create &amp; Update" Tag="All" />
-            <ComboBoxItem Content="Create &amp; Update Changed Values Only" Tag="AllChangedValuesOnly" />
+            <ComboBoxItem Content="Create &amp; Update (changed values only)" Tag="AllChangedValuesOnly" />
         </ComboBox>
 
     </Grid>
