@@ -1,4 +1,5 @@
-﻿using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
+﻿using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
@@ -58,6 +59,34 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             {
                 sourceEntity.Attributes.Remove(attributeToRemove);
             }
+        }
+
+        public static bool OwnerMustBeSet(EntityReference sourceOwnerId, EntityReference ownerInCrm, ImportMode setOwnerMode)
+        {
+            if (sourceOwnerId != null && Constants.UpdateModes.Contains(setOwnerMode))
+            {
+                bool ownerIsEqualToCurrentOwner = ownerInCrm != null && sourceOwnerId.Id == ownerInCrm.Id;
+                if (!ownerIsEqualToCurrentOwner || (setOwnerMode != ImportMode.UpdateChangedValuesOnly && setOwnerMode != ImportMode.AllChangedValuesOnly))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool StatusMustBeSet(OptionSetValue sourceStatuscode, OptionSetValue statuscodeInCrm, ImportMode setStateMode)
+        {
+            if (sourceStatuscode != null && Constants.UpdateModes.Contains(setStateMode))
+            {
+                bool statuscodeIsEqualToCurrentStatuscode = statuscodeInCrm != null && sourceStatuscode.Value == statuscodeInCrm.Value;
+                if (!statuscodeIsEqualToCurrentStatuscode || (setStateMode != ImportMode.UpdateChangedValuesOnly && setStateMode != ImportMode.AllChangedValuesOnly))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

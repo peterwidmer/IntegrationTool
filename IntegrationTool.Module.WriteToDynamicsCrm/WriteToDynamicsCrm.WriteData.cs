@@ -15,14 +15,12 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm
 {
     public partial class WriteToDynamicsCrm
     {
-        static List<ImportMode> CreateModes = new List<ImportMode>() { ImportMode.Create, ImportMode.All, ImportMode.AllChangedValuesOnly };
-        static List<ImportMode> UpdateModes = new List<ImportMode>() { ImportMode.Update, ImportMode.UpdateChangedValuesOnly, ImportMode.All, ImportMode.AllChangedValuesOnly };
-
         private Logger logger = null;
         private IOrganizationService service = null;
         private EntityUpdateHandler entityUpdateHandler = null;
@@ -144,14 +142,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
         private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
-            if (!CreateModes.Contains(Configuration.ImportMode)) { return; }
+            if (!Constants.CreateModes.Contains(Configuration.ImportMode)) { return; }
 
             // Check if owner may be written
-            if (Configuration.SetOwnerMode != ImportMode.Create &&
-                Configuration.SetOwnerMode != ImportMode.All &&
-                entity.Contains("ownerid"))
+            if (Constants.CreateModes.Contains(Configuration.SetOwnerMode))
             {
-                entity.Attributes.Remove("ownerid");
+                entity.Attributes.Add("ownerid", ownerid);
             }
 
             try
@@ -163,55 +159,64 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 logger.SetWriteFault(recordNumber, ex.Detail.Message);
             }
 
+            if (statuscode != null && Constants.CreateModes.Contains(Configuration.SetStateMode))
+            {
+                service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
+            }
+
             var resolvedEntityArray = new ResolvedEntity[resolvedEntities[entityKey].Length + 1];
             resolvedEntities[entityKey].CopyTo(resolvedEntityArray, 0);
             resolvedEntityArray[resolvedEntityArray.Length - 1] = new ResolvedEntity(entity);
             resolvedEntities[entityKey] = resolvedEntityArray;
-
-            if (ownerid != null &&
-                (this.Configuration.SetOwnerMode == ImportMode.Create || this.Configuration.SetOwnerMode == ImportMode.All))
-            {
-                service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
-            }
-
-            if (statuscode != null &&
-                (this.Configuration.SetStateMode == ImportMode.Create || this.Configuration.SetStateMode == ImportMode.All))
-            {
-                service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
-            }
         }
 
         private void UpdateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
-            if (!UpdateModes.Contains(Configuration.ImportMode)) { return; }
+            if (!Constants.UpdateModes.Contains(Configuration.ImportMode)) { return; }
 
             bool validForUpdate = resolvedEntities[entityKey].Length == 1 || (resolvedEntities[entityKey].Length > 1 && Configuration.MultipleFoundMode == MultipleFoundMode.All);
             if (!validForUpdate) { return; }
 
-            for (int iId = 0; iId < resolvedEntities[entityKey].Length; iId++)
+            for (int i = 0; i < resolvedEntities[entityKey].Length; i++)
             {
-                var resolvedEntity = resolvedEntities[entityKey][iId].Value;
+                var resolvedEntity = resolvedEntities[entityKey][i].Value;
                 entityUpdateHandler.BuildEntityForUpdate(entity, resolvedEntity, Configuration.ImportMode);
 
                 try
                 {
-                    service.Update(entity);
+                    if (entity.Attributes.Count > 0)
+                    {
+                        service.Update(entity);
+                        foreach (var attribute in entity.Attributes)
+                        {
+                            resolvedEntity.SetAttributeValue(attribute.Key, attribute.Value);
+                        }
+                    }
+                    else
+                    {
+                        // Can optionally implement - log that an empty was not updated because it was equal
+                    }
                 }
                 catch (FaultException<OrganizationServiceFault> ex)
                 {
                     logger.SetWriteFault(recordNumber, ex.Detail.Message);
                 }
 
-                if (ownerid != null &&
-                    (this.Configuration.SetOwnerMode == ImportMode.Update || this.Configuration.SetOwnerMode == ImportMode.All))
+                var resolvedEntityOwnerId = resolvedEntity.Contains("ownerid") ? (EntityReference)resolvedEntity["ownerid"] : null;
+                bool ownerMustBeSet = EntityUpdateHandler.OwnerMustBeSet(ownerid, resolvedEntityOwnerId, Configuration.SetOwnerMode);
+                if(ownerMustBeSet)
                 {
                     service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
+                    resolvedEntity.SetAttributeValue("ownerid", ownerid);
                 }
 
-                if (statuscode != null &&
-                    (this.Configuration.SetStateMode == ImportMode.Update || this.Configuration.SetStateMode == ImportMode.All))
+                var resolvedEntityStatuscode = resolvedEntity.Contains("statuscode") ? (OptionSetValue)resolvedEntity["statuscode"] : null;
+                bool statusMustBeSet = EntityUpdateHandler.StatusMustBeSet(statuscode, resolvedEntityStatuscode, Configuration.SetStateMode);
+                if(statusMustBeSet)
                 {
                     service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
+                    resolvedEntity.SetAttributeValue("statecode", statecode);
+                    resolvedEntity.SetAttributeValue("statuscode", statuscode);
                 }
             }
         }

@@ -3,6 +3,7 @@ using IntegrationTool.DBAccess;
 using IntegrationTool.Module.ConnectToDynamicsCrm;
 using IntegrationTool.Module.Crm2013Wrapper;
 using IntegrationTool.Module.WriteToDynamicsCrm;
+using IntegrationTool.Module.WriteToDynamicsCrm.Execution;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Data;
@@ -25,23 +26,25 @@ namespace IntegrationTool.UnitTests.Targets
     public class Test_WriteToDynamicsCrm
     {
         private static IConnection connection;
+        private static IOrganizationService organizationService;
 
         [ClassInitialize]
         public static void InitializeCrm2013Wrapper(TestContext context)
         {
             connection = Test_Helpers.GetDynamicsCrmConnection();
+            organizationService = connection.GetConnection() as IOrganizationService;
         }
 
         [TestMethod]
         public void Test_ContactImport()
-        {
-            var organizationService = connection.GetConnection() as IOrganizationService;
-            
+        {            
             var accountName1 = Guid.NewGuid().ToString();
             var account = new Entity("account");
             account.Attributes.Add("name", accountName1);
             Guid account1 = organizationService.Create(account);
 
+
+            // FIRST RUN
             var writeToCrmConfig = GetContactImportConfiguration();
 
             IDatastore contactDatastore = GetContactDataStore(accountName1);
@@ -50,17 +53,30 @@ namespace IntegrationTool.UnitTests.Targets
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), contactDatastore, Test_Helpers.ReportProgressMethod);
 
-            var contactsId1001 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet("new_id"), new ConditionExpression("new_id", ConditionOperator.Equal, "1001"));
+            var contactsId1001 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet(true), new ConditionExpression("new_id", ConditionOperator.Equal, "1001"));
             Assert.AreEqual(1, contactsId1001.Count);
+            var contact1001 = contactsId1001.First();
+            Assert.AreEqual("James Test", ((EntityReference)contact1001["ownerid"]).Name);
 
-            // Prepare second run
+            // SECOND RUN
             writeToCrmConfig.ImportMode = ImportMode.AllChangedValuesOnly;
+            writeToCrmConfig.SetOwnerMode = ImportMode.AllChangedValuesOnly;
             contactDatastore.SetValue(0, 2, "Baden");
-            contactDatastore.AddData(new object[] { "Thomas", "Meyer", "New York", 1004, accountName1, "Active", new DateTime(1973, 04, 24) });
+            contactDatastore.SetValue(0, 7, "John");
+            contactDatastore.SetValue(0, 8, "test");
+            contactDatastore.SetValue(3, 7, "John");
+            contactDatastore.SetValue(3, 8, "test");
+            contactDatastore.AddData(new object[] { "Thomas", "Meyer", "New York", 1004, accountName1, "Active", new DateTime(1973, 04, 24), "James", "Test" });
 
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), contactDatastore, Test_Helpers.ReportProgressMethod);
-            var contactsId1004 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet("new_id"), new ConditionExpression("new_id", ConditionOperator.Equal, "1004"));
+            
+            var contactsId1004 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet(true), new ConditionExpression("new_id", ConditionOperator.Equal, "1004"));
             Assert.AreEqual(1, contactsId1004.Count);
+
+            contactsId1001 = Crm2013Wrapper.RetrieveMultiple(organizationService, "contact", new ColumnSet(true), new ConditionExpression("new_id", ConditionOperator.Equal, "1001"));
+            Assert.AreEqual(1, contactsId1001.Count);
+            contact1001 = contactsId1001.First();
+            Assert.AreEqual("John test", ((EntityReference)contact1001["ownerid"]).Name);
 
             organizationService.Delete("account", account1);
         }
@@ -72,6 +88,7 @@ namespace IntegrationTool.UnitTests.Targets
                 EntityName = "contact",
                 ImportMode = ImportMode.All,
                 MultipleFoundMode = MultipleFoundMode.All,
+                SetOwnerMode = ImportMode.All,
                 ConfigurationId = Guid.NewGuid(),
                 SelectedConnectionConfigurationId = Test_Helpers.CRMCONNECTIONID
             };
@@ -92,6 +109,16 @@ namespace IntegrationTool.UnitTests.Targets
                         Source ="CompanyName",
                         Target = "name"
                     } }
+            });
+
+            writeToCrmConfig.RelationMapping.Add(new Module.WriteToDynamicsCrm.SDK.RelationMapping()
+            {
+                EntityName = "systemuser",
+                LogicalName = "ownerid",
+                Mapping = new List<DataMappingControl.DataMapping>() { 
+                    new DataMappingControl.DataMapping() { Source ="OwnerFirstname", Target = "firstname" },
+                    new DataMappingControl.DataMapping() { Source ="OwnerLastname", Target = "lastname" }
+                }
             });
 
             writeToCrmConfig.PicklistMapping.Add(new Module.WriteToDynamicsCrm.SDK.PicklistMapping()
@@ -117,12 +144,14 @@ namespace IntegrationTool.UnitTests.Targets
             dataObject.AddColumn(new ColumnMetadata("CompanyName"));
             dataObject.AddColumn(new ColumnMetadata("Status"));
             dataObject.AddColumn(new ColumnMetadata("Birthdate"));
+            dataObject.AddColumn(new ColumnMetadata("OwnerFirstname"));
+            dataObject.AddColumn(new ColumnMetadata("OwnerLastname"));
 
-            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
-            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, accountName1, "Inactive", new DateTime(2004, 12, 03) });
-            dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null });
+            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23), "James", "Test" });
+            dataObject.AddData(new object[] { "Joachim 2", "Suter", "Dättwil", 1002, accountName1, "Inactive", new DateTime(2004, 12, 03), "John", "test" });
+            dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null, null, null });
             // Doublekey to test it works too
-            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23) });
+            dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23), "James", "Test" });
 
             return dataObject;
         }
@@ -130,8 +159,6 @@ namespace IntegrationTool.UnitTests.Targets
         [TestMethod]
         public void Test_CaseImport()
         {
-            var organizationService = connection.GetConnection() as IOrganizationService;
-
             string accountName1 = Guid.NewGuid().ToString();
             Entity account = new Entity("account");
             account.Attributes.Add("name", accountName1);
@@ -176,6 +203,107 @@ namespace IntegrationTool.UnitTests.Targets
             ((IDataTarget)module).WriteData(connection, new DummyDatabaseInterface(), dataObject, Test_Helpers.ReportProgressMethod);
 
             organizationService.Delete("account", account1);
+        }
+
+        [TestMethod]
+        public void Test_EntityUpdateHandler_SetOwnerMode()
+        {
+            Guid testGuid = Guid.NewGuid();
+            var ownerInSourceWithTestGuid = new EntityReference("systemuser", testGuid);
+            var ownerInCrmWithTestGuid = new EntityReference("systemuser", testGuid);
+            var ownerInSourceWithRandomGuid = new EntityReference("systemuser", Guid.NewGuid());
+            var ownerInCrmWithRandomGuid = new EntityReference("systemuser", Guid.NewGuid());
+
+            bool test1 = EntityUpdateHandler.OwnerMustBeSet(null, ownerInCrmWithRandomGuid, ImportMode.AllChangedValuesOnly);
+            Assert.IsFalse(test1);
+
+            bool test2 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithTestGuid, ownerInCrmWithTestGuid, ImportMode.Create);
+            Assert.IsFalse(test2);
+
+            bool test3 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithTestGuid, ownerInCrmWithTestGuid, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsFalse(test3);
+
+            bool test4 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithTestGuid, ownerInCrmWithTestGuid, ImportMode.AllChangedValuesOnly);
+            Assert.IsFalse(test4);
+
+            bool test5 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, ownerInCrmWithTestGuid, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsTrue(test5);
+
+            bool test6 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, ownerInCrmWithTestGuid, ImportMode.AllChangedValuesOnly);
+            Assert.IsTrue(test6);
+
+            bool test7 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithTestGuid, ownerInCrmWithTestGuid, ImportMode.Update);
+            Assert.IsTrue(test7);
+
+            bool test8 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithTestGuid, ownerInCrmWithTestGuid, ImportMode.All);
+            Assert.IsTrue(test8);
+
+            bool test9 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, ownerInCrmWithTestGuid, ImportMode.Update);
+            Assert.IsTrue(test9);
+
+            bool test10 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, ownerInCrmWithTestGuid, ImportMode.All);
+            Assert.IsTrue(test10);
+
+            bool test11 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, null, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsTrue(test11);
+
+            bool test12 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, null, ImportMode.AllChangedValuesOnly);
+            Assert.IsTrue(test12);
+
+            bool test13 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, null, ImportMode.Update);
+            Assert.IsTrue(test13);
+
+            bool test14 = EntityUpdateHandler.OwnerMustBeSet(ownerInSourceWithRandomGuid, null, ImportMode.All);
+            Assert.IsTrue(test14);
+        }
+
+        [TestMethod]
+        public void Test_EntityUpdateHandler_SetStateMode()
+        {
+            var value3 = new OptionSetValue(3);
+            var value4 = new OptionSetValue(4);
+
+            bool test1 = EntityUpdateHandler.StatusMustBeSet(null, value3, ImportMode.All);
+            Assert.IsFalse(test1);
+
+            bool test2 = EntityUpdateHandler.StatusMustBeSet(value3, value3, ImportMode.Create);
+            Assert.IsFalse(test2);
+
+            bool test3 = EntityUpdateHandler.StatusMustBeSet(value3, value3, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsFalse(test3);
+
+            bool test4 = EntityUpdateHandler.StatusMustBeSet(value3, value3, ImportMode.AllChangedValuesOnly);
+            Assert.IsFalse(test4);
+
+            bool test5 = EntityUpdateHandler.StatusMustBeSet(value4, value3, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsTrue(test5);
+
+            bool test6 = EntityUpdateHandler.StatusMustBeSet(value4, value3, ImportMode.AllChangedValuesOnly);
+            Assert.IsTrue(test6);
+
+            bool test7 = EntityUpdateHandler.StatusMustBeSet(value3, value3, ImportMode.Update);
+            Assert.IsTrue(test7);
+
+            bool test8 = EntityUpdateHandler.StatusMustBeSet(value3, value3, ImportMode.All);
+            Assert.IsTrue(test8);
+
+            bool test9 = EntityUpdateHandler.StatusMustBeSet(value4, value3, ImportMode.Update);
+            Assert.IsTrue(test9);
+
+            bool test10 = EntityUpdateHandler.StatusMustBeSet(value4, value3, ImportMode.All);
+            Assert.IsTrue(test10);
+
+            bool test11 = EntityUpdateHandler.StatusMustBeSet(value4, null, ImportMode.UpdateChangedValuesOnly);
+            Assert.IsTrue(test11);
+
+            bool test12 = EntityUpdateHandler.StatusMustBeSet(value4, null, ImportMode.AllChangedValuesOnly);
+            Assert.IsTrue(test12);
+
+            bool test13 = EntityUpdateHandler.StatusMustBeSet(value4, null, ImportMode.Update);
+            Assert.IsTrue(test13);
+
+            bool test14 = EntityUpdateHandler.StatusMustBeSet(value4, null, ImportMode.All);
+            Assert.IsTrue(test14);
         }
     }
 }
