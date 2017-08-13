@@ -153,6 +153,7 @@ namespace IntegrationTool.UnitTests.Targets
             dataObject.AddData(new object[] { "James", "Brown", "London", 1003, null, "Active", null, null, null });
             // Doublekey to test it works too
             dataObject.AddData(new object[] { "Peter", "Widmer", "Wettingen", 1001, accountName1, "Active", new DateTime(1980, 06, 23), "James", "Test" });
+            dataObject.AddData(new object[] { "Empty", "City", "", 1004, null, "Active", null, null, null });
 
             return dataObject;
         }

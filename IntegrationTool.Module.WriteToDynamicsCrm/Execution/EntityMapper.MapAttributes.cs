@@ -92,14 +92,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                     case AttributeTypeCode.Memo:
                     case AttributeTypeCode.String:
                         string stringValue = obj.ToString();
+                        if (string.IsNullOrEmpty(stringValue))
+                        {
+                            stringValue = null;
+                        }
                         entity.Attributes.Add(dataMapping.Target, stringValue);
                         break;
-
-                    //case AttributeTypeCode.State:
-                    
-                    //    int stateValue = Convert.ToInt32(obj.ToString());
-                    //    entity.Attributes.Add(dataMapping.Target, new OptionSetValue(stateValue));
-                    //    break;
 
                     case AttributeTypeCode.Status:
                     case AttributeTypeCode.Picklist:
