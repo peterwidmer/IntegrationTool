@@ -23,6 +23,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         public List<PicklistMapping> PicklistMapping { get; set; }
         public ObservableCollection<string> PrimaryKeyAttributes { get; set; }
         public List<RelationMapping> RelationMapping { get; set; }
+        public int BatchSizeResolving { get; set; }
 
         public WriteToDynamicsCrmConfiguration()
         {
@@ -30,6 +31,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             PicklistMapping = new List<SDK.PicklistMapping>();
             PrimaryKeyAttributes = new ObservableCollection<string>();
             RelationMapping = new List<RelationMapping>();
+            BatchSizeResolving = 100;
         }
 
         public string [] GetAllMappedAttributes()

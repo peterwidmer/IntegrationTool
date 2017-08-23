@@ -88,7 +88,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Resolving primarykeys of records"));
             var primaryKeyResolver = new PrimaryKeyResolver(service, entityMetaData, primaryKeyAttributeMetadataDictionary);
-            var resolvedEntities = primaryKeyResolver.OneByOneResolver(entities, Configuration.GetAllMappedAttributes());
+            var resolvedEntities = primaryKeyResolver.BatchResolver(entities, Configuration.GetAllMappedAttributes(), Configuration.BatchSizeResolving);
 
             reportProgress(new SimpleProgressReport("Writing records to crm"));
             WriteEntity(entities, resolvedEntities, primaryKeyAttributeMetadataDictionary, reportProgress);          
