@@ -1,6 +1,10 @@
 ﻿using IntegrationTool.Module.ConnectToDynamicsCrm;
+using IntegrationTool.Module.ConnectToExcel;
 using IntegrationTool.Module.Crm2013Wrapper;
+using IntegrationTool.Module.LoadFromExcel;
 using IntegrationTool.SDK;
+using IntegrationTool.SDK.Data;
+using IntegrationTool.SDK.Database;
 using IntegrationTool.UnitTests.Targets.Properties;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
@@ -69,6 +73,22 @@ namespace IntegrationTool.UnitTests.Targets
             invoice.Attributes.Add("invoicenumber", "inv 1");
 
             return invoice;
+        }
+
+        public static IDatastore LoadExcelsheet(string sheetPath, string sheetName)
+        {
+            ConnectToExcelConfiguration configuration = new ConnectToExcelConfiguration();
+            configuration.FilePath = sheetPath;
+            configuration.SheetName = sheetName;
+
+            IConnection excelConnection = new ConnectToExcel() { Configuration = configuration };
+
+            IDataSource loadFromExcel = new LoadFromExcel();
+
+            IDatastore dataStore = DataStoreFactory.GetDatastore();
+            loadFromExcel.LoadData(excelConnection, dataStore, ReportProgressMethod);
+
+            return dataStore;
         }
     }
 }

@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus">
+      <HintPath>..\References\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Crm.Sdk.Proxy">
       <HintPath>..\References\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
     </Reference>
@@ -78,6 +81,7 @@
     <Compile Include="Test_Helpers.cs" />
     <Compile Include="Test_WriteToDynamicsCrm.cs" />
     <Compile Include="Test_WriteToDynamicsCrmN2N.cs" />
+    <Compile Include="Test_WriteToDynamicsCrm_LargeDataset.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">
@@ -92,6 +96,10 @@
       <Project>{42d951a0-a901-4bce-ac49-b735c1ff99ca}</Project>
       <Name>IntegrationTool.Module.ConnectToDynamicsCrm</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToExcel\IntegrationTool.Module.ConnectToExcel.csproj">
+      <Project>{78ab131a-7b8e-40ed-b8cd-861c274cf14d}</Project>
+      <Name>IntegrationTool.Module.ConnectToExcel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToODBC\IntegrationTool.Module.ConnectToODBC.csproj">
       <Project>{6ac6e5fc-2b14-46e4-8150-3cfce86d9ad9}</Project>
       <Name>IntegrationTool.Module.ConnectToODBC</Name>
@@ -103,6 +111,10 @@
     <ProjectReference Include="..\IntegrationTool.Module.DeleteInDynamicsCrm\IntegrationTool.Module.DeleteInDynamicsCrm.csproj">
       <Project>{efabd2f9-e72b-4183-8119-08a1ce4ca01e}</Project>
       <Name>IntegrationTool.Module.DeleteInDynamicsCrm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromExcel\IntegrationTool.Module.LoadFromExcel.csproj">
+      <Project>{fed4145d-5fe4-4fdf-a11f-d637df37721f}</Project>
+      <Name>IntegrationTool.Module.LoadFromExcel</Name>
     </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrmN2N\IntegrationTool.Module.WriteToDynamicsCrmN2N.csproj">
       <Project>{6b4e8f13-9067-46a2-8619-70275f6d20d6}</Project>
@@ -125,7 +137,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Content Include="TestData\LargeDataset.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

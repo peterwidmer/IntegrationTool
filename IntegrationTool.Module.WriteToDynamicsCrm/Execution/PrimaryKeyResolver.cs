@@ -74,11 +74,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
         public FilterExpression GetFilterForEntities(Entity [] sourceEntities, int startIndex, int batchSize)
         {
-            var filterExpression = new FilterExpression();
-            for(int i=startIndex; i < startIndex + batchSize; i++)
+            var filterExpression = new FilterExpression(LogicalOperator.Or);
+            int maxIndex = (startIndex + batchSize) >= sourceEntities.Length ? sourceEntities.Length : (startIndex + batchSize);
+            for (int i = startIndex; i < maxIndex; i++)
             {
                 var rowConditions = BuildPrimaryKeyConditions(sourceEntities, i);
-                var rowFilter = new FilterExpression();
+                var rowFilter = new FilterExpression(LogicalOperator.And);
                 rowFilter.Conditions.AddRange(rowConditions);
 
                 filterExpression.Filters.Add(rowFilter);

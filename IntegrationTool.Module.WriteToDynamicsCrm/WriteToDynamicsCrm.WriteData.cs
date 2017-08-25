@@ -122,7 +122,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
                 string entityKey = PrimaryKeyResolver.BuildExistingCheckKey(entity, primaryKeyAttributeMetadataDictionary);
 
-                if (resolvedEntities[entityKey].Length == 0) // Create
+                if (!resolvedEntities.ContainsKey(entityKey)) // Create
                 {
                     logger.SetBusinessKeyAndImportTypeForRecord(i, entityKey, ImportMode.Create);
                     CreateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);   
@@ -164,10 +164,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
             }
 
-            var resolvedEntityArray = new ResolvedEntity[resolvedEntities[entityKey].Length + 1];
-            resolvedEntities[entityKey].CopyTo(resolvedEntityArray, 0);
-            resolvedEntityArray[resolvedEntityArray.Length - 1] = new ResolvedEntity(entity);
-            resolvedEntities[entityKey] = resolvedEntityArray;
+            resolvedEntities.Add(entityKey, new ResolvedEntity[] { new ResolvedEntity(entity) });
         }
 
         private void UpdateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
