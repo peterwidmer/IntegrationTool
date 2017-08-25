@@ -4,6 +4,8 @@ The Integration Tool allows to run and organize workflows, in which you can exec
 
 You can find out more about it on http://www.freedevelopertutorials.com/integrationtool-tutorial
 
+![Screenshot of the IntegrationTool](http://freedevelopertutorials.azurewebsites.net/wp-content/uploads/2014/12/IntegrationToolScreen.png)
+
 ## How can I contribute?
 
 You are very welcome to contribute. I list ideas I'd like to see in the Integration Tool in the Wiki. If you want to implement on of them:
