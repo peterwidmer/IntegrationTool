@@ -19,7 +19,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                 AttributeMetadata attributeMetadata = this.attributeMetadataDictionary[dataMapping.Target];
                 object obj = data[this.columnMetadataDictionary[dataMapping.Source].ColumnIndex];
 
-                if (obj == null)
+                if (obj == null || string.IsNullOrEmpty(obj.ToString()))
                 {
                     entity.Attributes.Add(dataMapping.Target, null);
                     continue;
