@@ -123,6 +123,11 @@ namespace IntegrationTool.ProjectDesigner
             e.CanExecute = this.CurrentProject != null;
         }
 
+        private void Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
         #endregion
 
         private void SaveProject()

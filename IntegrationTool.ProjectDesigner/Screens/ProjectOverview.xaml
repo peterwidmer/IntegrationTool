@@ -8,22 +8,22 @@
         <DataTemplate x:Key="PackageTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <Label Content="{Binding Path=DisplayName}" />
+                <Label Content="{Binding Path=DisplayName}" ToolTip="{Binding Path=DisplayName}" />
                 <Label Content="{Binding Path=Description}" Grid.Column="2" />
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="RunLogTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
-                <Label Content="{Binding Path=PackageDisplayName}" />
+                <Label Content="{Binding Path=PackageDisplayName}" ToolTip="{Binding Path=PackageDisplayName}" />
                 <Label Content="{Binding Path=StartTime}" ContentStringFormat="yyyy-MM-dd HH:mm" Grid.Column="2" />
                 <Label Content="{Binding Path=EndTime}" ContentStringFormat="yyyy-MM-dd HH:mm" Grid.Column="3" />
             </Grid>
