@@ -150,6 +150,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.WriteToMSSQL", "IntegrationTool.Module.WriteToMSSQL\IntegrationTool.Module.WriteToMSSQL.csproj", "{04178246-FE6E-476C-B0F7-77B56A44253C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.ProjectDesigner", "IntegrationTool.UnitTests.ProjectDesigner\IntegrationTool.UnitTests.ProjectDesigner.csproj", "{BEB3FC79-F985-4369-B2D4-9A401F6366DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -670,6 +672,16 @@ Global
 		{04178246-FE6E-476C-B0F7-77B56A44253C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{04178246-FE6E-476C-B0F7-77B56A44253C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{04178246-FE6E-476C-B0F7-77B56A44253C}.Release|x86.ActiveCfg = Release|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
