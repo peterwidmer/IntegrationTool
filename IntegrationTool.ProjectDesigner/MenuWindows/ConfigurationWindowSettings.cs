@@ -41,7 +41,7 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
                 originalConfiguration = ConfigurationSerializer.SerializeObject(configuration, moduleLoader.GetModuleTypeList()),
             };
 
-            if(!dataStores.Any())
+            if(designerItem.ModuleDescription.Attributes.ModuleType != ModuleType.Step && !dataStores.Any())
             {
                 throw new InfoException("No incoming data available. Please connect a datasource first!");
             }
@@ -56,8 +56,9 @@ namespace IntegrationTool.ProjectDesigner.MenuWindows
             }
             else
             {
-                configurationWindowSettings.configurationControl = ((IModule)module).RenderConfigurationWindow(configuration, dataStores.First());
-                configurationWindowSettings.datastore = dataStores.First();
+                var firstDataStore = dataStores != null ? dataStores.First() : null;
+                configurationWindowSettings.configurationControl = ((IModule)module).RenderConfigurationWindow(configuration, firstDataStore);
+                configurationWindowSettings.datastore = firstDataStore;
             }
 
             return configurationWindowSettings;
