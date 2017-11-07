@@ -16,11 +16,36 @@ using System.Windows.Input;
 
 namespace IntegrationTool.ProjectDesigner
 {
+    public static class CustomCommands
+    {
+        public static readonly RoutedUICommand OpenRecentFile = new RoutedUICommand
+                (
+                        "OpenRecentFile",
+                        "OpenRecentFile",
+                        typeof(CustomCommands)
+                );
+    }
+
     public partial class MainWindow
     {
         public MainWindow()
         {
             
+        }
+
+        private void OpenRecentFileCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OpenRecentFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var menuItem = e.OriginalSource as System.Windows.Controls.MenuItem;
+            var recentFile = menuItem.Tag as RecentFile;
+            if(recentFile != null)
+            {
+                OpenProject(recentFile.FullFilePath);
+            }
         }
 
         #region New Project Command Handling
@@ -88,6 +113,15 @@ namespace IntegrationTool.ProjectDesigner
 
         private void OpenProject(string projectPath)
         {
+            try
+            {
+                this.RecentFilesList.Add(projectPath);
+            }
+            catch(Exception ex)
+            {
+                System.Windows.Forms.MessageBox.Show("Could not add the project to the recent-files.\nError:\n" + ex.Message);
+            }
+
             try
             {
                 Type[] extraTypes = applicationInitializer.ModuleLoader.GetModuleTypeList();

@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.ApplicationCore;
+using IntegrationTool.ProjectDesigner.Classes;
 using IntegrationTool.ProjectDesigner.MenuWindows;
 using IntegrationTool.SDK;
 using System;
@@ -26,16 +27,16 @@ namespace IntegrationTool.ProjectDesigner
     {
         private ApplicationInitializer applicationInitializer;
         private Project CurrentProject = null;
-
-        private ObservableCollection<MyObject> _recentFilesList = new ObservableCollection<MyObject>();
-        public ObservableCollection<MyObject> RecentFilesList
+        public RecentFilesList RecentFilesList { get; set; }
+        public bool RecentFilesVisible
         {
-            get { return _recentFilesList; }
-            set { _recentFilesList = value; }
+            get { return RecentFilesList.RecentFiles.Count > 0; }
         }
 
         public MainWindow(ApplicationInitializer applicationInitializer)
         {
+            this.RecentFilesList = new RecentFilesList();
+
             InitializeComponent();
 
             this.applicationInitializer = applicationInitializer;
@@ -59,10 +60,5 @@ namespace IntegrationTool.ProjectDesigner
         {
             System.Diagnostics.Process.Start("http://www.freedevelopertutorials.com/integrationtool-tutorial/");
         }
-    }
-
-    public class MyObject
-    {
-        public string Title { get; set; }
     }
 }

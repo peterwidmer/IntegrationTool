@@ -4,8 +4,11 @@
        xmlns:s="clr-namespace:IntegrationTool.ProjectDesigner"
         xmlns:fd="clr-namespace:IntegrationTool.ProjectDesigner.FlowDesign"
         Title="Integration Tool" Height="600" Width="800" WindowStartupLocation="CenterScreen" Name="UI">
+    <Window.CommandBindings>
+        <CommandBinding Command="s:CustomCommands.OpenRecentFile" CanExecute="OpenRecentFileCommand_CanExecute" Executed="OpenRecentFileCommand_Executed" />
+    </Window.CommandBindings>
     <Window.Resources>
-        <CollectionViewSource Source="{Binding ElementName=UI, Path=RecentFilesList}" x:Key="RecentFilesItems"/>
+        <CollectionViewSource Source="{Binding ElementName=UI, Path=RecentFilesList.RecentFiles}" x:Key="RecentFilesItems"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -20,15 +23,17 @@
                         <MenuItem Header="Open Project" Command="Open" />
                         <MenuItem Header="Save Project" Command="Save" />
                         <Separator />
-                        <CollectionContainer Collection="{Binding Source={StaticResource RecentFilesItems}}" />
-
+                        <CollectionContainer Collection="{Binding Source={StaticResource RecentFilesItems}}"  />
                         <Separator />
                         <MenuItem Header="Exit" Command="Close" />
                     </CompositeCollection>
                 </MenuItem.ItemsSource>
                 <MenuItem.ItemContainerStyle>
                     <Style>
-                        <Setter Property="MenuItem.Header" Value="{Binding Title}"/>
+                        <Setter Property="MenuItem.Tag" Value="{Binding}" />
+                        <Setter Property="MenuItem.Command" Value="s:CustomCommands.OpenRecentFile" />
+                        <Setter Property="MenuItem.Header" Value="{Binding FileName}" />
+                        <Setter Property="MenuItem.ToolTip" Value="{Binding FullFilePath}" />
                     </Style>
                 </MenuItem.ItemContainerStyle>
                 

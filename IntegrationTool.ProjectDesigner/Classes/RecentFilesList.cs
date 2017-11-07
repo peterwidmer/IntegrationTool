@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace IntegrationTool.ProjectDesigner.Classes
 {
@@ -12,16 +14,16 @@ namespace IntegrationTool.ProjectDesigner.Classes
     {
         public const string RECENTFILESSTORENAME = "RecentFilesList.txt";
 
-        public ObservableCollection<string> RecentFiles { get; set; }
+        public ObservableCollection<RecentFile> RecentFiles { get; set; }
 
         public RecentFilesList()
         {
-            RecentFiles = new ObservableCollection<string>();
+            RecentFiles = new ObservableCollection<RecentFile>();
 
             var serializedRecentFiles = ApplicationLocalStorageHelper.ReadFrom(RECENTFILESSTORENAME);
             if(!string.IsNullOrEmpty(serializedRecentFiles))
             {
-                RecentFiles = (ObservableCollection<string>)ConfigurationSerializer.DeserializeObject(serializedRecentFiles, typeof(ObservableCollection<string>), new Type [] {});
+                RecentFiles = (ObservableCollection<RecentFile>)ConfigurationSerializer.DeserializeObject(serializedRecentFiles, typeof(ObservableCollection<RecentFile>), new Type [] {});
             }            
         }
 
@@ -33,12 +35,19 @@ namespace IntegrationTool.ProjectDesigner.Classes
                 RecentFiles.RemoveAt(0);
             }
 
-            if(RecentFiles.Contains(file))
+            var newFile = new RecentFile()
             {
-                RecentFiles.Remove(file);
+                FileName = Path.GetFileName(file),
+                FullFilePath = file
+            };
+
+            var recentFile = RecentFiles.FirstOrDefault(t => t.FullFilePath == newFile.FullFilePath);
+            if(recentFile != null)
+            {
+                RecentFiles.Remove(recentFile);
             }
 
-            RecentFiles.Add(file);
+            RecentFiles.Add(newFile);
 
             var serializedRecentFiles = ConfigurationSerializer.SerializeObject(RecentFiles, new Type [] {});
             ApplicationLocalStorageHelper.WriteToFile(RECENTFILESSTORENAME, serializedRecentFiles);

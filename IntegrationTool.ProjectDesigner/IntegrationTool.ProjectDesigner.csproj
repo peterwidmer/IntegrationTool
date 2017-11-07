@@ -82,6 +82,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Classes\ApplicationLocalStorageHelper.cs" />
+    <Compile Include="Classes\RecentFile.cs" />
     <Compile Include="Classes\RecentFilesList.cs" />
     <Compile Include="Classes\StepCopy.cs" />
     <Compile Include="Classes\StepProperty.cs" />
