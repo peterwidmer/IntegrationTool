@@ -32,8 +32,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\Microsoft.Xrm.Client.dll = References\Microsoft.Xrm.Client.dll
 		References\Microsoft.Xrm.Sdk.dll = References\Microsoft.Xrm.Sdk.dll
 		References\Microsoft.Xrm.Tooling.Connector.dll = References\Microsoft.Xrm.Tooling.Connector.dll
-		References\SQLite.Interop.dll = References\SQLite.Interop.dll
-		References\System.Data.SQLite.dll = References\System.Data.SQLite.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.Sources", "IntegrationTool.UnitTests.Sources\IntegrationTool.UnitTests.Sources.csproj", "{B8BC7CD2-A397-482B-ABE3-AD0F0E442839}"
@@ -151,6 +149,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.WriteToMSSQL", "IntegrationTool.Module.WriteToMSSQL\IntegrationTool.Module.WriteToMSSQL.csproj", "{04178246-FE6E-476C-B0F7-77B56A44253C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.ProjectDesigner", "IntegrationTool.UnitTests.ProjectDesigner\IntegrationTool.UnitTests.ProjectDesigner.csproj", "{BEB3FC79-F985-4369-B2D4-9A401F6366DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.LoadFromSQLite", "IntegrationTool.Module.LoadFromSQLite\IntegrationTool.Module.LoadFromSQLite.csproj", "{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -682,6 +682,16 @@ Global
 		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BEB3FC79-F985-4369-B2D4-9A401F6366DC}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -732,5 +742,6 @@ Global
 		{5D9E07DD-1406-4463-9DC3-E7D7E1763D9B} = {8F8A2EAC-1DA3-49AF-B7AD-A409F99CACEC}
 		{3B784F61-12D1-457F-BF04-9E0135F19762} = {D2621EB1-4E86-45FA-9900-A5F69FA4E36B}
 		{04178246-FE6E-476C-B0F7-77B56A44253C} = {E33D817F-B24A-448D-9181-5EC51753A901}
+		{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
 	EndGlobalSection
 EndGlobal
