@@ -22,7 +22,7 @@
                         <MenuItem Header="New Project" Command="New" />
                         <MenuItem Header="Open Project" Command="Open" />
                         <MenuItem Header="Save Project" Command="Save" />
-                        <Separator />
+                        <Separator x:Name="RecentFilesSeparator" />
                         <CollectionContainer Collection="{Binding Source={StaticResource RecentFilesItems}}"  />
                         <Separator />
                         <MenuItem Header="Exit" Command="Close" />

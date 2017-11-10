@@ -5,6 +5,7 @@ using IntegrationTool.SDK;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,14 +29,11 @@ namespace IntegrationTool.ProjectDesigner
         private ApplicationInitializer applicationInitializer;
         private Project CurrentProject = null;
         public RecentFilesList RecentFilesList { get; set; }
-        public bool RecentFilesVisible
-        {
-            get { return RecentFilesList.RecentFiles.Count > 0; }
-        }
+
 
         public MainWindow(ApplicationInitializer applicationInitializer)
         {
-            this.RecentFilesList = new RecentFilesList();
+            this.RecentFilesList = new RecentFilesList();            
 
             InitializeComponent();
 
@@ -45,9 +43,18 @@ namespace IntegrationTool.ProjectDesigner
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Open, Open_Executed, Open_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Save, Save_Executed, Save_Enabled));
             this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, Close_Executed));
+            RecentFilesChanged();
+            this.RecentFilesList.RecentFiles.CollectionChanged += RecentFiles_CollectionChanged;
+        }
 
-            //this.RecentFilesList.Add(new MyObject() { Title = "Test 1" });
-            //this.RecentFilesList.Add(new MyObject() { Title = "Test 2" });
+        void RecentFiles_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            RecentFilesChanged();
+        }
+
+        public void RecentFilesChanged()
+        {
+            RecentFilesSeparator.Visibility = this.RecentFilesList.RecentFiles.Count > 0 ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void menuAbout_Click(object sender, RoutedEventArgs e)
