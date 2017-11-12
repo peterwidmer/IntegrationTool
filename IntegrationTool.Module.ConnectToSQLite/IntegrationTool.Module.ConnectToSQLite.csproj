@@ -4,20 +4,20 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7BF10F1-07A7-446D-BAB3-4B9E2F1DF6C9}</ProjectGuid>
+    <ProjectGuid>{D4024F41-28DF-4FC8-A50E-F388F6835027}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IntegrationTool.Module.LoadFromSQLite</RootNamespace>
-    <AssemblyName>IntegrationTool.Module.LoadFromSQLite</AssemblyName>
+    <RootNamespace>IntegrationTool.Module.ConnectToSQLite</RootNamespace>
+    <AssemblyName>IntegrationTool.Module.ConnectToSQLite</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>7d41b5f4</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>77edd279</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\IntegrationTool.ProjectDesigner\bin\Debug\Modules\Sources\</OutputPath>
+    <OutputPath>..\IntegrationTool.ProjectDesigner\bin\Debug\Modules\Connections\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,19 +51,9 @@
     <Compile Include="ConfigurationWindow.xaml.cs">
       <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoadFromSQLite.cs" />
-    <Compile Include="LoadFromSQLiteConfiguration.cs" />
+    <Compile Include="ConnectToSQLite.cs" />
+    <Compile Include="ConnectToSQLiteConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SDK\Enums\SQLiteQueryType.cs" />
-    <Compile Include="UserControls\SqlQueryControl.xaml.cs">
-      <DependentUpon>SqlQueryControl.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Icon.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
@@ -72,11 +62,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\SqlQueryControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

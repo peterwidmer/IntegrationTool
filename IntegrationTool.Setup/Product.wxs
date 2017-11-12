@@ -184,6 +184,9 @@
       <Component Id="ModuleComponent_ConnectToTextFile" Win64="yes">
         <File Id="ModuleComponent_ConnectToTextFile.dll" Source="$(var.IntegrationTool.Module.ConnectToTextFile.TargetPath)" KeyPath="yes" />
       </Component>
+      <Component Id="ModuleComponent_ConnectToSQLite" Win64="yes">
+        <File Id="ModuleComponent_ConnectToSQLite.dll" Source="$(var.IntegrationTool.Module.ConnectToSQLite.TargetPath)" KeyPath="yes" />
+      </Component>
     </ComponentGroup>
     
     <!-- Source Module-Files -->
@@ -206,6 +209,9 @@
       </Component>
       <Component Id="ModuleComponent_LoadFromCsv" Win64="yes">
         <File Id="ModuleComponent_LoadFromCSV.dll" Source="$(var.IntegrationTool.Module.LoadFromCSV.TargetPath)" KeyPath="yes" />
+      </Component>
+      <Component Id="ModuleComponent_LoadFromSQLite" Win64="yes">
+        <File Id="ModuleComponent_LoadFromSQLite.dll" Source="$(var.IntegrationTool.Module.LoadFromSQLite.TargetPath)" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 

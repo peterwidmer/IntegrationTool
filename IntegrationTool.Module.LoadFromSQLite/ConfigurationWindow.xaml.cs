@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IntegrationTool.Module.LoadFromSQLite.SDK.Enums;
+using IntegrationTool.Module.LoadFromSQLite.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +28,23 @@ namespace IntegrationTool.Module.LoadFromSQLite
         {
             InitializeComponent();
             this.DataContext = this.loadFromSQLiteConfiguration = loadFromSQLiteConfiguration;
+        }
+
+        private void ddQueryType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddQueryType.SelectedItem != null)
+            {
+                switch (this.loadFromSQLiteConfiguration.QueryType)
+                {
+                    case SQLiteQueryType.SqlQuery:
+                        this.QueryTypeContentControl.Content = new SqlQueryControl();
+                        break;
+                }
+            }
+            else
+            {
+                this.QueryTypeContentControl.Content = null;
+            }
         }
     }
 }

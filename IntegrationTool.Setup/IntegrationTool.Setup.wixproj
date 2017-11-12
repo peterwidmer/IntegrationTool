@@ -128,6 +128,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.ConnectToSQLite\IntegrationTool.Module.ConnectToSQLite.csproj">
+      <Name>IntegrationTool.Module.ConnectToSQLite</Name>
+      <Project>{d4024f41-28df-4fc8-a50e-f388f6835027}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.ConnectToTextFile\IntegrationTool.Module.ConnectToTextFile.csproj">
       <Name>IntegrationTool.Module.ConnectToTextFile</Name>
       <Project>{3a4d2e2c-ade3-4d22-a065-ad8f406a7b3f}</Project>
@@ -211,6 +219,14 @@
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromODBC\IntegrationTool.Module.LoadFromODBC.csproj">
       <Name>IntegrationTool.Module.LoadFromODBC</Name>
       <Project>{6882bbb0-8851-4461-acb5-10af1320cc3c}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromSQLite\IntegrationTool.Module.LoadFromSQLite.csproj">
+      <Name>IntegrationTool.Module.LoadFromSQLite</Name>
+      <Project>{f7bf10f1-07a7-446d-bab3-4b9e2f1df6c9}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
