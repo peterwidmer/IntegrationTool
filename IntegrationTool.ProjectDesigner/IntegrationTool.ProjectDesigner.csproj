@@ -50,6 +50,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.Runtime.dll.15.0.4859.1000\lib\Microsoft.SharePoint.Client.Runtime\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Xrm.Client, Version=5.0.9689.2166, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>

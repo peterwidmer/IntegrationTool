@@ -20,9 +20,10 @@ namespace IntegrationTool.Module.ConnectToSharepoint
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
-        public ConfigurationWindow()
+        public ConfigurationWindow(ConnectToSharepointConfiguration configuration)
         {
             InitializeComponent();
+            this.DataContext = configuration;
         }
     }
 }
