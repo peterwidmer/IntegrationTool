@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="165"/>
+            <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="13*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -15,16 +15,17 @@
             <RowDefinition Height="23"/>
             <RowDefinition Height="4"/>
             <RowDefinition Height="23"/>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="27*"/>
+            <RowDefinition Height="4"/>
+
             <RowDefinition Height="262*"/>
         </Grid.RowDefinitions>
         <Label Content="Site Url:" Grid.Row="1"/>
         <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding Path=SiteUrl, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         <Label Content="Authentication-Type:" Grid.Row="3"/>
-        <ComboBox x:Name="ddAuthenticationType" Grid.Column="2" SelectedValue="{Binding Path=AuthenticationType}" SelectedValuePath="Tag"  Grid.Row="3" VerticalAlignment="Top" >
+        <ComboBox x:Name="ddAuthenticationType" Grid.Column="2" SelectedValue="{Binding Path=AuthenticationType}" SelectedValuePath="Tag"  Grid.Row="3" VerticalAlignment="Top" SelectionChanged="ddAuthenticationType_SelectionChanged" >
             <ComboBoxItem Content="On-Premise" Tag="OnPremise" />
             <ComboBoxItem Content="Sharepoint Online" Tag="SharepointOnline" />
         </ComboBox>
+        <ContentControl x:Name="AuthenticationTypeContent" Content="ContentControl" Grid.Row="5" Grid.ColumnSpan="2"/>
     </Grid>
 </UserControl>

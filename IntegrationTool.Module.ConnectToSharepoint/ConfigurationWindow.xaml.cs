@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IntegrationTool.Module.ConnectToSharepoint.UserControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,33 @@ namespace IntegrationTool.Module.ConnectToSharepoint
     /// </summary>
     public partial class ConfigurationWindow : UserControl
     {
+        private ConnectToSharepointConfiguration configuration;
+
         public ConfigurationWindow(ConnectToSharepointConfiguration configuration)
         {
             InitializeComponent();
-            this.DataContext = configuration;
+            this.DataContext = this.configuration = configuration;
+        }
+
+        private void ddAuthenticationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddAuthenticationType.SelectedItem != null)
+            {
+                switch (this.configuration.AuthenticationType)
+                {
+                    case SharepointAuthenticationType.OnPremise:
+                        this.AuthenticationTypeContent.Content = new OnPremiseAuthenticationControl();
+                        break;
+
+                    case SharepointAuthenticationType.SharepointOnline:
+                        this.AuthenticationTypeContent.Content = new SharepointOnlineAuthentication();
+                        break;
+                }
+            }
+            else
+            {
+                this.AuthenticationTypeContent.Content = null;
+            }
         }
     }
 }

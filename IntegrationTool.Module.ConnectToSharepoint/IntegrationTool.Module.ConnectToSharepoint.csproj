@@ -58,9 +58,24 @@
     <Compile Include="ConnectToSharepoint.cs" />
     <Compile Include="ConnectToSharepointConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserControls\InverseBooleanConverter.cs" />
+    <Compile Include="UserControls\OnPremiseAuthenticationControl.xaml.cs">
+      <DependentUpon>OnPremiseAuthenticationControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\SharepointOnlineAuthentication.xaml.cs">
+      <DependentUpon>SharepointOnlineAuthentication.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\OnPremiseAuthenticationControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\SharepointOnlineAuthentication.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
