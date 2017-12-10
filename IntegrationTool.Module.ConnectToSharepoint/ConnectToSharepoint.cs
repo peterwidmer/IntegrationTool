@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using IntegrationTool.SDK.Database;
 using System.Windows.Controls;
 using Microsoft.SharePoint.Client;
+using System.Security;
+using System.Net;
 
 namespace IntegrationTool.Module.ConnectToSharepoint
 {
@@ -35,7 +37,29 @@ namespace IntegrationTool.Module.ConnectToSharepoint
 
         public object GetConnection()
         {
-            return new ClientContext(this.Configuration.SiteUrl);
+            var clientContext = new ClientContext(this.Configuration.SiteUrl);
+            if(Configuration.AuthenticationType == SharepointAuthenticationType.OnPremise)
+            {
+                if(Configuration.UseIntegratedSecurity)
+                {
+                    clientContext.Credentials = CredentialCache.DefaultNetworkCredentials;
+                }
+                else
+                {
+                    clientContext.Credentials = new NetworkCredential(Configuration.User, Configuration.Password, Configuration.Domain);
+                }
+            }
+            else if(Configuration.AuthenticationType == SharepointAuthenticationType.SharepointOnline)
+            {
+                var securePassword = new SecureString();
+                foreach (char c in Configuration.Password)
+                {
+                    securePassword.AppendChar(c);
+                }
+
+                clientContext.Credentials = new SharePointOnlineCredentials(Configuration.User, securePassword);
+            }
+            return clientContext;
         }
     }
 }
