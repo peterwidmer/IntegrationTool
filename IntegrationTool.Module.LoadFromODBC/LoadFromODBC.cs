@@ -31,8 +31,7 @@ namespace IntegrationTool.Module.LoadFromODBC
 
         public System.Windows.Controls.UserControl RenderConfigurationWindow(ConfigurationBase configurationBase, IDatastore dataObject)
         {
-            ConfigurationWindow configurationWindow = new ConfigurationWindow((LoadFromODBCConfiguration)configurationBase);
-            return configurationWindow;
+            return new ConfigurationWindow((LoadFromODBCConfiguration)configurationBase);
         }
 
         public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)

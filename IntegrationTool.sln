@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.ConsoleProjectStarter", "IntegrationTool.ConsoleProjectStarter\IntegrationTool.ConsoleProjectStarter.csproj", "{91339927-1BED-4559-98BE-78A36F91D086}"
 EndProject
@@ -157,6 +157,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.SharepointWrapper", "IntegrationTool.Module.SharepointWrapper\IntegrationTool.Module.SharepointWrapper.csproj", "{C548CCB7-4B4C-4E8C-A37A-2E25EDD4663B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.ConnectToSharepoint", "IntegrationTool.Module.ConnectToSharepoint\IntegrationTool.Module.ConnectToSharepoint.csproj", "{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.LoadFromSharepoint", "IntegrationTool.Module.LoadFromSharepoint\IntegrationTool.Module.LoadFromSharepoint.csproj", "{389072ED-7406-4B96-A60D-690BE4FAB940}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -728,6 +730,18 @@ Global
 		{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4}.Release|x86.ActiveCfg = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Debug|x86.Build.0 = Debug|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|x86.ActiveCfg = Release|Any CPU
+		{389072ED-7406-4B96-A60D-690BE4FAB940}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -782,5 +796,9 @@ Global
 		{D4024F41-28DF-4FC8-A50E-F388F6835027} = {8F8A2EAC-1DA3-49AF-B7AD-A409F99CACEC}
 		{C548CCB7-4B4C-4E8C-A37A-2E25EDD4663B} = {7ABEE7A1-871E-40EF-88AF-E778630733D8}
 		{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4} = {8F8A2EAC-1DA3-49AF-B7AD-A409F99CACEC}
+		{389072ED-7406-4B96-A60D-690BE4FAB940} = {ED4FEA40-492F-4D2B-AC70-0D5AD00AB071}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBC9511A-1898-46DC-BF1C-956266F70ED0}
 	EndGlobalSection
 EndGlobal
