@@ -40,36 +40,36 @@ namespace IntegrationTool.Flowmanagement
             this.loadedModules = loadedModules;
             this.package = package;
             
-            var deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, this.package.Diagram.Diagram);
+            var diagramDeserializer = new DiagramDeserializer(this.loadedModules, this.package.Diagram.Diagram);
 
-            this.connectionList = deserializer.Connections;
-            foreach (DesignerItemBase item in deserializer.DesignerItems)
+            this.connectionList = diagramDeserializer.Connections;
+            foreach (DesignerItemBase item in diagramDeserializer.DesignerItems)
             {
-                StepConfiguration configuration = package.Configurations.FirstOrDefault(t => t.ConfigurationId == item.ID) as StepConfiguration;
-                ItemWorker itemWorker = InitializeItemWorker(item, configuration);
+                var stepConfiguration = package.Configurations.FirstOrDefault(t => t.ConfigurationId == item.ID) as StepConfiguration;
+                var itemWorker = InitializeItemWorker(item, stepConfiguration);
                 itemWorkers.Add(itemWorker);
             }
         }
 
-        void bgw_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        void bgw_DoWork(object sender, DoWorkEventArgs e)
         {
             var itemWorker = e.Argument as ItemWorker;
             var designerItem = itemWorker.DesignerItem;
 
             ItemLog itemLog = ItemLog.CreateNew(designerItem.ID, designerItem.ItemLabel, designerItem.ModuleDescription.ModuleType.Name, DateTime.Now);
 
-            ObjectResolver objectResolver = new ObjectResolver(this.package.Configurations.OfType<StepConfigurationBase>().ToList(), connectionConfigurations);
+            var objectResolver = new ObjectResolver(this.package.Configurations.OfType<StepConfigurationBase>().ToList(), connectionConfigurations);
 
             try
             {
                 if (designerItem.ModuleDescription.Attributes.ContainsSubConfiguration)
                 {
-                    SerializedDiagram subDiagram = this.package.SubDiagrams.FirstOrDefault(t => t.ParentItemId == designerItem.ID);
+                    var subDiagram = this.package.SubDiagrams.FirstOrDefault(t => t.ParentItemId == designerItem.ID);
                     if (subDiagram != null)
                     {
-                        IntegrationTool.SDK.Diagram.DiagramDeserializer deserializer = new SDK.Diagram.DiagramDeserializer(this.loadedModules, subDiagram.Diagram);
-                        var flowGraph = new FlowGraph(deserializer.DesignerItems, deserializer.Connections);
-                        SubFlowExecution subFlowExecution = new SubFlowExecution(itemWorker, itemLog, objectResolver, flowGraph);
+                        var diagramDeserializer = new DiagramDeserializer(this.loadedModules, subDiagram.Diagram);
+                        var flowGraph = new FlowGraph(diagramDeserializer.DesignerItems, diagramDeserializer.Connections);
+                        var subFlowExecution = new SubFlowExecution(itemWorker, itemLog, objectResolver, flowGraph);
                         subFlowExecution.Execute(this.runLog);                        
                     }
                 }
@@ -100,7 +100,7 @@ namespace IntegrationTool.Flowmanagement
             designerItem.State = ItemState.Initialized;
 
             ItemWorker itemWorker = new ItemWorker(designerItem, stepConfiguration);
-            itemWorker.BackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            itemWorker.BackgroundWorker = new BackgroundWorker();
             itemWorker.BackgroundWorker.WorkerReportsProgress = true;
             itemWorker.BackgroundWorker.DoWork += bgw_DoWork;
             itemWorker.BackgroundWorker.ProgressChanged += BackgroundWorker_ProgressChanged;
@@ -131,26 +131,17 @@ namespace IntegrationTool.Flowmanagement
                 switch (e.State)
                 {
                     case ItemEvent.Started:
-                        if (DesignerItemStart != null)
-                        {
-                            DesignerItemStart(e, new EventArgs());
-                        }
+                        DesignerItemStart?.Invoke(e, new EventArgs());
                         break;
 
                     case ItemEvent.ProgressReport:
-                        if (ProgressReport != null)
-                        {
-                            ProgressReport(e, new EventArgs());
-                        }
+                        ProgressReport?.Invoke(e, new EventArgs());
                         break;
 
                     case ItemEvent.StoppedNotExecuted:
                     case ItemEvent.StoppedWithError:
                     case ItemEvent.StoppedSuccessful:
-                        if (DesignerItemStop != null)
-                        {
-                            DesignerItemStop(e, new EventArgs());
-                        }
+                        DesignerItemStop?.Invoke(e, new EventArgs());
                         break;
                 }
             };
@@ -179,10 +170,7 @@ namespace IntegrationTool.Flowmanagement
                     List<ItemWorker> unfinishedItemWorkers = itemWorkers.Where(t => t.DesignerItem.State != ItemState.Stopped && t.DesignerItem.State != ItemState.Error && t.DesignerItem.State != ItemState.NotExecuted).ToList();
                     if (unfinishedItemWorkers.Count == 0)
                     {
-                        if (RunCompleted != null)
-                        {
-                            RunCompleted(this, new EventArgs());
-                        }
+                        RunCompleted?.Invoke(this, new EventArgs());
                         break;
                     }
 
