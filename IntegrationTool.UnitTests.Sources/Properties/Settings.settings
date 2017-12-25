@@ -5,5 +5,8 @@
     <Setting Name="CrmConnectionString" Type="System.String" Scope="User">
       <Value Profile="(Default)">Url=http://devserv/DataProc; Domain=DEV; Username=johntest; Password=12ab!12ab;</Value>
     </Setting>
+    <Setting Name="SharepointUsername" Type="System.String" Scope="User">
+      <Value Profile="(Default)">mysharepoint@mysptest79.onmicrosoft.com</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

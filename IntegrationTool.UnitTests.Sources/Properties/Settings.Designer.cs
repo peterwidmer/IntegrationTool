@@ -12,7 +12,7 @@ namespace IntegrationTool.UnitTests.Sources.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.3.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -32,6 +32,18 @@ namespace IntegrationTool.UnitTests.Sources.Properties {
             }
             set {
                 this["CrmConnectionString"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mysharepoint@mysptest79.onmicrosoft.com")]
+        public string SharepointUsername {
+            get {
+                return ((string)(this["SharepointUsername"]));
+            }
+            set {
+                this["SharepointUsername"] = value;
             }
         }
     }

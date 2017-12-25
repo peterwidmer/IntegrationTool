@@ -32,7 +32,19 @@ namespace IntegrationTool.Module.LoadFromSharepoint
 
         public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
         {
-            throw new NotImplementedException();
+            var clientContext = connection.GetConnection() as ClientContext;
+
+            var oList = clientContext.Web.Lists.GetByTitle(this.Configuration.ListName);
+            var camlQuery = new CamlQuery() { ViewXml = this.Configuration.CamlQueryViewXml };
+            var collListItem = oList.GetItems(camlQuery);
+
+            clientContext.Load(oList);
+            clientContext.ExecuteQuery();
+
+            foreach (ListItem oListItem in collListItem)
+            {
+                Console.WriteLine("ID: {0} \nTitle: {1} \nBody: {2}", oListItem.Id, oListItem["Title"], oListItem["Body"]);
+            }
         }
     }
 }

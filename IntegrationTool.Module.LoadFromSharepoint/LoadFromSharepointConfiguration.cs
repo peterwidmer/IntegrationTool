@@ -9,5 +9,7 @@ namespace IntegrationTool.Module.LoadFromSharepoint
 {
     public class LoadFromSharepointConfiguration : SourceConfiguration
     {
+        public string ListName { get; set; }
+        public string CamlQueryViewXml { get; set; }
     }
 }

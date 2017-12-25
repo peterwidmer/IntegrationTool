@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IntegrationTool.UnitTests.Sources</RootNamespace>
     <AssemblyName>IntegrationTool.UnitTests.Sources</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -42,6 +42,13 @@
     </Reference>
     <Reference Include="EPPlus">
       <HintPath>..\References\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.14.0.4762.1000\lib\Microsoft.SharePoint.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SharePoint.Client.Runtime, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SharePoint.Client.Runtime.dll.15.0.4859.1000\lib\Microsoft.SharePoint.Client.Runtime\Microsoft.SharePoint.Client.Runtime.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Xrm.Client">
       <HintPath>..\References\Microsoft.Xrm.Client.dll</HintPath>
@@ -115,6 +122,10 @@
       <Project>{fed4145d-5fe4-4fdf-a11f-d637df37721f}</Project>
       <Name>IntegrationTool.Module.LoadFromExcel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.LoadFromSharepoint\IntegrationTool.Module.LoadFromSharepoint.csproj">
+      <Project>{389072ed-7406-4b96-a60d-690be4fab940}</Project>
+      <Name>IntegrationTool.Module.LoadFromSharepoint</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.Module.LoadFromWebRequest\IntegrationTool.Module.LoadFromWebRequest.csproj">
       <Project>{6008825d-1ac4-4654-a1b6-9a7e3be02751}</Project>
       <Name>IntegrationTool.Module.LoadFromWebRequest</Name>
@@ -126,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
