@@ -1,7 +1,7 @@
 ﻿using IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Relation;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericClasses;
-using IntegrationTool.SDK.GenericControls;
+using IntegrationTool.SDK.Controls.Generic;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IntegrationTool.DataMappingControl;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
 {

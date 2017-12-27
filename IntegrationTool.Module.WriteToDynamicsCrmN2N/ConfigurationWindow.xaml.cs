@@ -1,8 +1,8 @@
-﻿using IntegrationTool.SDK;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.SDK;
 using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericClasses;
-using IntegrationTool.SDK.GenericControls;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk.Metadata;

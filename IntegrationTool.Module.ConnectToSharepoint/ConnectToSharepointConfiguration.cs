@@ -18,9 +18,14 @@ namespace IntegrationTool.Module.ConnectToSharepoint
         public string SiteUrl { get; set; }
 
         public SharepointAuthenticationType AuthenticationType { get; set; }
-        public bool UseIntegratedSecurity { get; set; } = true;
+        public bool UseIntegratedSecurity { get; set; }
         public string Domain { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
+
+        public ConnectToSharepointConfiguration()
+        {
+            UseIntegratedSecurity = true;
+        }
     }
 }

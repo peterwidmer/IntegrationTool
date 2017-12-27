@@ -13,16 +13,23 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace IntegrationTool.SDK.Controls.Generic
+namespace IntegrationTool.DataMappingControl
 {
     /// <summary>
-    /// Interaction logic for MessageControl2.xaml
+    /// Interaction logic for MessageControl.xaml
     /// </summary>
-    public partial class MessageControl2 : UserControl
+    public partial class MessageControl : UserControl
     {
-        public MessageControl2()
+        public MessageControl(string title, string message)
         {
             InitializeComponent();
+            this.lblTitle.Content = title;
+            this.lblMessage.Text = message;
+        }
+
+        public void SetMessageHeight(double height)
+        {
+            this.rowMessageBlock.Height = new GridLength(height, GridUnitType.Star);
         }
     }
 }

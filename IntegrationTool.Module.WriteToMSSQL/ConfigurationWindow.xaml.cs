@@ -1,11 +1,11 @@
-﻿using IntegrationTool.DBAccess;
+﻿using IntegrationTool.DataMappingControl;
+using IntegrationTool.DBAccess;
 using IntegrationTool.Module.DbCommons;
 using IntegrationTool.Module.WriteToMSSQL.UserControls;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Controls.Generic;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.GenericClasses;
-using IntegrationTool.SDK.GenericControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;

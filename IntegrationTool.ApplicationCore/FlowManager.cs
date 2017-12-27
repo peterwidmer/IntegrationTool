@@ -131,17 +131,28 @@ namespace IntegrationTool.Flowmanagement
                 switch (e.State)
                 {
                     case ItemEvent.Started:
-                        DesignerItemStart?.Invoke(e, new EventArgs());
+                        if(DesignerItemStart != null)
+                        {
+                            DesignerItemStart.Invoke(e, new EventArgs());
+                        }
+                        
                         break;
 
                     case ItemEvent.ProgressReport:
-                        ProgressReport?.Invoke(e, new EventArgs());
+                        if(ProgressReport != null)
+                        {
+                            ProgressReport.Invoke(e, new EventArgs());
+                        }
                         break;
 
                     case ItemEvent.StoppedNotExecuted:
                     case ItemEvent.StoppedWithError:
                     case ItemEvent.StoppedSuccessful:
-                        DesignerItemStop?.Invoke(e, new EventArgs());
+                        if(DesignerItemStop != null)
+                        {
+                            DesignerItemStop.Invoke(e, new EventArgs());
+                        }
+                        
                         break;
                 }
             };
@@ -170,7 +181,10 @@ namespace IntegrationTool.Flowmanagement
                     List<ItemWorker> unfinishedItemWorkers = itemWorkers.Where(t => t.DesignerItem.State != ItemState.Stopped && t.DesignerItem.State != ItemState.Error && t.DesignerItem.State != ItemState.NotExecuted).ToList();
                     if (unfinishedItemWorkers.Count == 0)
                     {
-                        RunCompleted?.Invoke(this, new EventArgs());
+                        if(RunCompleted != null)
+                        {
+                            RunCompleted.Invoke(this, new EventArgs());
+                        }
                         break;
                     }
 

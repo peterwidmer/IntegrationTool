@@ -49,6 +49,9 @@
     <Compile Include="DataMapping.cs" />
     <Compile Include="DragDataWrapper.cs" />
     <Compile Include="ListBoxDragDropDataProvider.cs" />
+    <Compile Include="LoadingControl.xaml.cs">
+      <DependentUpon>LoadingControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MappingControl.xaml.cs">
       <DependentUpon>MappingControl.xaml</DependentUpon>
     </Compile>
@@ -56,14 +59,28 @@
     <Compile Include="DragHelper.cs" />
     <Compile Include="DropHelper.cs" />
     <Compile Include="IDataDropObjectProvider.cs" />
+    <Compile Include="MessageControl.xaml.cs">
+      <DependentUpon>MessageControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="LoadingControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MappingControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="spinnermask.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

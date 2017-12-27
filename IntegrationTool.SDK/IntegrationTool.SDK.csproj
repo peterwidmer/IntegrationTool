@@ -79,12 +79,6 @@
     <Compile Include="Controls\Generic\LogSummaryControl.xaml.cs">
       <DependentUpon>LogSummaryControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Generic\MessageControl.xaml.cs">
-      <DependentUpon>MessageControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Generic\MessageControl2.xaml.cs">
-      <DependentUpon>MessageControl2.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Data\DataConditionClasses\ConditionCheckHelper.cs" />
     <Compile Include="Data\DataConditionClasses\DataConditionAttribute.cs" />
     <Compile Include="Data\DataConditionClasses\IDataConditionCheck.cs" />
@@ -126,9 +120,6 @@
     <Compile Include="FlowManagement\ItemWorker.cs" />
     <Compile Include="FlowManagement\ProgressReport.cs" />
     <Compile Include="GenericClasses\NameDisplayName.cs" />
-    <Compile Include="Controls\Generic\LoadingControl.xaml.cs">
-      <DependentUpon>LoadingControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\ExcelConnectionObject.cs" />
     <Compile Include="Logging\ILogRendering.cs" />
     <Compile Include="Logging\ItemLog.cs" />
@@ -179,21 +170,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Generic\MessageControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Generic\LoadingControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Generic\MessageControl2.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Controls\Generic\spinnermask.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IntegrationTool.DataMappingControl\IntegrationTool.DataMappingControl.csproj">

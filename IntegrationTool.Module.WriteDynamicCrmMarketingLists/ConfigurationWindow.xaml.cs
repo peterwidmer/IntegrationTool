@@ -1,7 +1,7 @@
 ﻿using IntegrationTool.Module.WriteDynamicCrmMarketingLists.UserControls;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using IntegrationTool.SDK.GenericControls;
+using IntegrationTool.SDK.Controls.Generic;
 using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk.Metadata;
@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IntegrationTool.DataMappingControl;
 
 namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
 {
