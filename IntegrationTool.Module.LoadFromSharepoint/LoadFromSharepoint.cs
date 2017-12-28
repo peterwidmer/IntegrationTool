@@ -38,12 +38,33 @@ namespace IntegrationTool.Module.LoadFromSharepoint
             var camlQuery = new CamlQuery() { ViewXml = this.Configuration.CamlQueryViewXml };
             var collListItem = oList.GetItems(camlQuery);
 
-            clientContext.Load(oList);
+            clientContext.Load(collListItem);
             clientContext.ExecuteQuery();
 
-            foreach (ListItem oListItem in collListItem)
+            foreach (ListItem listItem in collListItem)
             {
-                Console.WriteLine("ID: {0} \nTitle: {1} \nBody: {2}", oListItem.Id, oListItem["Title"], oListItem["Body"]);
+                foreach (var fieldValue in listItem.FieldValues)
+                {
+                    if (datastore.Metadata.ContainsColumn(fieldValue.Key) == false)
+                    {
+                        datastore.AddColumn(new ColumnMetadata(fieldValue.Key));
+                    }
+                }
+
+                object[] data = new object[datastore.Metadata.Columns.Count];
+                foreach (var fieldValue in listItem.FieldValues)
+                {
+                    if (fieldValue.Value as FieldUserValue != null)
+                    {
+                        data[datastore.Metadata[fieldValue.Key].ColumnIndex] = fieldValue.Value;
+                    }
+                    else
+                    {
+                        data[datastore.Metadata[fieldValue.Key].ColumnIndex] = fieldValue.Value;
+                    }
+                }
+
+                datastore.AddData(data);
             }
         }
     }
