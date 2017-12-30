@@ -45,10 +45,7 @@ namespace IntegrationTool.Module.LoadFromSharepoint
             {
                 foreach (var fieldValue in listItem.FieldValues)
                 {
-                    if (datastore.Metadata.ContainsColumn(fieldValue.Key) == false)
-                    {
-                        datastore.AddColumn(new ColumnMetadata(fieldValue.Key));
-                    }
+                    ExtractTableHeaders(datastore, fieldValue);
                 }
 
                 object[] data = new object[datastore.Metadata.Columns.Count];
@@ -56,7 +53,15 @@ namespace IntegrationTool.Module.LoadFromSharepoint
                 {
                     if (fieldValue.Value as FieldUserValue != null)
                     {
-                        data[datastore.Metadata[fieldValue.Key].ColumnIndex] = fieldValue.Value;
+                        var fieldUserValue = (FieldUserValue)fieldValue.Value;
+                        data[datastore.Metadata[fieldValue.Key + "_LookupId"].ColumnIndex] = fieldUserValue.LookupId;
+                        data[datastore.Metadata[fieldValue.Key + "_LookupValue"].ColumnIndex] = fieldUserValue.LookupValue;
+                    }
+                    else if (fieldValue.Value as FieldLookupValue != null)
+                    {
+                        var fieldLookupValue = (FieldLookupValue)fieldValue.Value;
+                        data[datastore.Metadata[fieldValue.Key + "_LookupId"].ColumnIndex] = fieldLookupValue.LookupId;
+                        data[datastore.Metadata[fieldValue.Key + "_LookupValue"].ColumnIndex] = fieldLookupValue.LookupValue;
                     }
                     else
                     {
@@ -65,6 +70,22 @@ namespace IntegrationTool.Module.LoadFromSharepoint
                 }
 
                 datastore.AddData(data);
+            }
+        }
+
+        private void ExtractTableHeaders(IDatastore datastore, KeyValuePair<string,object> fieldValue)
+        {
+            if (datastore.Metadata.ContainsColumn(fieldValue.Key) == false)
+            {
+                if (fieldValue.Value as FieldUserValue != null || fieldValue.Value as FieldLookupValue != null)
+                {
+                    datastore.AddColumn(new ColumnMetadata(fieldValue.Key + "_LookupId"));
+                    datastore.AddColumn(new ColumnMetadata(fieldValue.Key + "_LookupValue"));
+                }
+                else
+                {
+                    datastore.AddColumn(new ColumnMetadata(fieldValue.Key));
+                }
             }
         }
     }
