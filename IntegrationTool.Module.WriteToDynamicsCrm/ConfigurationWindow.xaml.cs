@@ -115,7 +115,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             this.entityMetadata = ((object[])e.Result)[0] as EntityMetadata;
 
             attributeMapping = CreateAttributeMappingWindow(this.entityMetadata);
-            existingCheck = CreateExistingCheckWindow();
+            existingCheck = CreateImportSettingsControl();
             relationMapping = CreateRelationmappingWindow(this.entityMetadata);
 
             ConfigurationContent.Content = new ConfigurationContent(attributeMapping, existingCheck, relationMapping);         
@@ -150,14 +150,23 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             }
         }
 
-        private ImportSettings CreateExistingCheckWindow()
+        private ImportSettings CreateImportSettingsControl()
         {
             ImportSettings existingCheck = new ImportSettings(this.configuration);
-            foreach(var mapping in this.configuration.Mapping.OrderBy(t=> t.Target))
+            foreach (var mapping in GetPrimaryKeyAttributes())
             {
-                existingCheck.AvailablePrimaryKeyAttributes.Add(new NameDisplayName(mapping.Target, mapping.Target));
+                existingCheck.AvailablePrimaryKeyAttributes.Add(mapping);
             }
             return existingCheck;
+        }
+
+        private IEnumerable<NameDisplayName> GetPrimaryKeyAttributes()
+        {
+            var resultList = new List<NameDisplayName>();
+            resultList.AddRange(configuration.Mapping.Select(mapping => new NameDisplayName(mapping.Target, mapping.Target)));
+            resultList.AddRange(configuration.RelationMapping.Select(mapping => new NameDisplayName(mapping.LogicalName, mapping.LogicalName)));
+
+            return resultList.OrderBy(t => t.DisplayName);
         }
 
         private RelationMapping CreateRelationmappingWindow(EntityMetadata entityMetadata)

@@ -19,20 +19,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         public MultipleFoundMode MultipleFoundMode { get; set; }
         public ImportMode SetStateMode { get; set; }
         public ImportMode SetOwnerMode { get; set; }
-        public List<DataMapping> Mapping { get; set; }
-        public List<PicklistMapping> PicklistMapping { get; set; }
-        public ObservableCollection<string> PrimaryKeyAttributes { get; set; }
-        public List<RelationMapping> RelationMapping { get; set; }
-        public int BatchSizeResolving { get; set; }
-
-        public WriteToDynamicsCrmConfiguration()
-        {
-            Mapping = new List<DataMapping>();
-            PicklistMapping = new List<SDK.PicklistMapping>();
-            PrimaryKeyAttributes = new ObservableCollection<string>();
-            RelationMapping = new List<RelationMapping>();
-            BatchSizeResolving = 100;
-        }
+        public List<DataMapping> Mapping { get; set; } = new List<DataMapping>();
+        public List<PicklistMapping> PicklistMapping { get; set; } = new List<PicklistMapping>();
+        public ObservableCollection<string> PrimaryKeyAttributes { get; set; } = new ObservableCollection<string>();
+        public List<RelationMapping> RelationMapping { get; set; } = new List<RelationMapping>();
+        public int BatchSizeResolving { get; set; } = 100;
 
         public string [] GetAllMappedAttributes()
         {
