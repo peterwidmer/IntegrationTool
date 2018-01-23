@@ -210,9 +210,8 @@ namespace IntegrationTool.Flowmanagement
                             // Check if all incoming connection allow an execution
                             bool allowExecution_PreviousErrorTest = FlowHelper.AllowExecution_OnPreviousErrorTest(itemWorker, this.itemWorkers, this.connectionList);
                             bool allowExecution_PreviousItemNotSuccessfulOnErrorlineTest = FlowHelper.AllowExecution_PreviousStepNotSuccessfulOnErrorlineTest(itemWorker, this.itemWorkers, this.connectionList);
-                            bool allowExecution_activeItem = itemWorker.Configuration.Status == StepExecutionStatus.Active;
 
-                            if (allowExecution_PreviousErrorTest && allowExecution_PreviousItemNotSuccessfulOnErrorlineTest && allowExecution_activeItem)
+                            if (allowExecution_PreviousErrorTest && allowExecution_PreviousItemNotSuccessfulOnErrorlineTest)
                             {
                                 ExecuteDesignerItem(itemWorker);
                             }
@@ -235,10 +234,17 @@ namespace IntegrationTool.Flowmanagement
 
         private void ExecuteDesignerItem(ItemWorker itemWorker)
         {
-            progress.Report(new ProgressReport() { State = ItemEvent.Started, DesignerItem = itemWorker.DesignerItem, Message = "Started" });
+            if (itemWorker.Configuration.Status == StepExecutionStatus.Active)
+            {
+                progress.Report(new ProgressReport() { State = ItemEvent.Started, DesignerItem = itemWorker.DesignerItem, Message = "Started" });
 
-            itemWorker.DesignerItem.State = ItemState.Running;
-            itemWorker.BackgroundWorker.RunWorkerAsync(itemWorker);
+                itemWorker.DesignerItem.State = ItemState.Running;
+                itemWorker.BackgroundWorker.RunWorkerAsync(itemWorker);
+            }
+            else
+            {
+                DoNotExecuteDesignerItem(itemWorker);
+            }
         }
 
         private void DoNotExecuteDesignerItem(ItemWorker itemWorker)

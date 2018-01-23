@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Xml.Serialization;
 
 namespace IntegrationTool.SDK
@@ -37,6 +38,8 @@ namespace IntegrationTool.SDK
         {
             Packages = new ObservableCollection<Package>();
             RunLogs = new ObservableCollection<RunLog>();
+            
+
             Connections = new ObservableCollection<ConnectionConfigurationBase>();
         }
 
@@ -59,8 +62,8 @@ namespace IntegrationTool.SDK
         /// </summary>
         public void LoadRunLogs()
         {
-            this.RunLogs.Clear();
-            string logBasePath = this.ProjectFolder.Trim('\\') + @"\logs\";
+            var loadedLogs = new List<RunLog>();            
+            string logBasePath = this.ProjectFolder.Trim(Path.DirectorySeparatorChar) + @"\logs\";
             if (Directory.Exists(logBasePath))
             {
                 foreach (string runLogFileDirectory in Directory.GetDirectories(logBasePath))
@@ -72,8 +75,14 @@ namespace IntegrationTool.SDK
 
                     string serializedRunLog = ConfigurationFileHandler.ReadStringFromFile(runLogFileDirectory + @"\runLog.xml");
                     RunLog runLog = (RunLog)ConfigurationSerializer.DeserializeObject(serializedRunLog, typeof(RunLog), new Type[] { });
-                    this.RunLogs.Add(runLog);                    
+                    loadedLogs.Add(runLog);                    
                 }
+            }
+
+            this.RunLogs.Clear();
+            foreach(var log in loadedLogs.OrderBy(t=> t.StartTime))
+            {
+                RunLogs.Add(log);
             }
         }
 

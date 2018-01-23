@@ -33,7 +33,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
             InitializeComponent();
             this.DataContext = this.runLog = runLog;
             this.moduleDescriptions = moduleDescriptions;
-            this.LogLeader.Visibility = System.Windows.Visibility.Hidden;
+            this.LogLeader.Visibility = Visibility.Hidden;
 
             InitializeLogMenu();
         }
@@ -67,10 +67,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            if (BackButtonClicked != null)
-            {
-                BackButtonClicked(sender, e);
-            }
+            BackButtonClicked?.Invoke(sender, e);
         }
 
         private void logMenu_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -80,7 +77,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
                 TreeViewItem menuItem = logMenu.SelectedItem as TreeViewItem;
                 ItemLog itemLog = menuItem.Tag as ItemLog;
 
-                this.LogLeader.Visibility = System.Windows.Visibility.Visible;
+                this.LogLeader.Visibility = Visibility.Visible;
                 this.LogLeader.SetItemLog(itemLog);
                 this.LogLeader.SetDetailedLogVisibility(Visibility.Hidden);
 

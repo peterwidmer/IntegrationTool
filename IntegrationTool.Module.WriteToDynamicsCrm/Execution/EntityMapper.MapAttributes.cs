@@ -63,8 +63,15 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Decimal:
-                        decimal decimalValue = Convert.ToDecimal(obj.ToString());
-                        entity.Attributes.Add(dataMapping.Target, decimalValue);
+                        try
+                        {
+                            decimal decimalValue = Convert.ToDecimal(obj.ToString());
+                            entity.Attributes.Add(dataMapping.Target, decimalValue);
+                        }
+                        catch(FormatException)
+                        {
+                            throw new FormatException("Could not convert value '" + obj.ToString() + "' to decimal.");
+                        }
                         break;
 
                     case AttributeTypeCode.Double:

@@ -79,10 +79,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             for (int i = startIndex; i < maxIndex; i++)
             {
                 var rowConditions = BuildPrimaryKeyConditions(sourceEntities, i);
-                var rowFilter = new FilterExpression(LogicalOperator.And);
-                rowFilter.Conditions.AddRange(rowConditions);
-
-                filterExpression.Filters.Add(rowFilter);
+                if (rowConditions != null)
+                {
+                    var rowFilter = new FilterExpression(LogicalOperator.And);
+                    rowFilter.Conditions.AddRange(rowConditions);
+                    filterExpression.Filters.Add(rowFilter);
+                }
             }
 
             return filterExpression;
@@ -120,7 +122,21 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             var conditions = new List<ConditionExpression>();
             foreach (var primaryKey in this.primaryKeyAttributeMetadataDictionary)
             {
-                conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, sourceEntities[i][primaryKey.Key]));
+                if (!sourceEntities[i].Contains(primaryKey.Key)) { return null; }
+
+                var conditionValue = sourceEntities[i][primaryKey.Key];
+                if (conditionValue is EntityReference)
+                {
+                    conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, ((EntityReference)conditionValue).Id));
+                }
+                else if(conditionValue is OptionSetValue)
+                {
+                    conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, ((EntityReference)conditionValue).Id));
+                }
+                else
+                {
+                    conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, conditionValue));
+                }
             }
             return conditions;
         }
