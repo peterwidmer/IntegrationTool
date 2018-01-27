@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.ConsoleProjectStarter", "IntegrationTool.ConsoleProjectStarter\IntegrationTool.ConsoleProjectStarter.csproj", "{91339927-1BED-4559-98BE-78A36F91D086}"
 EndProject
@@ -159,6 +159,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.ConnectToSharepoint", "IntegrationTool.Module.ConnectToSharepoint\IntegrationTool.Module.ConnectToSharepoint.csproj", "{EE2D6E05-EA00-44C8-BDCA-0C46F4FBF2D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.Module.LoadFromSharepoint", "IntegrationTool.Module.LoadFromSharepoint\IntegrationTool.Module.LoadFromSharepoint.csproj", "{389072ED-7406-4B96-A60D-690BE4FAB940}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53E78482-4E65-4966-BAEC-B386B0691F35}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

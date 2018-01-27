@@ -21,5 +21,5 @@ The development is currently done with a Visual Studio 2013 (Community Edition o
 **WiX Toolset V3.8**. Is used for the setup.  
 You can download it here: http://wix.codeplex.com/releases/view/115492
 
-**Developer Pack of .Net 4.5.2**. Makes .Net 4.5.2 available in your Visual Studio.  
-You can download it here: http://www.microsoft.com/en-us/download/details.aspx?id=42637
+**Developer Pack of .Net 4.6.2**. Makes .Net 4.6.2 available in your Visual Studio.  
+You can download it here: https://www.microsoft.com/en-us/download/details.aspx?id=53321
