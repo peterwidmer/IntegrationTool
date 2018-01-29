@@ -1,8 +1,6 @@
 ﻿using IntegrationTool.Module.CrmWrapper;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;

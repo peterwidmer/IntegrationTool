@@ -1,7 +1,5 @@
 ﻿using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
@@ -15,7 +13,7 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                            DisplayName = "CRM",
                            ModuleType = ModuleType.Source,
                            GroupName = ModuleGroup.Source,
-                           ConnectionType = typeof(CrmConnection),
+                           ConnectionType = typeof(IOrganizationService),
                            ConfigurationType = typeof(LoadFromDynamicsCrmConfiguration))]
     public class LoadFromDynamicsCrm : IModule, IDataSource
     {

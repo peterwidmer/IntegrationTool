@@ -1,6 +1,4 @@
 ﻿using IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models;
-using IntegrationTool.SDK;
-using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;

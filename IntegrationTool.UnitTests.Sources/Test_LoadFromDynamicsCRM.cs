@@ -5,10 +5,8 @@ using IntegrationTool.SDK;
 using IntegrationTool.Module.LoadFromDynamicsCrm;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.UnitTests.Sources.Properties;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Client.Services;
 using IntegrationTool.SDK.Data;
+using Microsoft.Xrm.Sdk;
 
 namespace IntegrationTool.UnitTests.Sources
 {
@@ -51,8 +49,6 @@ namespace IntegrationTool.UnitTests.Sources
 
             organizationService.Delete("contact", contact1);
             organizationService.Delete("account", account1);
-
-            ((OrganizationService)organizationService).Dispose();
         }
 
         private string GetTestFetchXml(string contactName1)

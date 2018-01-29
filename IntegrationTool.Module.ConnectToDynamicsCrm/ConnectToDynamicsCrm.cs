@@ -2,7 +2,7 @@
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.SDK.Module.ModuleAttributes;
-using Microsoft.Xrm.Client;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace IntegrationTool.Module.ConnectToDynamicsCrm
         Name="ConnectToDynamicsCrm", 
         ContainsSubConfiguration=false, 
         ModuleType=ModuleType.Connection,
-        ConnectionType = typeof(CrmConnection),
+        ConnectionType = typeof(IOrganizationService),
         ConfigurationType=typeof(ConnectToDynamicsCrmConfiguration))]
     public class ConnectToDynamicsCrm : IModule, IConnection
     {

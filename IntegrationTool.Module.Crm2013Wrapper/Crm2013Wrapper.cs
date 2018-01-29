@@ -1,10 +1,10 @@
 ﻿using IntegrationTool.SDK.GenericClasses;
 using Microsoft.Crm.Sdk.Messages;
-using Microsoft.Xrm.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
+using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +18,10 @@ namespace IntegrationTool.Module.Crm2013Wrapper
     {
         public static IOrganizationService GetConnection(string connectionString)
         {
-            CrmConnection crmConnectionInstance = CrmConnection.Parse(connectionString);
-            return new Microsoft.Xrm.Client.Services.OrganizationService(crmConnectionInstance) as IOrganizationService;
+            var crmServiceClient = new CrmServiceClient(connectionString);
+            return crmServiceClient.OrganizationWebProxyClient != null ? 
+                (IOrganizationService)crmServiceClient.OrganizationWebProxyClient : 
+                (IOrganizationService)crmServiceClient.OrganizationServiceProxy;
         }
 
         public static EntityMetadata GetEntityMetadata(IOrganizationService service, string entityName)

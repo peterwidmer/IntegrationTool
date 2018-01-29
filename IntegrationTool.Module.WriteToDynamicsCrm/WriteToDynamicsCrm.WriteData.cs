@@ -4,8 +4,6 @@ using IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models;
 using IntegrationTool.Module.WriteToDynamicsCrm.Logging;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
@@ -186,7 +184,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         service.Update(entity);
                         foreach (var attribute in entity.Attributes)
                         {
-                            resolvedEntity.SetAttributeValue(attribute.Key, attribute.Value);
+                            resolvedEntity.Attributes.Add(attribute.Key, attribute.Value);
                         }
                     }
                     else
@@ -204,7 +202,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if(ownerMustBeSet)
                 {
                     service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
-                    resolvedEntity.SetAttributeValue("ownerid", ownerid);
+                    resolvedEntity.Attributes.Add("ownerid", ownerid);
                 }
 
                 var resolvedEntityStatuscode = resolvedEntity.Contains("statuscode") ? (OptionSetValue)resolvedEntity["statuscode"] : null;
@@ -212,8 +210,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if(statusMustBeSet)
                 {
                     service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
-                    resolvedEntity.SetAttributeValue("statecode", statecode);
-                    resolvedEntity.SetAttributeValue("statuscode", statuscode);
+                    resolvedEntity.Attributes.Add("statecode", statecode);
+                    resolvedEntity.Attributes.Add("statuscode", statuscode);
                 }
             }
         }

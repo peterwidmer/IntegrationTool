@@ -2,8 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IntegrationTool.SDK;
 using IntegrationTool.Module.ConnectToDynamicsCrm;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using IntegrationTool.UnitTests.Targets.Properties;
 using IntegrationTool.Module.Crm2013Wrapper;
 using System.Linq;

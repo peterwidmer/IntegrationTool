@@ -7,8 +7,6 @@ using IntegrationTool.SDK.Data;
 using IntegrationTool.SDK.Database;
 using IntegrationTool.UnitTests.Targets.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;

@@ -1,9 +1,6 @@
 ﻿using IntegrationTool.Module.WriteDynamicCrmMarketingLists.UserControls;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using IntegrationTool.SDK.Controls.Generic;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
-using Microsoft.Xrm.Client;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists
                            DisplayName = "CRM Marketing-List",
                            ModuleType = ModuleType.Target,
                            GroupName = ModuleGroup.Target,
-                           ConnectionType = typeof(CrmConnection),
+                           ConnectionType = typeof(IOrganizationService),
                            ConfigurationType = typeof(WriteToDynamicsCrmMarketingListsConfiguration))]
     public partial class WriteToDynamicsCrmMarketingLists : IModule, IDataTarget
     {

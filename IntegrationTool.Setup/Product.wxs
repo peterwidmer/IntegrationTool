@@ -98,16 +98,13 @@
         <File Id="MainComponent_CommandLine.dll" Source="..\References\CommandLine.dll" KeyPath="yes" />
       </Component>
       <Component Id="MainComponent_Microsoft_Crm_Sdk_Proxy" Win64="yes">
-        <File Id="MainComponent_Microsoft.Crm.Sdk.Proxy.dll" Source="..\References\Microsoft.Crm.Sdk.Proxy.dll" KeyPath="yes" />
-      </Component>
-      <Component Id="MainComponent_Microsoft_Xrm_Client" Win64="yes">
-        <File Id="MainComponent_Microsoft.Xrm.Client.dll" Source="..\References\Microsoft.Xrm.Client.dll" KeyPath="yes" />
+        <File Id="MainComponent_Microsoft.Crm.Sdk.Proxy.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.Crm.Sdk.Proxy.dll" KeyPath="yes" />
       </Component>
       <Component Id="MainComponent_Microsoft_Xrm_Sdk" Win64="yes">
-        <File Id="MainComponent_Microsoft.Xrm.Sdk.dll" Source="..\References\Microsoft.Xrm.Sdk.dll" KeyPath="yes" />
+        <File Id="MainComponent_Microsoft.Xrm.Sdk.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.Xrm.Sdk.dll" KeyPath="yes" />
       </Component>
       <Component Id="MainComponent_Microsoft_Xrm_Tooling_Connector" Win64="yes">
-        <File Id="MainComponent_Microsoft.Xrm.Tooling.Connector.dll" Source="..\References\Microsoft.Xrm.Tooling.Connector.dll" KeyPath="yes" />
+        <File Id="MainComponent_Microsoft.Xrm.Tooling.Connector.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.Xrm.Tooling.Connector.dll" KeyPath="yes" />
       </Component>      
       <Component Id="MainComponent_SQLite_Interop_dll" Win64="yes">
         <File Id="MainComponent_SQLite.Interop.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)x64\SQLite.Interop.dll" KeyPath="yes" />
@@ -119,7 +116,7 @@
         <File Id="MainComponent_CsvHelper.dll" Source="..\References\CsvHelper.dll" KeyPath="yes" />
       </Component>
       <Component Id="MainComponent_Microsoft_IdentityModel_Clients_ActiveDirectory" Win64="yes">
-        <File Id="MainComponent_Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="..\References\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" KeyPath="yes" />
+        <File Id="MainComponent_Microsoft.IdentityModel.Clients.ActiveDirectory.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.IdentityModel.Clients.ActiveDirectory.dll" KeyPath="yes" />
       </Component>     
     </ComponentGroup>
 

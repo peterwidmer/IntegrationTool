@@ -3,8 +3,6 @@ using IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Crm.Sdk.Messages;
-using Microsoft.Xrm.Client;
-using Microsoft.Xrm.Client.Services;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
