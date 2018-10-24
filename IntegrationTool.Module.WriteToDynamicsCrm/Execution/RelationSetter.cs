@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 {
@@ -29,14 +30,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             }
         }
 
-        public void SetRelation(string relationMappingLogicalName, Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities)
+        public void SetRelation(string relationMappingLogicalName, Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities, LookupResolve configurationLookupResolve)
         {
             EntityMapper entityMapper = new EntityMapper(relatedEntityMetadata.GetAttributeMetadata(), dataObject.Metadata, relationMappings, null);
 
             for (int i = 0; i < sourceEntities.Length; i++)
             {
                 Entity relatedEntity = new Entity();
-                entityMapper.MapAttributes(relatedEntity, dataObject[i]);
+                entityMapper.MapAttributes(relatedEntity, dataObject[i], configurationLookupResolve);
                 string relatedEntityKey = JoinResolver.BuildExistingCheckKey(relatedEntity, attributeMetadataDictionary);
                 if (relatedEntities.ContainsKey(relatedEntityKey))
                 {

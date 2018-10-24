@@ -25,15 +25,17 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="10"/>
+            <RowDefinition Height="24"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="202*"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
         <Label Content="Import-Mode:" Grid.Column="1" Grid.Row="1"/>
-        <ComboBox x:Name="ddAvailablePrimaryKeyAttributes" ItemsSource="{Binding}" DisplayMemberPath="Name" Grid.Row="9" Grid.Column="2"/>
-        <Label Content="Select Primary-Key:" Grid.Column="1" Grid.Row="9"/>
-        <Button x:Name="btnAddPrimaryKey" Content="Add" Grid.Column="4" Grid.Row="9" Click="btnAddPrimaryKey_Click"/>
-        <Label Content="Selected Primary Keys:" Grid.Column="1" Grid.Row="11"/>
-        <ListBox ItemsSource="{Binding}" x:Name="lbSelectedPrimaryKeyAttributes" Grid.Column="2" Grid.Row="11" KeyUp="lbSelectedPrimaryKeyAttributes_KeyUp"/>
+        <ComboBox x:Name="ddAvailablePrimaryKeyAttributes" ItemsSource="{Binding}" DisplayMemberPath="Name" Grid.Row="11" Grid.Column="2"/>
+        <Label Content="Select Primary-Key:" Grid.Column="1" Grid.Row="11"/>
+        <Button x:Name="btnAddPrimaryKey" Content="Add" Grid.Column="4" Grid.Row="11" Click="btnAddPrimaryKey_Click"/>
+        <Label Content="Selected Primary Keys:" Grid.Column="1" Grid.Row="13"/>
+        <ListBox ItemsSource="{Binding}" x:Name="lbSelectedPrimaryKeyAttributes" Grid.Column="2" Grid.Row="13" KeyUp="lbSelectedPrimaryKeyAttributes_KeyUp"/>
         <ComboBox x:Name="ddImportMode" Grid.Column="2" Grid.Row="1" SelectedValue="{Binding Path=ImportMode}" SelectedValuePath="Tag" SelectionChanged="ddImportMode_SelectionChanged" >
             <ComboBoxItem Content="None" Tag="None" />
             <ComboBoxItem Content="Create" Tag="Create" />
@@ -66,5 +68,13 @@
             <ComboBoxItem Content="Create &amp; Update (changed values only)" Tag="AllChangedValuesOnly" />
         </ComboBox>
 
-    </Grid>
+        <Label Content="Resolve Lookups:" Grid.Column="1" Grid.Row="9"/>
+        <ComboBox x:Name="ddLookupResolve" Grid.Column="2" Grid.Row="9" SelectedValue="{Binding Path=LookupResolve, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Tag" >
+            <ComboBoxItem Content="Default" Tag="All" />
+            <ComboBoxItem Content="Do not resolve Lookups" Tag="None" />
+            <ComboBoxItem Content="Source is CRM Guid" Tag="Guid" /> 
+        </ComboBox>
+
+
+</Grid>
 </UserControl>

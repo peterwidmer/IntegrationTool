@@ -28,10 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", 
 		References\CommandLine.dll = References\CommandLine.dll
 		References\CsvHelper.dll = References\CsvHelper.dll
 		References\EPPlus.dll = References\EPPlus.dll
-		References\Microsoft.Crm.Sdk.Proxy.dll = References\Microsoft.Crm.Sdk.Proxy.dll
-		References\Microsoft.Xrm.Client.dll = References\Microsoft.Xrm.Client.dll
-		References\Microsoft.Xrm.Sdk.dll = References\Microsoft.Xrm.Sdk.dll
-		References\Microsoft.Xrm.Tooling.Connector.dll = References\Microsoft.Xrm.Tooling.Connector.dll
+		References\Newtonsoft.Json.dll = References\Newtonsoft.Json.dll
+		References\SQLite.Interop.dll = References\SQLite.Interop.dll
+		References\System.Data.SQLite.dll = References\System.Data.SQLite.dll
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTool.UnitTests.Sources", "IntegrationTool.UnitTests.Sources\IntegrationTool.UnitTests.Sources.csproj", "{B8BC7CD2-A397-482B-ABE3-AD0F0E442839}"

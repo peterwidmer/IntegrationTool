@@ -7,12 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 {
     public partial class EntityMapper
     {
-        public void MapAttributes(Entity entity, object[] data)
+        public void MapAttributes(Entity entity, object[] data, LookupResolve configurationLookupResolve)
         {
             foreach (var dataMapping in this.mappings)
             {
@@ -38,11 +39,19 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Customer:
-                        LookupAttributeMetadata customerMetadata = attributeMetadata as LookupAttributeMetadata;
-                        Guid customerId = new Guid(obj.ToString());
-                        //entity.Attributes.Add(customerMetadata.LogicalName, new EntityReference(customerMetadata.)
-                        throw new Exception("Direct Customer Attribute Mapping not supported!");
 
+                        if (configurationLookupResolve == LookupResolve.Guid)
+                        {
+                            LookupAttributeMetadata clookupMetadata = attributeMetadata as LookupAttributeMetadata;
+                            Guid clookupId = new Guid(obj.ToString());
+                            entity.Attributes.Add(dataMapping.Target, new EntityReference(clookupMetadata.Targets[0], clookupId));
+                        }
+                        else
+                        {
+                            throw new Exception("Direct Customer Attribute Mapping not supported!");
+                        }
+
+                        break;
                     case AttributeTypeCode.DateTime:
                         if(obj.GetType() == typeof(DateTime))
                         {
@@ -85,10 +94,19 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Owner:
+                        LookupAttributeMetadata olookupMetadata = attributeMetadata as LookupAttributeMetadata;
+                        Guid olookupId = new Guid(obj.ToString());
+                        entity.Attributes.Add(dataMapping.Target, new EntityReference(olookupMetadata.Targets[0], olookupId));
+                        break;
+
                     case AttributeTypeCode.Lookup:
-                        LookupAttributeMetadata lookupMetadata = attributeMetadata as LookupAttributeMetadata;
-                        Guid lookupId = new Guid(obj.ToString());
-                        entity.Attributes.Add(dataMapping.Target, new EntityReference(lookupMetadata.Targets[0], lookupId));
+                        if (configurationLookupResolve == LookupResolve.Guid || configurationLookupResolve == LookupResolve.All)
+                        {
+                            LookupAttributeMetadata lookupMetadata = attributeMetadata as LookupAttributeMetadata;
+                            Guid lookupId = new Guid(obj.ToString());
+                            entity.Attributes.Add(dataMapping.Target, new EntityReference(lookupMetadata.Targets[0], lookupId));
+                        }
+
                         break;
 
                     case AttributeTypeCode.Money:

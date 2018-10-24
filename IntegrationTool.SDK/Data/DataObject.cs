@@ -46,7 +46,7 @@ namespace IntegrationTool.SDK
 
             foreach(var objArray in this.data)
             {
-                string value = objArray[column.ColumnIndex].ToString();
+                string value = objArray[column.ColumnIndex]?.ToString();
                 if(distinctValues.Contains(value) == false)
                 {
                     distinctValues.Add(value);

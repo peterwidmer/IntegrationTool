@@ -17,6 +17,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         public string EntityName { get; set; }
         public ImportMode ImportMode { get; set; }
         public MultipleFoundMode MultipleFoundMode { get; set; }
+        public LookupResolve LookupResolve { get; set; }
         public ImportMode SetStateMode { get; set; }
         public ImportMode SetOwnerMode { get; set; }
         public List<DataMapping> Mapping { get; set; } = new List<DataMapping>();

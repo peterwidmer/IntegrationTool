@@ -179,6 +179,49 @@ namespace IntegrationTool.DataMappingControl
             }
         }
 
+        private void AutoMapp_Button_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var sourceItem in SourceList)
+            {
+                var source = StoreTooltipInTargetMappingInsteadOfContent == false
+                    ? sourceItem.Content.ToString()
+                    : sourceItem.ToolTip.ToString();
+
+                var targetCanditateList = StoreTooltipInTargetMappingInsteadOfContent == false
+                    ? targetList.Where(t => (string)t.Content == source).ToList()
+                    : targetList.Where(t => (string)t.ToolTip == source).ToList();
+
+                if (source == "createdon")
+                {
+                    targetCanditateList = targetList.Where(t => (string) t.Content == "overriddencreatedon").ToList();
+                }
+
+                if (targetCanditateList.Count != 1) continue;
+                
+                var target = StoreTooltipInTargetMappingInsteadOfContent == false
+                    ? targetCanditateList.Single().Content.ToString()
+                    : targetCanditateList.Single().ToolTip.ToString();
+
+                if (source == "createdon")
+                {
+                    target = "overriddencreatedon";
+                }
+
+                if (Mapping.All(m => m.Target != target))
+                {
+                    var r = new DataMapping
+                    {
+                        Target = target,
+                        Source = source
+                    };
+                    Mapping.Add(r);
+                    MappingRowAdded?.Invoke(r);
+                }
+
+                RedrawLines();
+            }
+        }
+
         public void RedrawLines()
         {
             mainCanvast.VerticalAlignment = System.Windows.VerticalAlignment.Top;

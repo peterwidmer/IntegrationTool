@@ -110,6 +110,7 @@
     <Compile Include="Logging\RecordLogList\RecordLog.cs" />
     <Compile Include="SDK\Constants.cs" />
     <Compile Include="SDK\Enums\ImportMode.cs" />
+    <Compile Include="SDK\Enums\LookupResolve.cs" />
     <Compile Include="SDK\Enums\MappingNotFoundType.cs" />
     <Compile Include="SDK\Enums\MultipleFoundMode.cs" />
     <Compile Include="SDK\Enums\PicklistMappingType.cs" />

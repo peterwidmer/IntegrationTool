@@ -56,7 +56,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 object[] data = dataObject[i];
 
                 Entity entity = new Entity(this.Configuration.EntityName);
-                entityMapper.MapAttributes(entity, data);
+                entityMapper.MapAttributes(entity, data, this.Configuration.LookupResolve);
 
                 entities[i] = entity;
                 logger.AddRecord(i);
@@ -69,19 +69,22 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Resolving relationship entities"));
 
-            foreach (var relationMapping in Configuration.RelationMapping)
-            {
-                reportProgress(new SimpleProgressReport("Resolving relationship - load metadata for entity " + relationMapping.EntityName));
-                EntityMetadata relationEntityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, relationMapping.EntityName);
+            if (Configuration.LookupResolve == LookupResolve.All)
+            { 
+                foreach (var relationMapping in Configuration.RelationMapping)
+                {
+                    reportProgress(new SimpleProgressReport("Resolving relationship - load metadata for entity " + relationMapping.EntityName));
+                    EntityMetadata relationEntityMetadata = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, relationMapping.EntityName);
 
-                reportProgress(new SimpleProgressReport("Resolving relationship - load related records"));
-                JoinResolver relationResolver = new JoinResolver(service, relationEntityMetadata, relationMapping.Mapping);
-                Dictionary<string, Guid[]> relatedEntities = relationResolver.BuildMassResolverIndex();
+                    reportProgress(new SimpleProgressReport("Resolving relationship - load related records"));
+                    JoinResolver relationResolver = new JoinResolver(service, relationEntityMetadata, relationMapping.Mapping);
+                    Dictionary<string, Guid[]> relatedEntities = relationResolver.BuildMassResolverIndex();
 
-                reportProgress(new SimpleProgressReport("Resolving relationship - set relations"));
+                    reportProgress(new SimpleProgressReport("Resolving relationship - set relations"));
 
-                RelationSetter relationSetter = new RelationSetter(relationEntityMetadata, relationMapping.Mapping);
-                relationSetter.SetRelation(relationMapping.LogicalName, entities, dataObject, relatedEntities);
+                    RelationSetter relationSetter = new RelationSetter(relationEntityMetadata, relationMapping.Mapping);
+                    relationSetter.SetRelation(relationMapping.LogicalName, entities, dataObject, relatedEntities, Configuration.LookupResolve);
+                }
             }
 
             reportProgress(new SimpleProgressReport("Resolving primarykeys of records"));
@@ -184,7 +187,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         service.Update(entity);
                         foreach (var attribute in entity.Attributes)
                         {
-                            resolvedEntity.Attributes.Add(attribute.Key, attribute.Value);
+                            resolvedEntity[attribute.Key] = attribute.Value;
                         }
                     }
                     else

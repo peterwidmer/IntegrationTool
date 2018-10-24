@@ -50,7 +50,7 @@ namespace IntegrationTool.ApplicationCore
             {
                 if (runLog != null)
                 {
-                    string label = String.IsNullOrEmpty(sourceItem.ItemLabel) ? "-- No Label --" : sourceItem.ItemLabel;
+                    string label = sourceItem.ItemLabel;
                     throw new Exception("No connection was selected for the source '" + label + "'.");
                 }
                 dataStore = null;
