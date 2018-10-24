@@ -46,7 +46,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                             Guid clookupId = new Guid(obj.ToString());
                             entity.Attributes.Add(dataMapping.Target, new EntityReference(clookupMetadata.Targets[0], clookupId));
                         }
-                        else
+                        if (configurationLookupResolve == LookupResolve.All)
                         {
                             throw new Exception("Direct Customer Attribute Mapping not supported!");
                         }
