@@ -129,8 +129,17 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Money:
-                        decimal moneyValue = Convert.ToDecimal(obj.ToString());
-                        entity.Attributes.Add(dataMapping.Target, new Money(moneyValue));
+
+                        if (obj is Money)
+                        {
+                            entity.Attributes.Add(dataMapping.Target, obj);
+                        }
+                        else
+                        {
+                            decimal moneyValue = Convert.ToDecimal(obj.ToString());
+                            entity.Attributes.Add(dataMapping.Target, new Money(moneyValue));
+                        }
+                        
                         break;
 
                     case AttributeTypeCode.Memo:

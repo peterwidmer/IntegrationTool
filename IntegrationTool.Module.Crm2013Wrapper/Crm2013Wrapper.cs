@@ -16,9 +16,12 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 {
     public class Crm2013Wrapper
     {
+        // this Connectionstring extension is used to garanee that the sdk is always creating a new Instance
+        private const string RequirenewinstanceTrue = "; RequireNewInstance = True;";
+
         public static IOrganizationService GetConnection(string connectionString)
         {
-            var crmServiceClient = new CrmServiceClient(connectionString);
+            var crmServiceClient = new CrmServiceClient(connectionString + RequirenewinstanceTrue);
             return crmServiceClient.OrganizationWebProxyClient != null ? 
                 (IOrganizationService)crmServiceClient.OrganizationWebProxyClient : 
                 (IOrganizationService)crmServiceClient.OrganizationServiceProxy;

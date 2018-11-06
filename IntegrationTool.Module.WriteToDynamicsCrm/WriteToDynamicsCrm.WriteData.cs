@@ -128,6 +128,69 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
                             case "systemuser":
 
+                                var newuser = users.Entities.SingleOrDefault(t => t.Contains("internalemailaddress") && t["internalemailaddress"].ToString().ToLower() == ownerid.Name.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }                               
+
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == ownerid.Name.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                var key = ownerid.Name.Replace(',' , ' ');
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                if (!ownerid.Name.Contains('@'))
+                                {
+                                    ownerid = null;
+                                    break;
+                                }
+
+                                var name = ownerid.Name.Substring(0, ownerid.Name.IndexOf('@')).Split('.');
+                                key = name[0] + " " + name[1];
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                key = name[1] + " " + name[0];
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                key = name[0] + "," + name[1];
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                key = name[1] + "," + name[0];
+                                newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                                if (newuser != null)
+                                {
+                                    ownerid = newuser.ToEntityReference();
+                                    break;
+                                }
+
+                                ownerid = null;
+
                                 break;
                         }
                     }

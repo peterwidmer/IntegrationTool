@@ -1,6 +1,7 @@
 ﻿using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
     {
         private IOrganizationService service = null;
         private IDatastore datastore = null;
+        private EntityCollection users;
+
         public LoadFromDynamicsCrmConfiguration Configuration { get; set; }
 
         public LoadFromDynamicsCrm()
@@ -48,6 +51,9 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
             this.service = connection.GetConnection() as IOrganizationService;
+
+            reportProgress(new SimpleProgressReport("Loading Users..."));
+            this.users = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Start fetching entities..."));
             Crm2013Wrapper.Crm2013Wrapper.ExecuteFetchXml(service, this.Configuration.FetchXml, FetchXmlEntityCollectionRetrieved);
@@ -98,14 +104,15 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                     case DynamicsCrmQueryType.NativeExecuteFetchXml:
                         foreach (var attribute in entity.Attributes)
                         {
-                            if (attribute.Key == "ownerid")
+                            if (attribute.Value is EntityReference userref && userref.LogicalName == "systemuser")
                             {
-
+                                var user = users.Entities.Where(u => u.Id == userref.Id).SingleOrDefault();
+                                if (user != null && user.Contains("internalemailaddress"))
+                                {
+                                    userref.Name = user["internalemailaddress"].ToString();
+                                }
                             }
-
-                            {
-                                data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
-                            }
+                            data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
                         }
                         break;
                 }
