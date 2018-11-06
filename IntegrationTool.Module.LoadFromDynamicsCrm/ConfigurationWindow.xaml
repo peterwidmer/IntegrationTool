@@ -20,10 +20,10 @@
             <RowDefinition Height="78*"/>
         </Grid.RowDefinitions>
         <Label Content="Type" Grid.Row="1"/>
-        <ComboBox x:Name="ddQueryType" Grid.Column="2" SelectedValue="{Binding Path=QueryType}" SelectedValuePath="Tag" IsEnabled="False"  Grid.Row="1" VerticalAlignment="Top" SelectionChanged="ddQueryType_SelectionChanged">
+        <ComboBox x:Name="ddQueryType" Grid.Column="2" SelectedValue="{Binding Path=QueryType}" SelectedValuePath="Tag" IsEnabled="True"  Grid.Row="1" VerticalAlignment="Top" SelectionChanged="ddQueryType_SelectionChanged">
             <ComboBoxItem Content="Execute FetchXml" Tag="ExecuteFetchXml" />
+            <ComboBoxItem Content="CRM Fetch Native Objects" Tag="NativeExecuteFetchXml" />
         </ComboBox>
         <ContentControl x:Name="QueryTypeContentControl" Content="ContentControl" Grid.Row="3" Grid.ColumnSpan="5"/>
-
     </Grid>
 </UserControl>

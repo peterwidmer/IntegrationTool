@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
+using Microsoft.Xrm.Sdk.Query;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm
 {
@@ -23,7 +24,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         private IOrganizationService service = null;
         private EntityUpdateHandler entityUpdateHandler = null;
         private Dictionary<string, AttributeMetadata> attributeMetadataDictionary = null;
-        
+        private EntityCollection teams = new EntityCollection();
+        private EntityCollection users = new EntityCollection();
+
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
             reportProgress(new SimpleProgressReport("Building logging database"));
@@ -32,6 +35,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
             this.service = connection.GetConnection() as IOrganizationService;
+
+            reportProgress(new SimpleProgressReport("Loading Users..."));
+            this.users = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true)});
+
+            reportProgress(new SimpleProgressReport("Loading Teams..."));
+            this.teams = service.RetrieveMultiple(new QueryExpression("team") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Loading Entitymetadata"));            
             var entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
@@ -56,7 +65,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 object[] data = dataObject[i];
 
                 Entity entity = new Entity(this.Configuration.EntityName);
-                entityMapper.MapAttributes(entity, data, this.Configuration.LookupResolve);
+                entityMapper.MapAttributes(entity, data, this.Configuration);
 
                 entities[i] = entity;
                 logger.AddRecord(i);
@@ -83,7 +92,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     reportProgress(new SimpleProgressReport("Resolving relationship - set relations"));
 
                     RelationSetter relationSetter = new RelationSetter(relationEntityMetadata, relationMapping.Mapping);
-                    relationSetter.SetRelation(relationMapping.LogicalName, entities, dataObject, relatedEntities, Configuration.LookupResolve);
+                    relationSetter.SetRelation(relationMapping.LogicalName, entities, dataObject, relatedEntities, Configuration);
                 }
             }
 
@@ -107,6 +116,21 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 {
                     ownerid = entity["ownerid"] as EntityReference;
                     entity.Attributes.Remove("ownerid");
+
+                    var c = Configuration.Mapping.SingleOrDefault(m => m.Target == "ownerid");
+                    if (c != null && c.Automap)
+                    {
+                        switch (ownerid?.LogicalName)
+                        {
+                            case "team":
+                                ownerid = teams.Entities.SingleOrDefault(t => t["name"].ToString() == ownerid.Name)?.ToEntityReference();
+                                break;
+
+                            case "systemuser":
+
+                                break;
+                        }
+                    }
                 }
 
                 // Status may not be written, so we need to temporarily store it
@@ -205,7 +229,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if(ownerMustBeSet)
                 {
                     service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
-                    resolvedEntity.Attributes.Add("ownerid", ownerid);
+                    resolvedEntity["ownerid"] = ownerid;
                 }
 
                 var resolvedEntityStatuscode = resolvedEntity.Contains("statuscode") ? (OptionSetValue)resolvedEntity["statuscode"] : null;
@@ -213,8 +237,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if(statusMustBeSet)
                 {
                     service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
-                    resolvedEntity.Attributes.Add("statecode", statecode);
-                    resolvedEntity.Attributes.Add("statuscode", statuscode);
+                    resolvedEntity["statecode"] = statecode;
+                    resolvedEntity["statuscode"] = statuscode;
                 }
             }
         }

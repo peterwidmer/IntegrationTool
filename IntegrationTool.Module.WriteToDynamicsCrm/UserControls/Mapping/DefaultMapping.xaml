@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping.DateTimeMapping"
+﻿<UserControl x:Class="IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping.DefaultMapping"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IntegrationTool.Module.WriteToDynamicsCrm.UserControls.Mapping"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -17,17 +18,13 @@
             <RowDefinition Height="26"/>
             <RowDefinition Height="10"/>
             <RowDefinition Height="24"/>
-            <RowDefinition Height="10"/>
-            <RowDefinition Height="24"/>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="117*"/>
         </Grid.RowDefinitions>
-        <Label Content="DateTime-Mapping" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <Label Content="DateTime Format:" Grid.Column="1" Grid.Row="3" Padding="5 5 0 0"/>
-        <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding ValueFormat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-        <Label Content="Auto Map" Grid.Column="1" Grid.Row="5" Padding="5 5 0 0"/>
-        <CheckBox Grid.Column="2" Grid.Row="5" IsChecked="{Binding Automap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Label Content="Default-Mapping" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label Content="Auto Map" Grid.Column="1" Grid.Row="3" Padding="5 5 0 0"/>
+        <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding Automap, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>
 </UserControl>
+

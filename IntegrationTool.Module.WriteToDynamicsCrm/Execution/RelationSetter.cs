@@ -30,14 +30,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             }
         }
 
-        public void SetRelation(string relationMappingLogicalName, Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities, LookupResolve configurationLookupResolve)
+        public void SetRelation(string relationMappingLogicalName, Entity[] sourceEntities, IDatastore dataObject, Dictionary<string, Guid[]> relatedEntities, WriteToDynamicsCrmConfiguration configuration)
         {
             EntityMapper entityMapper = new EntityMapper(relatedEntityMetadata.GetAttributeMetadata(), dataObject.Metadata, relationMappings, null);
 
             for (int i = 0; i < sourceEntities.Length; i++)
             {
                 Entity relatedEntity = new Entity();
-                entityMapper.MapAttributes(relatedEntity, dataObject[i], configurationLookupResolve);
+                entityMapper.MapAttributes(relatedEntity, dataObject[i], configuration);
                 string relatedEntityKey = JoinResolver.BuildExistingCheckKey(relatedEntity, attributeMetadataDictionary);
                 if (relatedEntities.ContainsKey(relatedEntityKey))
                 {

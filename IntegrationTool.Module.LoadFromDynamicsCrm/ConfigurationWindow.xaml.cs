@@ -38,6 +38,10 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                     case DynamicsCrmQueryType.ExecuteFetchXml:
                         this.QueryTypeContentControl.Content = new FetchXmlControl();
                         break;
+
+                    case DynamicsCrmQueryType.NativeExecuteFetchXml:
+                        this.QueryTypeContentControl.Content = new FetchXmlControl();
+                        break;
                 }
             }
             else

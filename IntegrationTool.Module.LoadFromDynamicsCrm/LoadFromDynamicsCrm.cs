@@ -66,29 +66,50 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                 }
 
                 object[] data = new object[datastore.Metadata.Columns.Count];
-                foreach (var attribute in entity.Attributes)
+
+                switch (this.Configuration.QueryType)
                 {
-                    if (attribute.Value as AliasedValue != null)
-                    {
-                        data[datastore.Metadata[attribute.Key].ColumnIndex] = ((AliasedValue)attribute.Value).Value; 
-                    }
-                    else if(attribute.Value as EntityReference != null)
-                    {
-                        data[datastore.Metadata[attribute.Key].ColumnIndex] = ((EntityReference)attribute.Value).Id; 
-                    }
-                    else if(attribute.Value as OptionSetValue != null)
-                    {
-                        data[datastore.Metadata[attribute.Key].ColumnIndex] = ((OptionSetValue)attribute.Value).Value; 
-                    }
-                    else if (attribute.Value as Money != null)
-                    {
-                        data[datastore.Metadata[attribute.Key].ColumnIndex] = ((Money)attribute.Value).Value;
-                    }
-                    else
-                    {
-                        data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
-                    }
+                    case DynamicsCrmQueryType.ExecuteFetchXml:
+                        foreach (var attribute in entity.Attributes)
+                        {
+                            if (attribute.Value as AliasedValue != null)
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = ((AliasedValue) attribute.Value).Value;
+                            }
+                            else if (attribute.Value as EntityReference != null)
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = ((EntityReference) attribute.Value).Id;
+                            }
+                            else if (attribute.Value as OptionSetValue != null)
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = ((OptionSetValue) attribute.Value).Value;
+                            }
+                            else if (attribute.Value as Money != null)
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = ((Money) attribute.Value).Value;
+                            }
+                            else
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
+                            }
+                        }
+                        break;
+
+                    case DynamicsCrmQueryType.NativeExecuteFetchXml:
+                        foreach (var attribute in entity.Attributes)
+                        {
+                            if (attribute.Key == "ownerid")
+                            {
+
+                            }
+
+                            {
+                                data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
+                            }
+                        }
+                        break;
                 }
+
                 datastore.AddData(data);
             }
         }

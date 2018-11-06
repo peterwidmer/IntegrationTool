@@ -41,7 +41,7 @@ namespace IntegrationTool.ProjectDesigner
         private void OpenRecentFileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var menuItem = e.OriginalSource as System.Windows.Controls.MenuItem;
-            var recentFile = menuItem.Tag as RecentFile;
+            var recentFile = menuItem?.Tag as RecentFile;
             if(recentFile != null)
             {
                 OpenProject(recentFile.FullFilePath);

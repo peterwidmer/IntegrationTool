@@ -13,7 +13,7 @@ namespace IntegrationTool.SDK.Diagram
 
         public string ItemLabel
         {
-            get => String.IsNullOrEmpty(_itemLabel.Trim()) ? "-- No Label --" : _itemLabel;
+            get => String.IsNullOrEmpty(_itemLabel.Trim()) ? "-- No Label --" : _itemLabel.Trim();
             set => _itemLabel = value;
         }
 

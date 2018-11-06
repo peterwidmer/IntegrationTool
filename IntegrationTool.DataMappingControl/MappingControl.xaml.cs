@@ -212,14 +212,22 @@ namespace IntegrationTool.DataMappingControl
                     var r = new DataMapping
                     {
                         Target = target,
-                        Source = source
+                        Source = source,
+                        Automap = true
                     };
                     Mapping.Add(r);
                     MappingRowAdded?.Invoke(r);
                 }
 
-                RedrawLines();
+               
             }
+
+            foreach (var currentMapping in Mapping)
+            {
+              
+            }
+
+            RedrawLines();
         }
 
         public void RedrawLines()
@@ -260,13 +268,13 @@ namespace IntegrationTool.DataMappingControl
                 ListViewItem sourceitem = ListBoxSource.Items.OfType<ListViewItem>().
                                             Where(t =>
                                                 StoreTooltipInSourceMappingInsteadOfContent == false ? 
-                                                        t.Content.ToString() == mapping.Source :
-                                                        t.ToolTip.ToString() == mapping.Source).FirstOrDefault();
+                                                        t.Content?.ToString() == mapping.Source :
+                                                        t.ToolTip?.ToString() == mapping.Source).FirstOrDefault();
                 ListViewItem targetitem = ListBoxTarget.Items.OfType<ListViewItem>().
                                             Where(t =>
                                                 StoreTooltipInTargetMappingInsteadOfContent == false ?
-                                                        t.Content.ToString() == mapping.Target :
-                                                        t.ToolTip.ToString() == mapping.Target).FirstOrDefault();
+                                                        t.Content?.ToString() == mapping.Target :
+                                                        t.ToolTip?.ToString() == mapping.Target).FirstOrDefault();
 
                 if (sourceitem != null && targetitem != null)
                     this.DrawLine(sourceitem, targetitem, false);

@@ -126,6 +126,9 @@
     <Compile Include="UserControls\Mapping\DateTimeMapping.xaml.cs">
       <DependentUpon>DateTimeMapping.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Mapping\DefaultMapping.xaml.cs">
+      <DependentUpon>DefaultMapping.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Mapping\PicklistMapping.xaml.cs">
       <DependentUpon>PicklistMapping.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Mapping\DateTimeMapping.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Mapping\DefaultMapping.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

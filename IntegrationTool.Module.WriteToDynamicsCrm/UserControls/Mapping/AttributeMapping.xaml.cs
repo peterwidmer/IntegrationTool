@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
 {
@@ -72,6 +73,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                     if (picklistMappingEntry == null)
                     {
                         picklistMappingEntry = new SDK.PicklistMapping() { LogicalName = item.Target };
+
+                        if (item.Automap)
+                        {
+                            picklistMappingEntry.MappingType = PicklistMappingType.Automatic;
+                        }
+
                         this.configuration.PicklistMapping.Add(picklistMappingEntry);
                     }
 
@@ -94,7 +101,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
                     break;
 
                 default:
-                    attributeDependentSettings.Content = null;
+                    attributeDependentSettings.Content = new DefaultMapping(item);
+                        
                     break;
             }
         }

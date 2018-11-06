@@ -9,7 +9,8 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
 {
     public enum DynamicsCrmQueryType
     {
-        ExecuteFetchXml
+        ExecuteFetchXml,
+        NativeExecuteFetchXml
     }
 
     public class LoadFromDynamicsCrmConfiguration : SourceConfiguration

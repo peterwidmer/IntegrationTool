@@ -13,7 +13,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 {
     public partial class EntityMapper
     {
-        public void MapAttributes(Entity entity, object[] data, LookupResolve configurationLookupResolve)
+        public void MapAttributes(Entity entity, object[] data, WriteToDynamicsCrmConfiguration configuration)
         {
             foreach (var dataMapping in this.mappings)
             {
@@ -40,20 +40,25 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                     case AttributeTypeCode.Customer:
 
-                        if (configurationLookupResolve == LookupResolve.Guid)
+                        if (configuration.LookupResolve == LookupResolve.Guid)
                         {
                             LookupAttributeMetadata clookupMetadata = attributeMetadata as LookupAttributeMetadata;
                             Guid clookupId = new Guid(obj.ToString());
                             entity.Attributes.Add(dataMapping.Target, new EntityReference(clookupMetadata.Targets[0], clookupId));
                         }
-                        if (configurationLookupResolve == LookupResolve.All)
+                        if (configuration.LookupResolve == LookupResolve.All)
                         {
                             throw new Exception("Direct Customer Attribute Mapping not supported!");
                         }
 
                         break;
                     case AttributeTypeCode.DateTime:
-                        if(obj.GetType() == typeof(DateTime))
+
+                        if (dataMapping.Automap)
+                        {
+                            entity.Attributes.Add(attributeMetadata.LogicalName, obj);
+                        }
+                        else if(obj.GetType() == typeof(DateTime))
                         {
                             entity.Attributes.Add(dataMapping.Target, (DateTime)obj);
                         }
@@ -94,17 +99,31 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Owner:
-                        LookupAttributeMetadata olookupMetadata = attributeMetadata as LookupAttributeMetadata;
-                        Guid olookupId = new Guid(obj.ToString());
-                        entity.Attributes.Add(dataMapping.Target, new EntityReference(olookupMetadata.Targets[0], olookupId));
+                        if (obj is EntityReference)
+                        {
+                            entity.Attributes.Add(dataMapping.Target, obj);
+                        }
+                        else
+                        {
+                            LookupAttributeMetadata olookupMetadata = attributeMetadata as LookupAttributeMetadata;
+                            Guid olookupId = new Guid(obj.ToString());
+                            entity.Attributes.Add(dataMapping.Target, new EntityReference(olookupMetadata.Targets[0], olookupId));
+                        }
                         break;
 
                     case AttributeTypeCode.Lookup:
-                        if (configurationLookupResolve == LookupResolve.Guid || configurationLookupResolve == LookupResolve.All)
+                        if (configuration.LookupResolve == LookupResolve.Guid || configuration.LookupResolve == LookupResolve.All)
                         {
-                            LookupAttributeMetadata lookupMetadata = attributeMetadata as LookupAttributeMetadata;
-                            Guid lookupId = new Guid(obj.ToString());
-                            entity.Attributes.Add(dataMapping.Target, new EntityReference(lookupMetadata.Targets[0], lookupId));
+                            if (obj is EntityReference)
+                            {
+                                entity.Attributes.Add(dataMapping.Target, obj);
+                            }
+                            else
+                            {
+                                LookupAttributeMetadata lookupMetadata = attributeMetadata as LookupAttributeMetadata;
+                                Guid lookupId = new Guid(obj.ToString());
+                                entity.Attributes.Add(dataMapping.Target, new EntityReference(lookupMetadata.Targets[0], lookupId));
+                            }
                         }
 
                         break;
@@ -131,11 +150,28 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         switch (picklistMapping.MappingType)
                         {
                             case SDK.Enums.PicklistMappingType.Automatic:
-                                optionValue = Convert.ToInt32(obj.ToString());
+
+                                if (obj is OptionSetValue value)
+                                {
+                                    optionValue = value.Value;
+                                }
+                                else
+                                {
+                                    optionValue = Convert.ToInt32(obj.ToString());
+                                }
+
+                                
                                 break;
 
                             case SDK.Enums.PicklistMappingType.Manual:
-                                var mapping = picklistMapping.Mapping.Where(t => t.Source == obj.ToString()).FirstOrDefault();
+
+                                var key = obj.ToString();
+                                if (obj is OptionSetValue v)
+                                {
+                                    key = v.Value.ToString();
+                                }
+
+                                var mapping = picklistMapping.Mapping.Where(t => t.Source == key).FirstOrDefault();
                                 if (mapping == null && !String.IsNullOrEmpty(obj.ToString()))
                                 {
                                     switch(picklistMapping.MappingNotFound)
@@ -144,7 +180,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                                             throw new Exception("Could not map picklist " + dataMapping.Target + ": Mapping for source-value " + obj.ToString() + " could not be found!");
                                         
                                         case SDK.Enums.MappingNotFoundType.Ignore:
-                                            // Ignore simply does nothing
+                                            // ignore
                                             break;
 
                                         case SDK.Enums.MappingNotFoundType.SetDefaultValue:
