@@ -56,7 +56,7 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
             this.users = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Start fetching entities..."));
-            Crm2013Wrapper.Crm2013Wrapper.ExecuteFetchXml(service, this.Configuration.FetchXml, FetchXmlEntityCollectionRetrieved, mappingPreview);
+            Crm2013Wrapper.Crm2013Wrapper.ExecuteFetchXml(service, this.Configuration.FetchXml, FetchXmlEntityCollectionRetrieved, reportProgress, mappingPreview);
         }
 
         private void FetchXmlEntityCollectionRetrieved(EntityCollection retrievedEntityCollection)

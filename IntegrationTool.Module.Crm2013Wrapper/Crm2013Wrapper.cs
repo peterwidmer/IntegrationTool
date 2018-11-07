@@ -7,10 +7,13 @@ using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using IntegrationTool.SDK;
 
 namespace IntegrationTool.Module.Crm2013Wrapper
 {
@@ -222,7 +225,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
         public delegate void RetrievedEntityCollectionMethod(EntityCollection retrievedEntityCollection);
 
-        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml, RetrievedEntityCollectionMethod retrievedEntityCollection, bool mappingPreview)
+        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml, RetrievedEntityCollectionMethod retrievedEntityCollection, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             int pageNumber = 1;
             string pagingCookie = null;
@@ -233,7 +236,10 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 string pagingString = BuildFetchXmlCookie(pageNumber, pagingCookie, fetchCount);
 
                 RetrieveMultipleRequest retrieveMultipleRequest = new RetrieveMultipleRequest();
-                retrieveMultipleRequest.Query = new FetchExpression(fetchXml);
+
+                string xml = CreateXml(fetchXml, pagingCookie, pageNumber, fetchCount);
+
+                retrieveMultipleRequest.Query = new FetchExpression(xml);
 
                 EntityCollection retrievedEntities = ((RetrieveMultipleResponse)service.Execute(retrieveMultipleRequest)).EntityCollection;
                 retrievedEntityCollection(retrievedEntities);
@@ -252,7 +258,72 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 {
                     break;
                 }
+
+                reportProgress(new SimpleProgressReport("fetching entities... Page Nummber: " + pageNumber));
             }
+        }
+
+        public string ExtractNodeValue(XmlNode parentNode, string name)
+        {
+            XmlNode childNode = parentNode.SelectSingleNode(name);
+
+            if (null == childNode)
+            {
+                return null;
+            }
+            return childNode.InnerText;
+        }
+
+        public string ExtractAttribute(XmlDocument doc, string name)
+        {
+            XmlAttributeCollection attrs = doc.DocumentElement.Attributes;
+            XmlAttribute attr = (XmlAttribute)attrs.GetNamedItem(name);
+            if (null == attr)
+            {
+                return null;
+            }
+            return attr.Value;
+        }
+
+        public static string CreateXml(string xml, string cookie, int page, int count)
+        {
+            StringReader stringReader = new StringReader(xml);
+            XmlTextReader reader = new XmlTextReader(stringReader);
+
+            // Load document
+            XmlDocument doc = new XmlDocument();
+            doc.Load(reader);
+
+            return CreateXml(doc, cookie, page, count);
+        }
+
+        public static string CreateXml(XmlDocument doc, string cookie, int page, int count)
+        {
+            XmlAttributeCollection attrs = doc.DocumentElement.Attributes;
+
+            if (cookie != null)
+            {
+                XmlAttribute pagingAttr = doc.CreateAttribute("paging-cookie");
+                pagingAttr.Value = cookie;
+                attrs.Append(pagingAttr);
+            }
+
+            XmlAttribute pageAttr = doc.CreateAttribute("page");
+            pageAttr.Value = System.Convert.ToString(page);
+            attrs.Append(pageAttr);
+
+            XmlAttribute countAttr = doc.CreateAttribute("count");
+            countAttr.Value = System.Convert.ToString(count);
+            attrs.Append(countAttr);
+
+            StringBuilder sb = new StringBuilder(1024);
+            StringWriter stringWriter = new StringWriter(sb);
+
+            XmlTextWriter writer = new XmlTextWriter(stringWriter);
+            doc.WriteTo(writer);
+            writer.Close();
+
+            return sb.ToString();
         }
 
         public static string BuildFetchXmlCookie(int pageNumber, string pagingCookie, int fetchCount)
