@@ -18,6 +18,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             foreach (var dataMapping in this.mappings)
             {
                 AttributeMetadata attributeMetadata = this.attributeMetadataDictionary[dataMapping.Target];
+
+                if (!this.columnMetadataDictionary.ContainsKey(dataMapping.Source))
+                {
+                    continue;
+                }
+
                 object obj = data[this.columnMetadataDictionary[dataMapping.Source].ColumnIndex];
 
                 if (obj == null || string.IsNullOrEmpty(obj.ToString()))
