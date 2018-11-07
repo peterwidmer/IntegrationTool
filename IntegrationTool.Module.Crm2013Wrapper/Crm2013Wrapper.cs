@@ -231,6 +231,37 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             string pagingCookie = null;
             int fetchCount = 250;
 
+            if (mappingPreview)
+            {
+                var conversionRequest = new FetchXmlToQueryExpressionRequest
+                {
+                    FetchXml = fetchXml
+                };
+
+                var conversionResponse = (FetchXmlToQueryExpressionResponse)service.Execute(conversionRequest);
+
+                // Use the newly converted query expression to make a retrieve multiple
+                // request to Microsoft Dynamics CRM.
+                QueryExpression queryExpression = conversionResponse.Query;
+
+                var retrievesEntityRequest = new RetrieveEntityRequest
+                {
+                    EntityFilters = EntityFilters.All,
+                    LogicalName = queryExpression.EntityName,
+                };
+                var response = (RetrieveEntityResponse)service.Execute(retrievesEntityRequest);
+                EntityCollection dummy = new EntityCollection();
+
+                Entity entity = new Entity(queryExpression.EntityName);
+                foreach (var item in response.EntityMetadata.Attributes)
+                {
+                    entity.Attributes[item.LogicalName] = "Dummy";
+                }
+                dummy.Entities.Add(entity);
+                retrievedEntityCollection(dummy);
+            }
+
+
             while (true)
             {
                 string pagingString = BuildFetchXmlCookie(pageNumber, pagingCookie, fetchCount);
