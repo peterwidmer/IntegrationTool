@@ -30,7 +30,7 @@ namespace IntegrationTool.Module.LoadFromMSSQL
             return configurationWindow;
         }
 
-        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             using (SqlConnection sqlConnection = connection.GetConnection() as SqlConnection)
             {

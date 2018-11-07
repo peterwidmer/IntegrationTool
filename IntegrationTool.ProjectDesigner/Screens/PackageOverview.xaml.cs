@@ -228,7 +228,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
             {
                 DesignerItem designerItem = ((RoutedEventArgs)e).OriginalSource as DesignerItem;
                 SubFlowExecution subFlowExecution = GetSubflowExecution();
-                var dataStores = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, true, null);
+                var dataStores = subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, true,true, null);
                 DataPreviewWindow dataPreviewWindow = new DataPreviewWindow(dataStores.First());
                 dataPreviewWindow.Show();
             }
@@ -265,7 +265,7 @@ namespace IntegrationTool.ProjectDesigner.Screens
 
                 var dataStores = designerItem.ModuleDescription.Attributes.ModuleType == ModuleType.Source ?
                     new List<IDatastore>() { new DummyDataStore() } :
-                    subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, false, null);
+                    subFlowExecution.GetDataObjectForDesignerItem(designerItem.ID, false, true, null);
 
                 ConfigurationWindowSettings configurationWindowSettings = ConfigurationWindowSettings.Get(designerItem, configuration, this.moduleLoader, dataStores, Connections);
                 ShowConfiguationWindow(configurationWindowSettings);

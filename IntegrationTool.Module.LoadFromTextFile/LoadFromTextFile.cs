@@ -28,7 +28,7 @@ namespace IntegrationTool.Module.LoadFromTextFile
             return configurationWindow;
         }
 
-        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             datastore.AddColumn(new ColumnMetadata("TextFile"));
 

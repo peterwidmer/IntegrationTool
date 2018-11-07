@@ -222,11 +222,11 @@ namespace IntegrationTool.Module.Crm2013Wrapper
 
         public delegate void RetrievedEntityCollectionMethod(EntityCollection retrievedEntityCollection);
 
-        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml, RetrievedEntityCollectionMethod retrievedEntityCollection)
+        public static void ExecuteFetchXml(IOrganizationService service, string fetchXml, RetrievedEntityCollectionMethod retrievedEntityCollection, bool mappingPreview)
         {
             int pageNumber = 1;
             string pagingCookie = null;
-            int fetchCount = 3;
+            int fetchCount = 250;
 
             while (true)
             {
@@ -242,6 +242,11 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 {
                     pageNumber++;
                     pagingCookie = retrievedEntities.PagingCookie;
+
+                    if (mappingPreview && pageNumber > 5)
+                    {
+                        break;
+                    }
                 }
                 else
                 {

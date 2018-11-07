@@ -25,7 +25,7 @@ namespace IntegrationTool.Module.LoadFromExcel
             Configuration = new LoadFromExcelConfiguration();
         }
 
-        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             ExcelConnectionObject excelConnection = (ExcelConnectionObject)connection.GetConnection();
             ExcelWorksheet worksheet = excelConnection.Worksheet;

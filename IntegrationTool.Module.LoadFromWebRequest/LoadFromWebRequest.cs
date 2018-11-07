@@ -30,7 +30,7 @@ namespace IntegrationTool.Module.LoadFromWebRequest
             return configurationWindow;
         }
 
-        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             HttpWebRequest webRequest = WebRequest.CreateHttp(this.Configuration.Url);
             webRequest.Method = this.Configuration.Method;

@@ -42,7 +42,7 @@ namespace IntegrationTool.UnitTests.Sources
             IDataSource loadFromDynamicsCrm = new LoadFromDynamicsCrm() { Configuration = configuration };
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
-            loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod);
+            loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod, false);
 
             var firstObject = dataObject[0];
             Assert.AreEqual<string>(contactName1, firstObject[dataObject.Metadata["firstname"].ColumnIndex].ToString());

@@ -30,7 +30,7 @@ namespace IntegrationTool.Module.LoadFromCSV
             return configurationWindow;
         }
 
-        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, SDK.Database.IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             using (StringReader stringReader = connection.GetConnection() as StringReader)
             {

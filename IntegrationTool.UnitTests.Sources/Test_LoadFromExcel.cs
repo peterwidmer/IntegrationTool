@@ -25,7 +25,7 @@ namespace IntegrationTool.UnitTests.Sources
             IDataSource loadFromExcel = new LoadFromExcel();
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
-            loadFromExcel.LoadData(excelConnection, dataObject, ReportProgressMethod);
+            loadFromExcel.LoadData(excelConnection, dataObject, ReportProgressMethod, false);
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)

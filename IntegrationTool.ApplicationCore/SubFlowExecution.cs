@@ -39,18 +39,18 @@ namespace IntegrationTool.ApplicationCore
 
             var targetItems = this.FlowGraph.DesignerItems.Where(t => t.ModuleDescription.Attributes.ModuleType == ModuleType.Target).ToList();
             var executionPlan = CreateExecutionPlan(targetItems);
-            ExecuteExecutionPlan(executionPlan, runLog);
+            ExecuteExecutionPlan(executionPlan, runLog, false);
         }
 
-        public void ExecuteExecutionPlan(List<DesignerItemBase> executionPlan, RunLog runLog)
+        public void ExecuteExecutionPlan(List<DesignerItemBase> executionPlan, RunLog runLog, bool mappingPreview)
         {
             foreach (var item in executionPlan)
             {
-                ExecuteItem(item, runLog);
+                ExecuteItem(item, runLog, mappingPreview);
             }  
         }
 
-        public void ExecuteItem(DesignerItemBase item, RunLog runLog)
+        public void ExecuteItem(DesignerItemBase item, RunLog runLog, bool mappingPreview)
         {
             var incomingConnections = FlowGraph.GetIncomingConnections(item);
             var outgoingConnections = FlowGraph.GetOutgoingConnections(item);
@@ -70,7 +70,7 @@ namespace IntegrationTool.ApplicationCore
                 }
             }
 
-            var returnedDataStore = moduleExecution.ExecuteDesignerItem(item, dataStores, ReportProgressMethod);
+            var returnedDataStore = moduleExecution.ExecuteDesignerItem(item, dataStores, ReportProgressMethod, mappingPreview);
             
             for(int i = 0; i < outgoingConnections.Count; i++)
             {
@@ -110,7 +110,7 @@ namespace IntegrationTool.ApplicationCore
             }
         }
 
-        public List<IDatastore> GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, bool isDataPreview, RunLog runLog)
+        public List<IDatastore> GetDataObjectForDesignerItem(Guid loadUntildesignerItemId, bool isDataPreview, bool ismappingPreview, RunLog runLog)
         {
             moduleExecution = new ModuleExecution(objectResolver, runLog, parentItemLog);
 
@@ -120,7 +120,7 @@ namespace IntegrationTool.ApplicationCore
             {
                 executionPlan.Remove(targetItems.First());
             }
-            ExecuteExecutionPlan(executionPlan, runLog);
+            ExecuteExecutionPlan(executionPlan, runLog, ismappingPreview);
 
             
             if (!isDataPreview)

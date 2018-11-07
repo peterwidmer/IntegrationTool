@@ -24,12 +24,12 @@ namespace IntegrationTool.ApplicationCore
             this.parentItemLog = parentItemLog;
         }
 
-        public IDatastore ExecuteDesignerItem(DesignerItemBase designerItem, List<IDatastore> dataStores, ReportProgressMethod reportProgressMethod)
+        public IDatastore ExecuteDesignerItem(DesignerItemBase designerItem, List<IDatastore> dataStores, ReportProgressMethod reportProgressMethod, bool mappingPreview)
         {
             switch(designerItem.ModuleDescription.Attributes.ModuleType)
             {
                 case ModuleType.Source:
-                    return LoadDataFromSource(designerItem, dataStores.First(), reportProgressMethod);
+                    return LoadDataFromSource(designerItem, dataStores.First(), reportProgressMethod, mappingPreview);
 
                 case ModuleType.Transformation:
                     return TransformData(designerItem, dataStores, reportProgressMethod);
@@ -42,7 +42,7 @@ namespace IntegrationTool.ApplicationCore
             }
         }
 
-        public IDatastore LoadDataFromSource(DesignerItemBase sourceItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod)
+        public IDatastore LoadDataFromSource(DesignerItemBase sourceItem, IDatastore dataStore, ReportProgressMethod reportProgressMethod, bool mappingPreview)
         {
             IModule sourceObject = objectResolver.GetModule(sourceItem.ID, sourceItem.ModuleDescription.ModuleType);
             IConnection connectionObject = objectResolver.GetConnection(sourceItem.ID);
@@ -65,7 +65,7 @@ namespace IntegrationTool.ApplicationCore
                 parentItemLog.SubFlowLogs.Add(itemLog);
             }
 
-            ((IDataSource)sourceObject).LoadData(connectionObject, dataStore, reportProgressMethod);
+            ((IDataSource)sourceObject).LoadData(connectionObject, dataStore, reportProgressMethod, mappingPreview);
 
             itemLog.EndTime = DateTime.Now;
 

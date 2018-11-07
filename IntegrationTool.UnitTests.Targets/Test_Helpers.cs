@@ -86,7 +86,7 @@ namespace IntegrationTool.UnitTests.Targets
             IDataSource loadFromExcel = new LoadFromExcel();
 
             IDatastore dataStore = DataStoreFactory.GetDatastore();
-            loadFromExcel.LoadData(excelConnection, dataStore, ReportProgressMethod);
+            loadFromExcel.LoadData(excelConnection, dataStore, ReportProgressMethod, false);
 
             return dataStore;
         }

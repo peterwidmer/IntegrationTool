@@ -34,7 +34,7 @@ namespace IntegrationTool.Module.LoadFromODBC
             return new ConfigurationWindow((LoadFromODBCConfiguration)configurationBase);
         }
 
-        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             OdbcConnection odbcConnection = connection.GetConnection() as OdbcConnection;
             if(odbcConnection.State != System.Data.ConnectionState.Open)

@@ -23,7 +23,7 @@ namespace IntegrationTool.UnitTests.Sources
             loadFromCSV.SetConfiguration(new LoadFromCSVConfiguration());
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
-            loadFromCSV.LoadData(csvConnection, dataObject, ReportProgressMethod);
+            loadFromCSV.LoadData(csvConnection, dataObject, ReportProgressMethod, false);
 
             var firstObject = dataObject[0];
             Assert.AreEqual<string>(firstObject[0].ToString(), "1");

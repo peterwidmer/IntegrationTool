@@ -9,6 +9,6 @@ namespace IntegrationTool.SDK
 {
     public interface IDataSource
     {
-        void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress);
+        void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview);
     }
 }

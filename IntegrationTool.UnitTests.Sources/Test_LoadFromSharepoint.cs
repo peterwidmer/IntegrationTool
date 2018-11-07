@@ -49,7 +49,7 @@ namespace IntegrationTool.UnitTests.Sources
             IDataSource loadFromDynamicsCrm = new LoadFromSharepoint() { Configuration = configuration };
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
-            loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod);
+            loadFromDynamicsCrm.LoadData(connection, dataObject, ReportProgressMethod, false);
         }
 
         private void ReportProgressMethod(SimpleProgressReport progress)

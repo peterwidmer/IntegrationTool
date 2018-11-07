@@ -30,7 +30,7 @@ namespace IntegrationTool.Module.LoadFromSharepoint
             return new ConfigurationWindow((LoadFromSharepointConfiguration)configurationBase);
         }
 
-        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             var clientContext = connection.GetConnection() as ClientContext;
 

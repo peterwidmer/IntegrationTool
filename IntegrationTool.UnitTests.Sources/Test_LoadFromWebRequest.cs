@@ -31,7 +31,7 @@ namespace IntegrationTool.UnitTests.Sources
             IDataSource loadFromWebRequest = new LoadFromWebRequest() { Configuration = loadFromWebRequestConfiguration };
 
             IDatastore dataObject = DataStoreFactory.GetDatastore();
-            loadFromWebRequest.LoadData(connectToUrlConnection, dataObject, Test_Helpers.ReportProgressMethod);
+            loadFromWebRequest.LoadData(connectToUrlConnection, dataObject, Test_Helpers.ReportProgressMethod, false);
         }
         
     }

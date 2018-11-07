@@ -35,7 +35,7 @@ namespace IntegrationTool.Module.LoadFromSQLite
             return configurationWindow;
         }
 
-        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress)
+        public void LoadData(IConnection connection, IDatastore datastore, ReportProgressMethod reportProgress, bool mappingPreview)
         {
             var databaseConnection = connection.GetConnection() as SQLiteConnection;
             if (databaseConnection.State != System.Data.ConnectionState.Open)
