@@ -141,7 +141,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
         public static DataCollection<Entity> RetrieveMultiple(IOrganizationService service, string entityName, ColumnSet columnSet, FilterExpression filterExpression)
         {
             QueryExpression query = new QueryExpression(entityName);
-            query.ColumnSet = columnSet;
+            query.ColumnSet = new ColumnSet(true);
             query.Criteria = filterExpression;
 
             EntityCollection result = service.RetrieveMultiple(query);

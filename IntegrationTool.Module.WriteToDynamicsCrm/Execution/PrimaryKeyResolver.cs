@@ -127,6 +127,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                 {
                     conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, ((EntityReference)conditionValue).Id));
                 }
+                else if (conditionValue is Guid)
+                {
+                    conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, ((Guid)conditionValue)));
+                }
                 else if(conditionValue is OptionSetValue)
                 {
                     conditions.Add(new ConditionExpression(primaryKey.Key, ConditionOperator.Equal, ((EntityReference)conditionValue).Id));

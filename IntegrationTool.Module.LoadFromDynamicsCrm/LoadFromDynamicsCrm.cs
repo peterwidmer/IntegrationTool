@@ -112,6 +112,23 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                                     userref.Name = user["internalemailaddress"].ToString();
                                 }
                             }
+                            if (attribute.Value is EntityCollection)
+                            {
+                                foreach (var party in ((EntityCollection)attribute.Value).Entities)
+                                {
+                                    foreach (var pattribute in party.Attributes)
+                                    {
+                                        if (pattribute.Value is EntityReference refe && refe.LogicalName == "systemuser")
+                                        {
+                                            var user = users.Entities.Where(u => u.Id == refe.Id).SingleOrDefault();
+                                            if (user != null && user.Contains("internalemailaddress"))
+                                            {
+                                                refe.Name = user["internalemailaddress"].ToString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             data[datastore.Metadata[attribute.Key].ColumnIndex] = attribute.Value;
                         }
                         break;

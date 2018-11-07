@@ -37,12 +37,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             this.service = connection.GetConnection() as IOrganizationService;
 
             reportProgress(new SimpleProgressReport("Loading Users..."));
-            this.users = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true)});
+            this.users = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Loading Teams..."));
             this.teams = service.RetrieveMultiple(new QueryExpression("team") { ColumnSet = new ColumnSet(true) });
 
-            reportProgress(new SimpleProgressReport("Loading Entitymetadata"));            
+            reportProgress(new SimpleProgressReport("Loading Entitymetadata"));
             var entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
             var primaryKeyAttributeMetadataDictionary = new Dictionary<string, AttributeMetadata>();
             foreach (string primaryKey in this.Configuration.PrimaryKeyAttributes)
@@ -70,7 +70,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 entities[i] = entity;
                 logger.AddRecord(i);
 
-                if(StatusHelper.MustShowProgress(i, dataObject.Count) == true)
+                if (StatusHelper.MustShowProgress(i, dataObject.Count) == true)
                 {
                     reportProgress(new SimpleProgressReport("Mapped " + (i + 1) + " of " + dataObject.Count + " records"));
                 }
@@ -79,7 +79,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             reportProgress(new SimpleProgressReport("Resolving relationship entities"));
 
             if (Configuration.LookupResolve == LookupResolve.All)
-            { 
+            {
                 foreach (var relationMapping in Configuration.RelationMapping)
                 {
                     reportProgress(new SimpleProgressReport("Resolving relationship - load metadata for entity " + relationMapping.EntityName));
@@ -101,7 +101,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             var resolvedEntities = primaryKeyResolver.BatchResolver(entities, Configuration.GetAllMappedAttributes(), Configuration.BatchSizeResolving);
 
             reportProgress(new SimpleProgressReport("Writing records to crm"));
-            WriteEntity(entities, resolvedEntities, primaryKeyAttributeMetadataDictionary, reportProgress);          
+            WriteEntity(entities, resolvedEntities, primaryKeyAttributeMetadataDictionary, reportProgress);
         }
 
         private void WriteEntity(Entity[] entities, Dictionary<string, ResolvedEntity[]> resolvedEntities, Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary, ReportProgressMethod reportProgress)
@@ -109,102 +109,20 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             for (int i = 0; i < entities.Length; i++)
             {
                 Entity entity = entities[i];
+                ResolveUser(entity);
 
-                var userrefs = entity.Attributes.Where(t => t.Value is EntityReference && (((EntityReference)t.Value).LogicalName == "systemuser" || ((EntityReference)t.Value).LogicalName == "teams")).ToList();
-                foreach (var userattribute in userrefs)
+                var partyLists = entity.Attributes.Where(t => t.Value is EntityCollection).ToList();
+                foreach (var partyList in partyLists)
                 {
-                    var userref = (EntityReference)userattribute.Value;
-                    try
+                    var c = Configuration.Mapping.SingleOrDefault(m => m.Target == partyList.Key);
+                    if ((c != null && c.Automap))
                     {
-                        var c = Configuration.Mapping.SingleOrDefault(m => m.Target == userattribute.Key);
-                        if (c != null && c.Automap)
+                        foreach (var party in ((EntityCollection)partyList.Value).Entities)
                         {
-                            switch (userref?.LogicalName)
-                            {
-                                case "team":
-                                    userref = teams.Entities.SingleOrDefault(t => t["name"].ToString() == userref.Name)?.ToEntityReference();
-                                    break;
-
-                                case "systemuser":
-
-                                    var newuser = users.Entities.SingleOrDefault(t => t.Contains("internalemailaddress") && t["internalemailaddress"].ToString().ToLower() == userref.Name.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == userref.Name.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    var key = userref.Name.Replace(',', ' ');
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    if (!userref.Name.Contains('@'))
-                                    {
-                                        userref = null;
-                                        break;
-                                    }
-
-                                    var name = userref.Name.Substring(0, userref.Name.IndexOf('@')).Split('.');
-                                    key = name[0] + " " + name[1];
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    key = name[1] + " " + name[0];
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    key = name[0] + "," + name[1];
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    key = name[1] + "," + name[0];
-                                    newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
-                                    if (newuser != null)
-                                    {
-                                        userref = newuser.ToEntityReference();
-                                        break;
-                                    }
-
-                                    userref = null;
-
-                                    break;
-                            }
+                            ResolveParty(party);
                         }
-
                     }
-                    catch
-                    {
-                        userref = null;
-                    }
-
-                    entity[userattribute.Key] = userref;
-
                 }
-
-
 
 
                 // Owner may not be written, so we need to temporarily store it
@@ -218,7 +136,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 // Status may not be written, so we need to temporarily store it
                 OptionSetValue statecode = null;
                 OptionSetValue statuscode = null;
-                if(entity.Contains("statuscode"))
+                if (entity.Contains("statuscode"))
                 {
                     statecode = entity["statecode"] as OptionSetValue;
                     entity.Attributes.Remove("statecode");
@@ -232,19 +150,130 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if (!resolvedEntities.ContainsKey(entityKey)) // Create
                 {
                     logger.SetBusinessKeyAndImportTypeForRecord(i, entityKey, ImportMode.Create);
-                    CreateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);   
+                    CreateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);
                 }
                 else // Update
                 {
                     logger.SetBusinessKeyAndImportTypeForRecord(i, entityKey, ImportMode.Update);
-                    UpdateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);   
+                    UpdateEntity(service, entity, entityKey, i, ownerid, statecode, statuscode, resolvedEntities);
                 }
 
-                if(StatusHelper.MustShowProgress(i, entities.Length) == true)
+                if (StatusHelper.MustShowProgress(i, entities.Length) == true)
                 {
                     reportProgress(new SimpleProgressReport("Wrote " + (i + 1) + " of " + entities.Length + " records"));
                 }
             }
+        }
+
+        private void ResolveParty(Entity entity)
+        {
+            var userrefs = entity.Attributes.Where(t => t.Value is EntityReference && (((EntityReference)t.Value).LogicalName == "systemuser" || ((EntityReference)t.Value).LogicalName == "teams")).ToList();
+            foreach (var userattribute in userrefs)
+            {
+                    Entity newuser = SearchNewUser((EntityReference)userattribute.Value);
+
+                    if (newuser == null)
+                    {
+                    entity.Attributes["addressused"] = ((EntityReference)userattribute.Value).Name;
+
+                        entity.Attributes.Remove(userattribute.Key);
+                    }
+                    else
+                    {
+                        entity[userattribute.Key] = newuser.ToEntityReference();
+                    }
+            }
+        }
+
+        private void ResolveUser(Entity entity)
+        {
+            var userrefs = entity.Attributes.Where(t => t.Value is EntityReference && (((EntityReference)t.Value).LogicalName == "systemuser" || ((EntityReference)t.Value).LogicalName == "teams")).ToList();
+            foreach (var userattribute in userrefs)
+            {
+                var c = Configuration.Mapping.SingleOrDefault(m => m.Target == userattribute.Key);
+                if ((c != null && c.Automap))
+                {
+                    Entity newuser = SearchNewUser((EntityReference)userattribute.Value);
+
+                    if (newuser == null)
+                    {
+                        entity.Attributes.Remove(userattribute.Key);
+                    }
+                    else
+                    {
+                        entity[userattribute.Key] = newuser.ToEntityReference();
+                    }
+                }
+            }
+        }
+
+        private Entity SearchNewUser(EntityReference userref)
+        {
+            Entity newuser = null;
+
+            try
+            {
+
+                switch (userref?.LogicalName)
+                {
+                    case "team":
+                        userref = teams.Entities.SingleOrDefault(t => t["name"].ToString() == userref.Name)?.ToEntityReference();
+                        break;
+
+                    case "systemuser":
+
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("internalemailaddress") && t["internalemailaddress"].ToString().ToLower() == userref.Name.ToLower());
+                        if (newuser != null) { break; }
+
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == userref.Name.ToLower());
+                        if (newuser != null) { break; }
+
+                        var key = userref.Name.Replace(',', ' ');
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                        if (newuser != null) { break; }
+
+                        if (!userref.Name.Contains('@')) { break; }
+
+                        var name = userref.Name.Substring(0, userref.Name.IndexOf('@')).Split('.');
+
+                        if (name.Length == 1)
+                        {
+                            newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == name[0].ToLower());
+                            break;
+                        }
+
+                        if (name.Length != 2)
+                        {
+                            break;
+                        }
+
+                        key = name[0] + " " + name[1];
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                        if (newuser != null) { break; }
+
+                        key = name[1] + " " + name[0];
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                        if (newuser != null) { break; }
+
+                        key = name[0] + "," + name[1];
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                        if (newuser != null) { break; }
+
+                        key = name[1] + "," + name[0];
+                        newuser = users.Entities.SingleOrDefault(t => t.Contains("fullname") && t["fullname"].ToString().ToLower() == key.ToLower());
+                        if (newuser != null) { break; }
+
+                        userref = null;
+
+                        break;
+                }
+
+            }
+            catch
+            {
+            }
+
+            return newuser;
         }
 
         private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
@@ -308,7 +337,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
                 var resolvedEntityOwnerId = resolvedEntity.Contains("ownerid") ? (EntityReference)resolvedEntity["ownerid"] : null;
                 bool ownerMustBeSet = EntityUpdateHandler.OwnerMustBeSet(ownerid, resolvedEntityOwnerId, Configuration.SetOwnerMode);
-                if(ownerMustBeSet)
+                if (ownerMustBeSet)
                 {
                     service.SetOwnerOfEntity(entity.LogicalName, entity.Id, ownerid.LogicalName, ownerid.Id);
                     resolvedEntity["ownerid"] = ownerid;
@@ -316,7 +345,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
                 var resolvedEntityStatuscode = resolvedEntity.Contains("statuscode") ? (OptionSetValue)resolvedEntity["statuscode"] : null;
                 bool statusMustBeSet = EntityUpdateHandler.StatusMustBeSet(statuscode, resolvedEntityStatuscode, Configuration.SetStateMode);
-                if(statusMustBeSet)
+                if (statusMustBeSet)
                 {
                     service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
                     resolvedEntity["statecode"] = statecode;

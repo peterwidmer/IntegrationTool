@@ -228,6 +228,15 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         entity.Attributes.Add(dataMapping.Target, id);
                         break;
 
+                    case AttributeTypeCode.PartyList:
+                        entity.Attributes.Add(dataMapping.Target, obj);
+
+                        break;
+
+                    case AttributeTypeCode.EntityName:
+
+                        break;
+
                     default:
                         throw new Exception("Could not convert attribute with type " + attributeMetadata.AttributeType.Value.ToString());
                 }
