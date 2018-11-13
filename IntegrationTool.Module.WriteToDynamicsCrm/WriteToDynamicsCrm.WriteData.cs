@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
 using Microsoft.Xrm.Sdk.Query;
+using Microsoft.Crm.Sdk.Messages;
 
 namespace IntegrationTool.Module.WriteToDynamicsCrm
 {
@@ -196,7 +197,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if ((cd != null && cd.Automap))
                 {
                     EntityReference newcurrency = entityCollection.Entities
-                        .SingleOrDefault(c => c["name"].ToString() == ((EntityReference) currentcurrency.Value).Name)
+                        .SingleOrDefault(c => c.Contains("name") && c["name"].ToString() == ((EntityReference) currentcurrency.Value).Name)
                         ?.ToEntityReference();
 
                     if (newcurrency == null)
@@ -334,7 +335,17 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             try
             {
-                entity.Id = service.Create(entity);
+                if (entity.LogicalName == "listmember")
+                {
+                    AddMemberListRequest addMemberListRequest = new AddMemberListRequest();
+                    addMemberListRequest.ListId = ((EntityReference)entity["listid"]).Id;
+                    addMemberListRequest.EntityId = ((EntityReference)entity["entityid"]).Id;
+                    service.Execute(addMemberListRequest);
+                }
+                else
+                {
+                    entity.Id = service.Create(entity);
+                }
             }
             catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
             {
