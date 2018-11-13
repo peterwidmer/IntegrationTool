@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:ui="http://schemas.microsoft.com/wix/UIExtension">
-	<Product Id="*" Name="IntegrationTool 1.21.5" Language="1033" Version="1.21.5.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
+	<Product Id="*" Name="IntegrationTool 1.21.8" Language="1033" Version="1.21.5.0" Manufacturer="Peter Widmer" UpgradeCode="16487d7d-3e3d-45e0-9018-7c5382a9a339">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -70,7 +70,15 @@
       <Component Id="MainComponent_ConsoleProjectStarter_Config" Win64="yes">
         <File Id="MainComponent_ConsoleProjectStarter.exe.config" Source="$(var.IntegrationTool.ConsoleProjectStarter.TargetDir)\IntegrationTool.ConsoleProjectStarter.exe.config" KeyPath="yes" />
       </Component>
-      <Component Id="MainComponent_ApplicationCore" Win64="yes">
+
+		  <Component Id="MainComponent_WindowsServiceProjectStarter" Win64="yes">
+		    <File Id="MainComponent_WindowsServiceProjectStarter.exe" Source="$(var.IntegrationTool.WindowsServiceProjectStarter.TargetPath)" KeyPath="yes" />
+		  </Component>
+		  <Component Id="MainComponent_WindowsServiceProjectStarter_Config" Win64="yes">
+		    <File Id="MainComponent_WindowsServiceProjectStarter.exe.config" Source="$(var.IntegrationTool.WindowsServiceProjectStarter.TargetDir)\IntegrationTool.WindowsServiceProjectStarter.exe.config" KeyPath="yes" />
+		  </Component>
+		  
+		  <Component Id="MainComponent_ApplicationCore" Win64="yes">
         <File Id="MainComponent_ApplicationCore.dll" Source="$(var.IntegrationTool.ApplicationCore.TargetPath)" KeyPath="yes" />
       </Component>
       <Component Id="MainComponent_SDK" Win64="yes">
@@ -105,7 +113,10 @@
       </Component>
       <Component Id="MainComponent_Microsoft_Xrm_Tooling_Connector" Win64="yes">
         <File Id="MainComponent_Microsoft.Xrm.Tooling.Connector.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.Xrm.Tooling.Connector.dll" KeyPath="yes" />
-      </Component>      
+      </Component>
+		  <Component Id="MainComponent_Microsoft_Xrm_Sdk_Deployment" Win64="yes">
+		    <File Id="MainComponent_Microsoft.Xrm.Sdk.Deployment.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)Microsoft.Xrm.Sdk.Deployment.dll" KeyPath="yes" />
+		  </Component>  
       <Component Id="MainComponent_SQLite_Interop_dll" Win64="yes">
         <File Id="MainComponent_SQLite.Interop.dll" Source="$(var.IntegrationTool.ProjectDesigner.TargetDir)x64\SQLite.Interop.dll" KeyPath="yes" />
       </Component>

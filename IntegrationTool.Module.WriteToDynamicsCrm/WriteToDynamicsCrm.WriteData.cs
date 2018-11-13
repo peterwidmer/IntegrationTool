@@ -26,6 +26,8 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         private Dictionary<string, AttributeMetadata> attributeMetadataDictionary = null;
         private EntityCollection teams = new EntityCollection();
         private EntityCollection users = new EntityCollection();
+        private EntityCollection currency = new EntityCollection();
+        private EntityCollection businessunit = new EntityCollection();
 
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
@@ -41,6 +43,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Loading Teams..."));
             this.teams = service.RetrieveMultiple(new QueryExpression("team") { ColumnSet = new ColumnSet(true) });
+
+            reportProgress(new SimpleProgressReport("Loading currency..."));
+            this.currency = service.RetrieveMultiple(new QueryExpression("systemuser") { ColumnSet = new ColumnSet(true) });
+
+            reportProgress(new SimpleProgressReport("Loading BusinesUnit..."));
+            this.businessunit = service.RetrieveMultiple(new QueryExpression("team") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Loading Entitymetadata"));
             var entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
@@ -124,6 +132,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     }
                 }
 
+                ResolveAutoMapRelation(entity, currency, "transactioncurrency");
+                ResolveAutoMapRelation(entity, businessunit, "businessunit");
+
 
                 // Owner may not be written, so we need to temporarily store it
                 EntityReference ownerid = null;
@@ -161,6 +172,31 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if (StatusHelper.MustShowProgress(i, entities.Length) == true)
                 {
                     reportProgress(new SimpleProgressReport("Wrote " + (i + 1) + " of " + entities.Length + " records"));
+                }
+            }
+        }
+
+        private void ResolveAutoMapRelation(Entity entity, EntityCollection entityCollection, string transactioncurrency)
+        {
+            var currencyattribute = entity.Attributes.Where(t =>
+                t.Value is EntityReference && ((EntityReference) t.Value).LogicalName == transactioncurrency).ToList();
+            foreach (var currentcurrency in currencyattribute)
+            {
+                var cd = Configuration.Mapping.SingleOrDefault(m => m.Target == currentcurrency.Key);
+                if ((cd != null && cd.Automap))
+                {
+                    EntityReference newcurrency = entityCollection.Entities
+                        .SingleOrDefault(c => c["name"].ToString() == ((EntityReference) currentcurrency.Value).Name)
+                        ?.ToEntityReference();
+
+                    if (newcurrency == null)
+                    {
+                        entity.Attributes.Remove(currentcurrency.Key);
+                    }
+                    else
+                    {
+                        entity[currentcurrency.Key] = newcurrency;
+                    }
                 }
             }
         }

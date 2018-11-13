@@ -206,7 +206,7 @@ namespace IntegrationTool.DataMappingControl
                 {
                     target = "overriddencreatedon";
                 }
-
+                
                 if (Mapping.All(m => m.Target != target))
                 {
                     var r = new DataMapping
@@ -218,8 +218,6 @@ namespace IntegrationTool.DataMappingControl
                     Mapping.Add(r);
                     MappingRowAdded?.Invoke(r);
                 }
-
-               
             }
 
             foreach (var currentMapping in Mapping)
