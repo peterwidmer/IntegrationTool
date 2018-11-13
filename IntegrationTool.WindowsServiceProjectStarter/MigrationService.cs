@@ -15,7 +15,7 @@ namespace IntegrationTool.WindowsServiceProjectStarter
         public MigrationService()
         {
             _eventLog = new EventLog();
-            if (!EventLog.SourceExists("Migration Service"))
+            if (!EventLog.SourceExists("MigrationService"))
             {
                 EventLog.CreateEventSource(
                     "MigrationService", "Migration ServiceLog");

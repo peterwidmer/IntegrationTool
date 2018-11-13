@@ -22,7 +22,7 @@ namespace IntegrationTool.WindowsServiceProjectStarter
         public MigrationRunner()
         {
             _eventLog = new EventLog();
-            if (!EventLog.SourceExists("Migration Service"))
+            if (!EventLog.SourceExists("MigrationService"))
             {
                 EventLog.CreateEventSource(
                     "MigrationService", "Migration ServiceLog");
@@ -37,8 +37,18 @@ namespace IntegrationTool.WindowsServiceProjectStarter
 
         public void Start()
         {
-            var runningThread = new Thread(Run);
-            runningThread.Start();
+            try
+            {
+                var runningThread = new Thread(Run);
+                runningThread.Start();
+            }
+            catch (Exception e)
+            {
+                _eventLog.WriteEntry(e.Message);
+                _eventLog.WriteEntry(e.StackTrace);
+                throw;
+            }
+
         }
 
         private void Run()
@@ -64,6 +74,12 @@ namespace IntegrationTool.WindowsServiceProjectStarter
             List<Package> packagesToExecute = new List<Package>();
             foreach (string packageName in packagesToRun)
             {
+                if (_shouldShutdownEventHandle.WaitOne(0))
+                {
+                    _isShutdownEventHandle.Set();
+                    return;
+                }
+
                 Package package = project.Packages.Where(t => t.DisplayName == packageName).FirstOrDefault();
                 if (package == null)
                 {
@@ -76,10 +92,18 @@ namespace IntegrationTool.WindowsServiceProjectStarter
 
             foreach (Package package in packagesToExecute)
             {
+                if (_shouldShutdownEventHandle.WaitOne(0))
+                {
+                    _isShutdownEventHandle.Set();
+                    return;
+                }
+
                 Task.Run(() => RunPackage(package, project.Connections, appInitializer.ModuleLoader.Modules, extraTypes)).Wait();
             }
 
             _eventLog.WriteEntry("\nExecution finished");
+
+            _shouldShutdownEventHandle.Set();
         }
 
         public EventWaitHandle Shutdown()
@@ -100,7 +124,7 @@ namespace IntegrationTool.WindowsServiceProjectStarter
         static void flowManager_ProgressReport(object sender, EventArgs e)
         {
             EventLog eventLog = new EventLog();
-            if (!EventLog.SourceExists("Migration Service"))
+            if (!EventLog.SourceExists("MigrationService"))
             {
                 EventLog.CreateEventSource(
                     "MigrationService", "Migration ServiceLog");

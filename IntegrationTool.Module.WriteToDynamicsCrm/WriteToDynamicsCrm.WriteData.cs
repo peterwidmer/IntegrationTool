@@ -116,6 +116,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         {
             for (int i = 0; i < entities.Length; i++)
             {
+                try
+                {
+
+
+
                 Entity entity = entities[i];
                 ResolveUser(entity);
 
@@ -172,6 +177,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 if (StatusHelper.MustShowProgress(i, entities.Length) == true)
                 {
                     reportProgress(new SimpleProgressReport("Wrote " + (i + 1) + " of " + entities.Length + " records"));
+                }
+                }
+                catch (Exception ex)
+                {
+                    logger.SetWriteFault(i, ex.Message);
                 }
             }
         }
