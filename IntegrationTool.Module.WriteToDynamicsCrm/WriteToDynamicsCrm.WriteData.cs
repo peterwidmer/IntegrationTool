@@ -256,6 +256,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
         private Entity SearchNewUser(EntityReference userref)
         {
+            if (userref.Name == null)
+                return null;
+
             Entity newuser = null;
 
             try

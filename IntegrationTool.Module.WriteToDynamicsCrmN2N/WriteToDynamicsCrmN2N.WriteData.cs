@@ -1,4 +1,6 @@
 ﻿using IntegrationTool.Module.CrmWrapper;
+using IntegrationTool.Module.WriteToDynamicsCrm.Logging;
+using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.SDK;
 using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Sdk;
@@ -13,6 +15,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 {
     public partial class WriteToDynamicsCrmN2N
     {
+        private Logger logger = null;
         private IOrganizationService service = null;
         private ReportProgressMethod reportProgress;
         private IDatastore dataObject;
@@ -26,6 +29,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
 
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
+            reportProgress(new SimpleProgressReport("Building logging database"));
+            this.logger = new Logger(databaseInterface);
+            this.logger.InitializeDatabase();
+
             this.reportProgress = reportProgress;
 
             reportProgress(new SimpleProgressReport("Connection to crm"));
@@ -70,8 +77,16 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
                 Guid entity1id = this.existingEntities1[joinKeyEntity1][0];
                 Guid entity2id = this.existingEntities2[joinKeyEntity2][0];
 
-                Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, relationshipMetadata.SchemaName, entity1Metadata.LogicalName, entity1id,entity2Metadata.LogicalName, entity2id);
-
+                try
+                {
+                    Crm2013Wrapper.Crm2013Wrapper.AssociateEntities(service, relationshipMetadata.SchemaName, entity1Metadata.LogicalName, entity1id, entity2Metadata.LogicalName, entity2id);
+                    logger.SetBusinessKeyAndImportTypeForRecord(i, joinKeyEntity1 + joinKeyEntity2, ImportMode.None);
+                }
+                catch (Exception e)
+                {
+                    logger.SetWriteFault(i, e.Message);
+                }
+               
                 if (StatusHelper.MustShowProgress(i, dataObject.Count) == true)
                 {
                     reportProgress(new SimpleProgressReport("Processed " + (i + 1) + " of " + dataObject.Count + " many2many-records"));

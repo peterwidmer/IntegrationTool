@@ -117,6 +117,10 @@
       <Name>IntegrationTool.Module.CrmWrapper</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\IntegrationTool.Module.WriteToDynamicsCrm\IntegrationTool.Module.WriteToDynamicsCrm.csproj">
+      <Project>{CD0EF612-415E-4A40-8D40-C77186A083C9}</Project>
+      <Name>IntegrationTool.Module.WriteToDynamicsCrm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\IntegrationTool.SDK\IntegrationTool.SDK.csproj">
       <Project>{071dbaa8-6722-4c52-a978-063e39aff2e5}</Project>
       <Name>IntegrationTool.SDK</Name>

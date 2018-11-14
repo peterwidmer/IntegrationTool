@@ -234,6 +234,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.EntityName:
+                        entity.Attributes.Add(dataMapping.Target, obj);
+                        break;
+
+                    case AttributeTypeCode.ManagedProperty:
 
                         break;
 
