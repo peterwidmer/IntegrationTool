@@ -206,7 +206,12 @@ namespace IntegrationTool.DataMappingControl
                 {
                     target = "overriddencreatedon";
                 }
-                
+
+                if (source == "overriddencreatedon")
+                {
+                    continue;
+                }
+
                 if (Mapping.All(m => m.Target != target))
                 {
                     var r = new DataMapping

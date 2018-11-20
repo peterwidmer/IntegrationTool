@@ -49,8 +49,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         if (configuration.LookupResolve == LookupResolve.Guid)
                         {
                             LookupAttributeMetadata clookupMetadata = attributeMetadata as LookupAttributeMetadata;
-                            Guid clookupId = new Guid(obj.ToString());
-                            entity.Attributes.Add(dataMapping.Target, new EntityReference(clookupMetadata.Targets[0], clookupId));
+                            entity.Attributes.Add(dataMapping.Target, obj);
                         }
                         if (configuration.LookupResolve == LookupResolve.All)
                         {

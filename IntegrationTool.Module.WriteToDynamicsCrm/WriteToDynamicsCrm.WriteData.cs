@@ -330,6 +330,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
         private void CreateEntity(IOrganizationService service, Entity entity, string entityKey, int recordNumber, EntityReference ownerid, OptionSetValue statecode, OptionSetValue statuscode, Dictionary<string, ResolvedEntity[]> resolvedEntities)
         {
+            bool writeError = false;
             if (!Constants.CreateModes.Contains(Configuration.ImportMode)) { return; }
 
             // Check if owner may be written
@@ -353,7 +354,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     {
                         entity.Id = service.Create(entity);
                     }
-                    catch (Exception e)
+                    catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> e)
                     {
                         Thread.Sleep(new TimeSpan(0,0,0,5));
                         entity.Id = service.Create(entity);
@@ -362,10 +363,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             }
             catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
             {
+                writeError = true;
                 logger.SetWriteFault(recordNumber, ex.Detail.Message);
             }
 
-            if (statuscode != null && Constants.CreateModes.Contains(Configuration.SetStateMode))
+            if (writeError!= true && statuscode != null && Constants.CreateModes.Contains(Configuration.SetStateMode))
             {
                 service.SetStateOfEntity(entity.LogicalName, entity.Id, statecode, statuscode);
             }

@@ -137,6 +137,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         void SourceTargetMapping_MappingRowAdded(DataMappingControl.DataMapping item)
         {
             existingCheck.AvailablePrimaryKeyAttributes.Add(new NameDisplayName(item.Target, item.Target));
+            existingCheck.AvailablePrimaryKeyAttributes.OrderBy(i => i.DisplayName);
         }
 
         void SourceTargetMapping_MappingRowDeleted(DataMappingControl.DataMapping item)
