@@ -7,10 +7,12 @@ using IntegrationTool.SDK.Database;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
@@ -347,7 +349,15 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 }
                 else
                 {
-                    entity.Id = service.Create(entity);
+                    try
+                    {
+                        entity.Id = service.Create(entity);
+                    }
+                    catch (Exception e)
+                    {
+                        Thread.Sleep(new TimeSpan(0,0,0,5));
+                        entity.Id = service.Create(entity);
+                    }
                 }
             }
             catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> ex)
@@ -379,7 +389,16 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 {
                     if (entity.Attributes.Count > 0)
                     {
-                        service.Update(entity);
+                        try
+                        {
+                            service.Update(entity);
+                        }
+                        catch (Exception e)
+                        {
+                            Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                            service.Update(entity);
+                        }
+                        
                         foreach (var attribute in entity.Attributes)
                         {
                             resolvedEntity[attribute.Key] = attribute.Value;

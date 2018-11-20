@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK
@@ -30,8 +31,15 @@ namespace IntegrationTool.Module.WriteDynamicCrmMarketingLists.SDK
                     break;
             }
 
-            list.Id = service.Create(list);
-
+            try
+            {
+                list.Id = service.Create(list);
+            }
+            catch (Exception e)
+            {
+                Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                list.Id = service.Create(list);
+            }
             return new Marketinglist(list["listname"].ToString(), list.Id);
         }
 

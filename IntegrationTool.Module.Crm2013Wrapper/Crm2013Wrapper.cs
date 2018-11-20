@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using IntegrationTool.SDK;
@@ -205,7 +206,16 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                     addItemCampaignRequest.EntityName = entityName1;
                     addItemCampaignRequest.EntityId = entity1id;
                 }
-                service.Execute(addItemCampaignRequest);
+
+                try
+                {
+                    service.Execute(addItemCampaignRequest);
+                }
+                catch (Exception e)
+                {
+                    Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                    service.Execute(addItemCampaignRequest);
+                }
             }
             else
             {
@@ -214,7 +224,16 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
                 associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
 
-                service.Execute(associateEntitiesRequest);
+                
+                try
+                {
+                    service.Execute(associateEntitiesRequest);
+                }
+                catch (Exception e)
+                {
+                    Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                    service.Execute(associateEntitiesRequest);
+                }
             }
         }
 
