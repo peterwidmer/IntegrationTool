@@ -31,6 +31,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         private EntityCollection users = new EntityCollection();
         private EntityCollection currency = new EntityCollection();
         private EntityCollection businessunit = new EntityCollection();
+        private EntityCollection queues = new EntityCollection();
 
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
@@ -52,6 +53,9 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
             reportProgress(new SimpleProgressReport("Loading BusinesUnit..."));
             this.businessunit = service.RetrieveMultiple(new QueryExpression("team") { ColumnSet = new ColumnSet(true) });
+
+            reportProgress(new SimpleProgressReport("Loading queues..."));
+            this.queues = service.RetrieveMultiple(new QueryExpression("queue") { ColumnSet = new ColumnSet(true) });
 
             reportProgress(new SimpleProgressReport("Loading Entitymetadata"));
             var entityMetaData = Crm2013Wrapper.Crm2013Wrapper.GetEntityMetadata(service, this.Configuration.EntityName);
@@ -136,6 +140,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         foreach (var party in ((EntityCollection)partyList.Value).Entities)
                         {
                             ResolveParty(party);
+                        }
+                        if (((EntityCollection)partyList.Value).Entities.Count == 0)
+                        {
+                            entity.Attributes.Remove(c.Target);
                         }
                     }
                 }
@@ -223,14 +231,28 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
 
                     if (newuser == null)
                     {
-                    entity.Attributes["addressused"] = ((EntityReference)userattribute.Value).Name;
-
+                        entity.Attributes["addressused"] = ((EntityReference)userattribute.Value).Name;
                         entity.Attributes.Remove(userattribute.Key);
                     }
                     else
                     {
                         entity[userattribute.Key] = newuser.ToEntityReference();
                     }
+            }
+
+            var queuerefs = entity.Attributes.Where(t => t.Value is EntityReference && (((EntityReference)t.Value).LogicalName == "queue")).ToList();
+            foreach (var qattribute in queuerefs)
+            {
+                Entity newqueue = this.queues.Entities.Where(q => q.Attributes.Contains("name") && (string)q["name"] == ((EntityReference)qattribute.Value).Name).FirstOrDefault();
+                if (newqueue == null)
+                {                   
+                    entity.Attributes.Remove(qattribute.Key);
+                }
+                else
+                {
+                    entity[qattribute.Key] = newqueue.ToEntityReference();
+                }
+
             }
         }
 

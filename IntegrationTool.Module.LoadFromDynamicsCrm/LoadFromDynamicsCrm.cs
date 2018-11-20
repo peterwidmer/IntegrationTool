@@ -125,6 +125,10 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                                             {
                                                 refe.Name = user["internalemailaddress"].ToString();
                                             }
+                                            else if (user != null && user.Contains("fullname"))
+                                            {
+                                                refe.Name = user["fullname"].ToString();
+                                            }
                                         }
                                     }
                                 }
