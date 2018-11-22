@@ -207,7 +207,7 @@ namespace IntegrationTool.DataMappingControl
                     target = "overriddencreatedon";
                 }
 
-                if (source == "overriddencreatedon")
+                if (source == "overriddencreatedon" || source == "stageid" || source == "traversedpath")
                 {
                     continue;
                 }

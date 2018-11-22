@@ -14,6 +14,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK.Enums;
 using IntegrationTool.Module.WriteToDynamicsCrm.SDK;
 using Microsoft.Xrm.Sdk.Query;
@@ -378,8 +379,15 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     }
                     catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> e)
                     {
-                        Thread.Sleep(new TimeSpan(0,0,0,5));
-                        entity.Id = service.Create(entity);
+                        if (e.Message.Contains("timed out") || e.Message.Contains("Bad Gateway"))
+                        {
+                            Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                            entity.Id = service.Create(entity);
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
                 }
             }
@@ -419,8 +427,15 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                         }
                         catch (Exception e)
                         {
-                            Thread.Sleep(new TimeSpan(0, 0, 0, 5));
-                            service.Update(entity);
+                            if (e.Message.Contains("timed out") || e.Message.Contains("Bad Gateway"))
+                            {
+                                Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                                service.Update(entity);
+                            }
+                            else
+                            {
+                                throw;
+                            }
                         }
                         
                         foreach (var attribute in entity.Attributes)
