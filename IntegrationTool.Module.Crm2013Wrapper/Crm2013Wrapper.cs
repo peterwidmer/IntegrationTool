@@ -207,15 +207,7 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                     addItemCampaignRequest.EntityId = entity1id;
                 }
 
-                try
-                {
-                    service.Execute(addItemCampaignRequest);
-                }
-                catch (Exception e)
-                {
-                    Thread.Sleep(new TimeSpan(0, 0, 0, 5));
-                    service.Execute(addItemCampaignRequest);
-                }
+                service.Execute(addItemCampaignRequest);
             }
             else
             {
@@ -224,16 +216,8 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 associateEntitiesRequest.Moniker1 = new EntityReference(entityName1, entity1id);
                 associateEntitiesRequest.Moniker2 = new EntityReference(entityName2, entity2id);
 
-                
-                try
-                {
-                    service.Execute(associateEntitiesRequest);
-                }
-                catch (Exception e)
-                {
-                    Thread.Sleep(new TimeSpan(0, 0, 0, 5));
-                    service.Execute(associateEntitiesRequest);
-                }
+
+                service.Execute(associateEntitiesRequest);
             }
         }
 

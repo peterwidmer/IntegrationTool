@@ -166,8 +166,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                 OptionSetValue statuscode = null;
                 if (entity.Contains("statuscode"))
                 {
-                    statecode = entity["statecode"] as OptionSetValue;
-                    entity.Attributes.Remove("statecode");
+                        if (entity.Contains("statecode"))
+                        {
+                            statecode = entity["statecode"] as OptionSetValue;
+                            entity.Attributes.Remove("statecode");
+                        }
 
                     statuscode = entity["statuscode"] as OptionSetValue;
                     entity.Attributes.Remove("statuscode");
@@ -381,7 +384,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     {
                         if (e.Message.Contains("timed out") || e.Message.Contains("Bad Gateway"))
                         {
-                            Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                            Thread.Sleep(new TimeSpan(0, 0, 0, 20));
                             entity.Id = service.Create(entity);
                         }
                         else
@@ -423,13 +426,13 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     {
                         try
                         {
-                            service.Update(entity);
+                           service.Update(entity);
                         }
                         catch (Exception e)
                         {
                             if (e.Message.Contains("timed out") || e.Message.Contains("Bad Gateway"))
                             {
-                                Thread.Sleep(new TimeSpan(0, 0, 0, 5));
+                                Thread.Sleep(new TimeSpan(0, 0, 0, 20));
                                 service.Update(entity);
                             }
                             else

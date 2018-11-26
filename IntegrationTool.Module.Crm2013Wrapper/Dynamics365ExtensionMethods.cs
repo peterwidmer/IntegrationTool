@@ -33,6 +33,11 @@ namespace IntegrationTool.Module.CrmWrapper
 
         public static void SetStateOfEntity(this IOrganizationService service, string entityName, Guid entityId, OptionSetValue statecode, OptionSetValue statuscode)
         {
+            if (statecode == null || statecode == null)
+            {
+                throw new Exception("could not set status... please check the status mapping");
+            }
+
             SetStateRequest setStateRequest = new SetStateRequest();
             setStateRequest.EntityMoniker = new EntityReference(entityName, entityId);
             setStateRequest.State = statecode;

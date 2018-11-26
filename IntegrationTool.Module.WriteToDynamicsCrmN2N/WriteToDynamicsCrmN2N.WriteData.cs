@@ -61,14 +61,21 @@ namespace IntegrationTool.Module.WriteToDynamicsCrmN2N
             {
                 string joinKeyEntity1 = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.Entity1Mapping, this.dataObject.Metadata);
                 string joinKeyEntity2 = JoinResolver.BuildExistingCheckKey(this.dataObject[i], this.Configuration.Entity2Mapping, this.dataObject.Metadata);
-                
-                if(!this.existingEntities1.ContainsKey(joinKeyEntity1) || !this.existingEntities2.ContainsKey(joinKeyEntity2))
+
+                if (!this.existingEntities1.ContainsKey(joinKeyEntity1))
                 {
                     continue;
                     // TODO Log, that one of the 2 entities could not be resolved!
                 }
 
-                if(this.Configuration.MultipleFoundMode == N2NMultipleFoundMode.None && (this.existingEntities1[joinKeyEntity1].Length > 1 || this.existingEntities2[joinKeyEntity2].Length > 1))
+
+                if (!this.existingEntities2.ContainsKey(joinKeyEntity2))
+                {
+                    continue;
+                    // TODO Log, that one of the 2 entities could not be resolved!
+                }
+
+                if (this.Configuration.MultipleFoundMode == N2NMultipleFoundMode.None && (this.existingEntities1[joinKeyEntity1].Length > 1 || this.existingEntities2[joinKeyEntity2].Length > 1))
                 {
                     continue;
                     // TODO Log, that more than one entities were resolved by this key

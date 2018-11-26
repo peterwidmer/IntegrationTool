@@ -159,6 +159,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                     case AttributeTypeCode.Status:
                     case AttributeTypeCode.Picklist:
+
                         IntegrationTool.Module.WriteToDynamicsCrm.SDK.PicklistMapping picklistMapping = this.picklistMappings.Where(t => t.LogicalName == dataMapping.Target).First();
                         int optionValue = -1;
                         switch (picklistMapping.MappingType)
@@ -215,8 +216,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                             if(dataMapping.Target == "statuscode")
                             {
                                 StatusAttributeMetadata statusAttributeMetadata = attributeMetadata as StatusAttributeMetadata;
-                                var statusOptionMetadata = statusAttributeMetadata.OptionSet.Options.Where(t=> t.Value == optionValue).First() as StatusOptionMetadata;
-                                entity.Attributes.Add("statecode", new OptionSetValue(statusOptionMetadata.State.Value));
+                                var statusOptionMetadata = statusAttributeMetadata.OptionSet.Options.Where(t=> t.Value == optionValue).FirstOrDefault() as StatusOptionMetadata;
+                                if (statusOptionMetadata != null)
+                                {
+                                    entity.Attributes.Add("statecode", new OptionSetValue(statusOptionMetadata.State.Value));
+                                }
                             }
                             entity.Attributes.Add(dataMapping.Target, new OptionSetValue(optionValue));
                         }
