@@ -1,4 +1,5 @@
 ﻿using IntegrationTool.Module.WriteToDynamicsCrm.Execution.Models;
+using IntegrationTool.SDK;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
@@ -14,12 +15,14 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
     public class PrimaryKeyResolver
     {
         private IOrganizationService service;
+        private IConnection connection;
         private EntityMetadata entityMetadata;
         private Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary;
 
-        public PrimaryKeyResolver(IOrganizationService service, EntityMetadata entityMetadata, Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary)
+        public PrimaryKeyResolver(IConnection connection, EntityMetadata entityMetadata, Dictionary<string, AttributeMetadata> primaryKeyAttributeMetadataDictionary)
         {
-            this.service = service;
+            service = connection.GetConnection() as IOrganizationService;
+            this.connection = connection;
             this.entityMetadata = entityMetadata;
             this.primaryKeyAttributeMetadataDictionary = primaryKeyAttributeMetadataDictionary;
         }
@@ -53,7 +56,17 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
             for (int i = 0; i < sourceEntities.Length; i+= batchSize)
             {
                 var filterExpression = GetFilterForEntities(sourceEntities, i, batchSize);
-                var resolvedEntities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, entityMetadata.LogicalName, columnSet, filterExpression);
+
+                IEnumerable<Entity> resolvedEntities = null;
+                try
+                {
+                    resolvedEntities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, entityMetadata.LogicalName, columnSet, filterExpression);
+                }
+                catch (System.ServiceModel.Security.MessageSecurityException)
+                {
+                    service = connection.GetConnection() as IOrganizationService;
+                    resolvedEntities = Crm2013Wrapper.Crm2013Wrapper.RetrieveMultiple(service, entityMetadata.LogicalName, columnSet, filterExpression);
+                }
                 AddEntitiesToDictionary(keyDictionary, resolvedEntities);
             }
 

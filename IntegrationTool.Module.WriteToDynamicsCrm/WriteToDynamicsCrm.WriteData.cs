@@ -33,9 +33,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
         private EntityCollection currency = new EntityCollection();
         private EntityCollection businessunit = new EntityCollection();
         private EntityCollection queues = new EntityCollection();
+        private IConnection connection;
 
         public void WriteData(IConnection connection, IDatabaseInterface databaseInterface, IDatastore dataObject, ReportProgressMethod reportProgress)
         {
+            this.connection = connection;
+
             reportProgress(new SimpleProgressReport("Building logging database"));
             this.logger = new Logger(databaseInterface);
             this.logger.InitializeDatabase();
@@ -113,10 +116,11 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
             }
 
             reportProgress(new SimpleProgressReport("Resolving primarykeys of records"));
-            var primaryKeyResolver = new PrimaryKeyResolver(service, entityMetaData, primaryKeyAttributeMetadataDictionary);
+            var primaryKeyResolver = new PrimaryKeyResolver(connection, entityMetaData, primaryKeyAttributeMetadataDictionary);
             var resolvedEntities = primaryKeyResolver.BatchResolver(entities, Configuration.GetAllMappedAttributes(), Configuration.BatchSizeResolving);
 
             reportProgress(new SimpleProgressReport("Writing records to crm"));
+
             WriteEntity(entities, resolvedEntities, primaryKeyAttributeMetadataDictionary, reportProgress);
         }
 
@@ -194,6 +198,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     reportProgress(new SimpleProgressReport("Wrote " + (i + 1) + " of " + entities.Length + " records"));
                 }
                 }
+                
                 catch (Exception ex)
                 {
                     logger.SetWriteFault(i, ex.Message);
@@ -380,7 +385,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     {
                         entity.Id = service.Create(entity);
                     }
-                    catch (FaultException<Microsoft.Xrm.Sdk.OrganizationServiceFault> e)
+                    catch (System.ServiceModel.Security.MessageSecurityException)
+                    {
+                        service = connection.GetConnection() as IOrganizationService;
+                        service.Update(entity);
+                    }
+                    catch (Exception e)
                     {
                         if (e.Message.Contains("timed out") || e.Message.Contains("Bad Gateway"))
                         {
@@ -426,7 +436,12 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm
                     {
                         try
                         {
-                           service.Update(entity);
+                            service.Update(entity);
+                        }
+                        catch (System.ServiceModel.Security.MessageSecurityException)
+                        {
+                            service = connection.GetConnection() as IOrganizationService;
+                            service.Update(entity);
                         }
                         catch (Exception e)
                         {
