@@ -104,6 +104,11 @@ namespace IntegrationTool.Module.LoadFromDynamicsCrm
                     case DynamicsCrmQueryType.NativeExecuteFetchXml:
                         foreach (var attribute in entity.Attributes)
                         {
+                            if (attribute.Value is DateTime datetime)
+                            {
+                                datetime = datetime.ToUniversalTime();
+                            }
+
                             if (attribute.Value is EntityReference userref && userref.LogicalName == "systemuser")
                             {
                                 var user = users.Entities.Where(u => u.Id == userref.Id).SingleOrDefault();
