@@ -258,7 +258,43 @@ namespace IntegrationTool.Module.Crm2013Wrapper
                 Entity entity = new Entity(queryExpression.EntityName);
                 foreach (var item in response.EntityMetadata.Attributes)
                 {
-                    entity.Attributes[item.LogicalName] = "Dummy";
+                    Dictionary<int, string> sample = new Dictionary<int, string>();
+
+                    switch (item.AttributeType)
+                    {
+                        case AttributeTypeCode.State:
+
+                            foreach (var op in ((StateAttributeMetadata)item).OptionSet.Options)
+                            {
+                                sample.Add(op.Value.Value, op.Label.LocalizedLabels.First().Label);
+                            }
+
+                            entity.Attributes[item.LogicalName] = sample;
+                            break;
+                        case AttributeTypeCode.Status:
+
+                            foreach (var op in ((StatusAttributeMetadata)item).OptionSet.Options)
+                            {
+                                sample.Add(op.Value.Value, op.Label.LocalizedLabels.First().Label);
+                            }
+
+                            entity.Attributes[item.LogicalName] = sample;
+                            break;
+                        case AttributeTypeCode.Picklist:
+
+
+                            foreach (var op in ((PicklistAttributeMetadata)item).OptionSet.Options)
+                            {
+                                sample.Add(op.Value.Value, op.Label.LocalizedLabels.First().Label);
+                            }
+
+                            entity.Attributes[item.LogicalName] = sample;
+                            
+                            break;
+                        default:
+                            entity.Attributes[item.LogicalName] = "Dummy";
+                            break;
+                    }
                 }
                 dummy.Entities.Add(entity);
                 retrievedEntityCollection(dummy);

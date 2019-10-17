@@ -46,7 +46,19 @@ namespace IntegrationTool.SDK
 
             foreach(var objArray in this.data)
             {
+                if (objArray[column.ColumnIndex] is Dictionary<int, string> dictionary)
+                {
+                    List<NameDisplayName> r = new List<NameDisplayName>();
+                    foreach (var v in dictionary)
+                    {
+                        r.Add(new NameDisplayName(v.Key.ToString(), v.Value));
+                    }
+
+                    return r;
+                }
+
                 string value = objArray[column.ColumnIndex]?.ToString();
+
                 if(distinctValues.Contains(value) == false)
                 {
                     distinctValues.Add(value);
