@@ -68,11 +68,18 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
             switch (attributeMetadata.AttributeType.Value)
             {
                 case AttributeTypeCode.Status:
+                case AttributeTypeCode.Virtual:
                 case AttributeTypeCode.Picklist:
-                    var picklistMappingEntry = this.configuration.PicklistMapping.Where(t => t.LogicalName == item.Target).FirstOrDefault();
+
+                    if (attributeMetadata.AttributeType.Value == AttributeTypeCode.Virtual && attributeMetadata.AttributeTypeName.Value != "MultiSelectPicklistType")
+                    {
+                        throw new Exception("AttributeTypeCode.Virtual is only supportet in sub type MultiSelectPicklistType");
+                    }
+
+                    var picklistMappingEntry = this.configuration.PicklistMapping.Where(t => t.LogicalName == item.Target && t.Source == item.Source).FirstOrDefault();
                     if (picklistMappingEntry == null)
                     {
-                        picklistMappingEntry = new SDK.PicklistMapping() { LogicalName = item.Target };
+                        picklistMappingEntry = new SDK.PicklistMapping() { LogicalName = item.Target, Source = item.Source };
 
                         if (item.Automap)
                         {
@@ -111,7 +118,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.UserControls
 
         void SourceTargetMapping_MappingRowDeleted(DataMappingControl.DataMapping item)
         {
-            var picklistMappingEntry = this.configuration.PicklistMapping.Where(t=>t.LogicalName == item.Target).FirstOrDefault();
+            var picklistMappingEntry = this.configuration.PicklistMapping.Where(t=>t.LogicalName == item.Target && t.Source == item.Source).FirstOrDefault();
             if(picklistMappingEntry != null)
             {
                 this.configuration.PicklistMapping.Remove(picklistMappingEntry);

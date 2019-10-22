@@ -28,7 +28,10 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
 
                 if (obj == null || string.IsNullOrEmpty(obj.ToString()))
                 {
-                    entity.Attributes.Add(dataMapping.Target, null);
+                    if (attributeMetadata.AttributeType.Value != AttributeTypeCode.Virtual)
+                    {
+                        entity.Attributes.Add(dataMapping.Target, null);
+                    }
                     continue;
                 }
 
@@ -158,9 +161,16 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                         break;
 
                     case AttributeTypeCode.Status:
+                    case AttributeTypeCode.Virtual:
                     case AttributeTypeCode.Picklist:
 
-                        IntegrationTool.Module.WriteToDynamicsCrm.SDK.PicklistMapping picklistMapping = this.picklistMappings.Where(t => t.LogicalName == dataMapping.Target).First();
+                        if (attributeMetadata.AttributeType.Value == AttributeTypeCode.Virtual && attributeMetadata.AttributeTypeName.Value != "MultiSelectPicklistType")
+                        {
+                            throw new Exception("AttributeTypeCode.Virtual is only supportet in sub type MultiSelectPicklistType");
+                        }
+
+
+                        IntegrationTool.Module.WriteToDynamicsCrm.SDK.PicklistMapping picklistMapping = this.picklistMappings.Where(t => t.LogicalName == dataMapping.Target &&  t.Source == dataMapping.Source ).First();
                         int optionValue = -1;
                         switch (picklistMapping.MappingType)
                         {
@@ -222,8 +232,29 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.Execution
                                     entity.Attributes.Add("statecode", new OptionSetValue(statusOptionMetadata.State.Value));
                                 }
                             }
-                            entity.Attributes.Add(dataMapping.Target, new OptionSetValue(optionValue));
+
+                            if (attributeMetadata.AttributeType.Value == AttributeTypeCode.Virtual && attributeMetadata.AttributeTypeName.Value == "MultiSelectPicklistType")
+                            {
+                                if (entity.Attributes.Contains(dataMapping.Target))
+                                {
+                                    var existing = (OptionSetValueCollection)entity.Attributes[dataMapping.Target] ;
+                                    existing.Add(new OptionSetValue(optionValue));
+                                    entity.Attributes[dataMapping.Target] = existing;
+                                }
+                                else
+                                {
+                                    OptionSetValueCollection OPcollection = new OptionSetValueCollection() { new OptionSetValue(optionValue)};
+
+
+                                    entity.Attributes.Add(dataMapping.Target, OPcollection);
+                                }
+                            }
+                            else
+                            {
+                                entity.Attributes.Add(dataMapping.Target, new OptionSetValue(optionValue));
+                            }                            
                         }
+
                         break;
 
                     case AttributeTypeCode.Uniqueidentifier:

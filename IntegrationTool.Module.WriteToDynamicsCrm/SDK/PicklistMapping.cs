@@ -15,6 +15,7 @@ namespace IntegrationTool.Module.WriteToDynamicsCrm.SDK
         public MappingNotFoundType MappingNotFound { get; set; }
         public List<DataMapping> Mapping { get; set; }
         public string DefaultValue { get; set; }
+        public string Source { get; set; }
 
         public PicklistMapping()
         {

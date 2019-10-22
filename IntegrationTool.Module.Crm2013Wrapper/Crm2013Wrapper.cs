@@ -111,7 +111,13 @@ namespace IntegrationTool.Module.Crm2013Wrapper
             foreach (var attribute in entityMetadata.Attributes)
                 //.Where(attribute => (attribute.IsValidForCreate.HasValue && (bool)attribute.IsValidForCreate) || (attribute.IsValidForUpdate.HasValue && (bool)attribute.IsValidForUpdate)))
             {
-                if(attribute.AttributeType.Value == AttributeTypeCode.Virtual || attribute.AttributeType.Value == AttributeTypeCode.State)
+                if (attribute.LogicalName == "tvd_tvdcodes")
+                {
+                    
+                }
+
+
+                if((attribute.AttributeType.Value == AttributeTypeCode.Virtual || attribute.AttributeType.Value == AttributeTypeCode.State) && attribute.AttributeTypeName.Value != "MultiSelectPicklistType")
                 {
                     continue;
                 }
